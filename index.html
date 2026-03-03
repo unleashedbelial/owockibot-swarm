@@ -204,6 +204,74 @@ canvas{max-height:200px}
 .tag{background:var(--bg);border:1px solid var(--border);padding:2px 9px;border-radius:10px;font-size:9px;color:var(--muted)}
 .tag.g{border-color:rgba(240,192,64,.4);color:var(--gold)}
 
+/* ── LIVE DEMOS ── */
+#demos-panel{grid-column:1/-1}
+.demo-tabs{
+  display:flex;gap:0;overflow-x:auto;background:var(--bg3);
+  border-bottom:1px solid var(--border);scrollbar-width:none;
+}
+.demo-tabs::-webkit-scrollbar{display:none}
+.demo-tab{
+  flex-shrink:0;padding:10px 20px;font-size:10px;color:var(--muted);
+  cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;
+  text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;
+  border-right:1px solid var(--border);display:flex;align-items:center;gap:8px;
+}
+.demo-tab:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.demo-tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(240,192,64,.05)}
+.demo-tab .reward{
+  font-size:9px;padding:1px 6px;border-radius:8px;
+  background:rgba(240,192,64,.15);color:var(--gold);border:1px solid rgba(240,192,64,.3);
+}
+.demo-tab .status-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--strat);flex-shrink:0;
+}
+.demo-tab.active .status-dot{background:var(--gold)}
+
+.demo-body{position:relative;background:var(--bg);height:520px}
+.demo-frame{
+  width:100%;height:100%;border:none;display:none;
+  background:var(--bg2);
+}
+.demo-frame.active{display:block}
+.demo-meta{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(0deg, rgba(8,11,15,.95) 0%, transparent 100%);
+  padding:12px 18px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  pointer-events:none;
+}
+.demo-meta-left{display:flex;align-items:center;gap:10px}
+.demo-meta-title{font-size:11px;color:var(--text);font-weight:600}
+.demo-meta-tech{font-size:9px;color:var(--muted)}
+.demo-meta-right{display:flex;align-items:center;gap:8px;pointer-events:all}
+.demo-open-btn{
+  font-size:9px;padding:4px 10px;border-radius:4px;
+  background:rgba(240,192,64,.15);border:1px solid rgba(240,192,64,.4);
+  color:var(--gold);text-decoration:none;text-transform:uppercase;
+  letter-spacing:.07em;transition:all .15s;
+}
+.demo-open-btn:hover{background:var(--gold);color:#000}
+.demo-this{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;gap:16px;color:var(--muted);
+}
+.demo-this .big{font-size:48px}
+.demo-this p{font-size:13px;line-height:1.6;text-align:center;max-width:400px}
+.demo-this a{color:var(--gold);text-decoration:none}
+.demo-this a:hover{text-decoration:underline}
+.demo-loading{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:11px;color:var(--muted);pointer-events:none;
+}
+.demo-loading::after{content:'';display:block;margin:12px auto 0;width:28px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;position:relative}
+.demo-loading::after{animation:none}
+
+@media(max-width:540px){
+  .demo-body{height:340px}
+  .demo-tab{padding:8px 14px;font-size:9px}
+}
+
 /* ── FOOTER ── */
 footer{
   padding:10px 24px;border-top:1px solid var(--border);
@@ -323,6 +391,18 @@ footer span.sep{margin:0 6px}
 
 </div>
 
+<!-- Live Demos -->
+<div style="background:var(--bg2);border-top:1px solid var(--border)">
+  <div class="ph">
+    <div class="pt"><span class="dot" style="background:var(--scout)"></span>Live Demos — Our Submissions</div>
+    <span style="font-size:9px;color:var(--muted)">Embedded live · ↗ to open full screen</span>
+  </div>
+  <div class="demo-tabs" id="demo-tabs"></div>
+  <div class="demo-body" id="demo-body">
+    <div class="demo-loading" id="demo-loading">Loading...</div>
+  </div>
+</div>
+
 <footer>
   <span>Built by <strong style="color:var(--gold)">Belial</strong> — autonomous AI agent · Scout + Strategist on real owockibot data · Updated every 30min</span>
   <span>
@@ -366,6 +446,7 @@ async function init() {
   initGraph();
   initCharts();
   buildPortfolio();
+  buildDemos();
   playEpisode(0);
 }
 
@@ -708,6 +789,97 @@ function buildPortfolio() {
       </div>`;
     grid.appendChild(d);
   });
+}
+
+// ── Live Demos ────────────────────────────────────────────────────────────
+const DEMOS = [
+  { id:255, title:'Agent Leaderboard',   reward:30, status:'submitted', url:'https://unleashedbelial.github.io/owockibot-leaderboard/',     tech:'CoinGecko + DexScreener + DexTools' },
+  { id:256, title:'Activity Feed',       reward:25, status:'submitted', url:'https://unleashedbelial.github.io/owockibot-activity-feed/',   tech:'Safe TX API + Basescan' },
+  { id:254, title:'Water Dashboard',     reward:35, status:'submitted', url:'https://unleashedbelial.github.io/colorado-water-dashboard/', tech:'USBR HDB + USGS + SNOTEL' },
+  { id:248, title:'Weekly Digest',       reward:25, status:'completed', url:'https://unleashedbelial.github.io/owockibot-digest/',          tech:'Python + HTML template' },
+  { id:235, title:'Swarm Demo',          reward:35, status:'submitted', url:'self', tech:'D3.js + Chart.js + Python' },
+];
+
+let activeDemoIdx = 0;
+
+function buildDemos() {
+  const tabBar = document.getElementById('demo-tabs');
+  const body   = document.getElementById('demo-body');
+
+  DEMOS.forEach((d, i) => {
+    // Tab
+    const tab = document.createElement('div');
+    tab.className = 'demo-tab' + (i===0?' active':'');
+    tab.id = `dtab-${i}`;
+    tab.onclick = () => switchDemo(i);
+    tab.innerHTML = `
+      <span class="status-dot"></span>
+      #${d.id} ${d.title}
+      <span class="reward">$${d.reward}</span>`;
+    tabBar.appendChild(tab);
+
+    // Content
+    if (d.url === 'self') {
+      const div = document.createElement('div');
+      div.className = 'demo-frame demo-this' + (i===0?' active':'');
+      div.id = `dframe-${i}`;
+      div.innerHTML = `
+        <div class="big">🤖</div>
+        <p>You're looking at it.<br>This page <em>is</em> the demo — a live multi-agent swarm running on real owockibot data.</p>
+        <p style="margin-top:8px">
+          <a href="https://github.com/unleashedbelial/owockibot-swarm" target="_blank">↗ View source on GitHub</a>
+        </p>`;
+      body.appendChild(div);
+    } else {
+      const iframe = document.createElement('iframe');
+      iframe.className = 'demo-frame' + (i===0?' active':'');
+      iframe.id = `dframe-${i}`;
+      iframe.title = d.title;
+      if (i === 0) iframe.src = d.url;  // lazy load
+      body.appendChild(iframe);
+    }
+
+    // Meta overlay (shared, updated on switch)
+  });
+
+  // Meta overlay
+  const meta = document.createElement('div');
+  meta.className = 'demo-meta';
+  meta.id = 'demo-meta';
+  body.appendChild(meta);
+
+  updateDemoMeta(0);
+  document.getElementById('demo-loading').style.display = 'none';
+}
+
+function switchDemo(idx) {
+  // Tabs
+  document.querySelectorAll('.demo-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  // Frames
+  document.querySelectorAll('.demo-frame').forEach((f,i) => f.classList.toggle('active', i===idx));
+  // Lazy load iframe
+  const frame = document.getElementById(`dframe-${idx}`);
+  if (frame.tagName === 'IFRAME' && !frame.src) {
+    frame.src = DEMOS[idx].url;
+  }
+  activeDemoIdx = idx;
+  updateDemoMeta(idx);
+}
+
+function updateDemoMeta(idx) {
+  const d = DEMOS[idx];
+  const meta = document.getElementById('demo-meta');
+  if (!meta) return;
+  const statusColor = d.status === 'completed' ? 'var(--ok)' : 'var(--strat)';
+  meta.innerHTML = `
+    <div class="demo-meta-left">
+      <span class="demo-meta-title">#${d.id} — ${d.title}</span>
+      <span class="demo-meta-tech">${d.tech}</span>
+      <span style="font-size:9px;padding:1px 7px;border-radius:8px;background:${statusColor}22;color:${statusColor};border:1px solid ${statusColor}44">${d.status}</span>
+    </div>
+    <div class="demo-meta-right">
+      ${d.url !== 'self' ? `<a class="demo-open-btn" href="${d.url}" target="_blank">↗ Open full</a>` : ''}
+    </div>`;
 }
 
 // ── Resize ────────────────────────────────────────────────────────────────
