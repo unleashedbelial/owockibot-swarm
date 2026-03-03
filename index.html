@@ -915,10 +915,6 @@ const BUILD_SIMS = [
     id:255, title:'Agent Leaderboard', reward:30, status:'submitted',
     live:'https://unleashedbelial.github.io/owockibot-leaderboard/',
     gh:'https://github.com/unleashedbelial/owockibot-leaderboard',
-  {
-    id:255, title:'Agent Leaderboard', reward:30, status:'submitted',
-    live:'https://unleashedbelial.github.io/owockibot-leaderboard/',
-    gh:'https://github.com/unleashedbelial/owockibot-leaderboard',
     sequence:[
       {k:'msg', from:'scout', to:'strategist', type:'bounty_found', text:'Bounty #255 "Agent Economy Leaderboard" — $30 USDC. Rank Base chain AI agents by mcap, volume, price change. Sparkline charts. Deploy on GitHub Pages. Pulling the full spec now.'},
       {k:'term', type:'comment', text:'Scout fetches full bounty spec from board'},
@@ -1152,7 +1148,7 @@ const BUILD_SIMS = [
       {k:'term', type:'warn', text:'[meta] this terminal is inside the demo it just built'},
     ]
   },
-
+];
 
 let activeBuildIdx = 0;
 let buildTimer = null;
