@@ -83,8 +83,8 @@ header{
 
 /* ── MAIN GRID ── */
 .main{
-  display:grid;grid-template-columns:1fr 380px;
-  grid-template-rows:560px auto;
+  display:grid;grid-template-columns:1fr 420px;
+  grid-template-rows:660px auto;
   gap:1px;background:var(--border);
 }
 .panel{background:var(--bg2);overflow:hidden}
@@ -112,8 +112,8 @@ header{
 
 /* ── RIGHT PANEL (messages + terminal) ── */
 #right-panel{display:flex;flex-direction:column;overflow:hidden}
-#feed-panel{display:flex;flex-direction:column;overflow:hidden;flex:5;min-height:0;border-bottom:1px solid var(--border)}
-#term-panel{display:flex;flex-direction:column;overflow:hidden;flex:3;min-height:0;background:#020609}
+#feed-panel{display:flex;flex-direction:column;overflow:hidden;flex:6;min-height:0;border-bottom:1px solid var(--border)}
+#term-panel{display:flex;flex-direction:column;overflow:hidden;flex:4;min-height:0;background:#020609}
 .term-inner{flex:1;min-height:0;overflow-y:auto;padding:10px 14px;scrollbar-width:none}
 .term-inner::-webkit-scrollbar{display:none}
 
@@ -499,95 +499,190 @@ function setActiveTab(idx) {
 let svg, W, H;
 let nodeMap = {};
 
+const nodeMsgCount = {scout:0, strategist:0, broadcast:0};
+
 function initGraph() {
   const cont = document.getElementById('net-svg');
   const rect = cont.parentElement.getBoundingClientRect();
   W = rect.width || 560;
-  H = Math.max(260, Math.min(420, rect.height || 340));
+  H = Math.max(300, rect.height || 420);
 
   svg = d3.select('#net-svg').attr('viewBox',`0 0 ${W} ${H}`).attr('preserveAspectRatio','xMidYMid meet');
 
   const defs = svg.append('defs');
-  ['scout','strategist','broadcast'].forEach(id => {
-    const f = defs.append('filter').attr('id',`gf-${id}`).attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
-    f.append('feGaussianBlur').attr('stdDeviation',5).attr('result','blur');
+
+  // Glow filters
+  ['scout','strategist','broadcast','pkt'].forEach(id => {
+    const sd = id==='pkt'?4:id==='broadcast'?6:5;
+    const f = defs.append('filter').attr('id',`gf-${id}`).attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+    f.append('feGaussianBlur').attr('stdDeviation',sd).attr('result','blur');
     const m = f.append('feMerge');
     m.append('feMergeNode').attr('in','blur');
     m.append('feMergeNode').attr('in','SourceGraphic');
   });
-  const fp = defs.append('filter').attr('id','gf-pkt').attr('x','-100%').attr('y','-100%').attr('width','300%').attr('height','300%');
-  fp.append('feGaussianBlur').attr('stdDeviation',3.5).attr('result','blur');
-  const mp = fp.append('feMerge');
-  mp.append('feMergeNode').attr('in','blur');
-  mp.append('feMergeNode').attr('in','SourceGraphic');
 
-  const cx=W/2, cy=H/2, r=Math.min(W,H)*.27;
+  // Radial gradient for node fill
+  svgNodes.forEach ? null : null; // just continue
+  ['scout','strategist','broadcast'].forEach((id,i) => {
+    const colors = ['#ff6b35','#4ecdc4','#ffe66d'];
+    const g = defs.append('radialGradient').attr('id',`grad-${id}`).attr('cx','50%').attr('cy','50%').attr('r','50%');
+    g.append('stop').attr('offset','0%').attr('stop-color',colors[i]).attr('stop-opacity',.35);
+    g.append('stop').attr('offset','100%').attr('stop-color',colors[i]).attr('stop-opacity',.05);
+  });
+
+  const cx=W/2, cy=H/2, r=Math.min(W,H)*.3;
   svgNodes = [
-    {id:'scout',      x:cx-r*.9, y:cy-r*.3, label:'Scout',      role:'Bounty Researcher', color:'#ff6b35'},
-    {id:'strategist', x:cx+r*.9, y:cy-r*.3, label:'Strategist', role:'Build Planner',     color:'#4ecdc4'},
-    {id:'broadcast',  x:cx,      y:cy+r*.75, label:'Network',    role:'Broadcast Hub',     color:'#ffe66d'}
+    {id:'scout',      x:cx-r*.95, y:cy-r*.28, label:'Scout',      role:'Bounty Researcher', color:'#ff6b35'},
+    {id:'strategist', x:cx+r*.95, y:cy-r*.28, label:'Strategist', role:'Build Planner',     color:'#4ecdc4'},
+    {id:'broadcast',  x:cx,       y:cy+r*.82,  label:'Network',    role:'Broadcast Hub',     color:'#ffe66d'}
   ];
   const nm = Object.fromEntries(svgNodes.map(n=>[n.id,n]));
   const edgePairs=[['scout','strategist'],['scout','broadcast'],['strategist','broadcast']];
 
+  // Background dot grid
+  const bgG = svg.append('g').attr('opacity',.18);
+  for(let gx=20; gx<W; gx+=28) for(let gy=16; gy<H; gy+=28)
+    bgG.append('circle').attr('cx',gx).attr('cy',gy).attr('r',1).attr('fill','#2a3a4a');
+
+  // Edges
   const eg = svg.append('g');
   edgePairs.forEach(([a,b])=>{
     const s=nm[a],t=nm[b];
+    // Dashed base edge
     eg.append('line').attr('class','edge').attr('x1',s.x).attr('y1',s.y).attr('x2',t.x).attr('y2',t.y);
-    eg.append('line').attr('class','edge-act').attr('id',`ea-${a}-${b}`).attr('stroke',s.color).attr('x1',s.x).attr('y1',s.y).attr('x2',t.x).attr('y2',t.y);
-    eg.append('line').attr('class','edge-act').attr('id',`ea-${b}-${a}`).attr('stroke',t.color).attr('x1',t.x).attr('y1',t.y).attr('x2',s.x).attr('y2',s.y);
+    // Active flash edges (both directions)
+    eg.append('line').attr('class','edge-act').attr('id',`ea-${a}-${b}`).attr('stroke',s.color).attr('stroke-width',2.5).attr('x1',s.x).attr('y1',s.y).attr('x2',t.x).attr('y2',t.y);
+    eg.append('line').attr('class','edge-act').attr('id',`ea-${b}-${a}`).attr('stroke',t.color).attr('stroke-width',2.5).attr('x1',t.x).attr('y1',t.y).attr('x2',s.x).attr('y2',s.y);
+    // Edge midpoint label (shows message type)
+    const mx=(s.x+t.x)/2, my=(s.y+t.y)/2;
+    eg.append('text').attr('id',`elbl-${a}-${b}`)
+      .attr('x',mx).attr('y',my-14).attr('text-anchor','middle')
+      .attr('font-size',8).attr('font-family','monospace')
+      .attr('fill','#4a6070').attr('opacity',0);
   });
 
-  // Message count badges (total across all episodes)
-  const counts = {};
-  data.episodes.forEach(ep => ep.messages.forEach(m=>{
-    const k=[m.from,m.to].sort().join('-');
-    counts[k]=(counts[k]||0)+1;
-  }));
-  edgePairs.forEach(([a,b])=>{
-    const s=nm[a],t=nm[b], k=[a,b].sort().join('-'), n=counts[k]||0;
-    if(n>0){
-      const mx=(s.x+t.x)/2, my=(s.y+t.y)/2;
-      svg.append('circle').attr('class','cnt-bg').attr('r',12).attr('cx',mx).attr('cy',my);
-      svg.append('text').attr('class','cnt-txt').attr('x',mx).attr('y',my+3).text(n);
-    }
-  });
-
+  // Nodes
   const ng = svg.append('g');
   svgNodes.forEach(n=>{
     const g = ng.append('g').attr('id',`ng-${n.id}`).attr('transform',`translate(${n.x},${n.y})`);
-    g.append('circle').attr('r',32).attr('fill','none').attr('stroke',n.color).attr('stroke-width',1).attr('opacity',.12).attr('id',`nr-${n.id}`);
-    g.append('circle').attr('r',24).attr('fill',`${n.color}20`).attr('stroke',n.color).attr('stroke-width',2).attr('filter',`url(#gf-${n.id})`);
+
+    // Outer orbital arc (rotating)
+    g.append('circle').attr('r',42).attr('fill','none')
+      .attr('stroke',n.color).attr('stroke-width',.8).attr('opacity',.1)
+      .attr('stroke-dasharray','6 18');
+
+    // Pulse ring
+    g.append('circle').attr('r',34).attr('fill','none')
+      .attr('stroke',n.color).attr('stroke-width',1).attr('opacity',.14)
+      .attr('id',`nr-${n.id}`);
+
+    // Node fill (gradient)
+    g.append('circle').attr('r',26)
+      .attr('fill',`url(#grad-${n.id})`)
+      .attr('stroke',n.color).attr('stroke-width',2)
+      .attr('filter',`url(#gf-${n.id})`);
+
+    // Inner active ring (lights up when speaking)
+    g.append('circle').attr('r',20).attr('fill','none')
+      .attr('stroke',n.color).attr('stroke-width',1.5).attr('opacity',0)
+      .attr('id',`na-${n.id}`);
+
+    // Icon
     const icons={scout:'🔍',strategist:'🧠',broadcast:'📡'};
-    g.append('text').attr('y',6).attr('text-anchor','middle').attr('font-size',17).text(icons[n.id]||'●');
-    g.append('text').attr('class','node-lbl').attr('y',42).text(n.label);
-    g.append('text').attr('class','node-role').attr('y',54).text(n.role);
+    g.append('text').attr('y',7).attr('text-anchor','middle').attr('font-size',18).text(icons[n.id]||'●');
+
+    // Label + role
+    g.append('text').attr('class','node-lbl').attr('y',46).text(n.label);
+    g.append('text').attr('class','node-role').attr('y',59).text(n.role);
+
+    // Msg counter badge
+    g.append('circle').attr('r',10).attr('cx',20).attr('cy',-22)
+      .attr('fill',n.color).attr('opacity',.15).attr('id',`nbc-${n.id}`);
+    g.append('text').attr('id',`nbv-${n.id}`)
+      .attr('x',20).attr('y',-18).attr('text-anchor','middle')
+      .attr('font-size',9).attr('fill',n.color).attr('font-family','monospace').text('0');
+
     nodeMap[n.id]=g;
   });
+
+  // Ambient particle system (slow floating dots)
+  startAmbientParticles();
 
   document.getElementById('graph-st').textContent = '3 agents connected';
 }
 
+function startAmbientParticles() {
+  function spawnParticle() {
+    if (!svg) return;
+    const n = svgNodes[Math.floor(Math.random()*svgNodes.length)];
+    const angle = Math.random()*Math.PI*2;
+    const dist = 30 + Math.random()*20;
+    const p = svg.append('circle')
+      .attr('r', 1.5).attr('fill', n.color).attr('opacity', 0)
+      .attr('cx', n.x + Math.cos(angle)*dist)
+      .attr('cy', n.y + Math.sin(angle)*dist);
+    const dur = 2000 + Math.random()*3000;
+    const tx = n.x + Math.cos(angle+.4)*(dist+20);
+    const ty = n.y + Math.sin(angle+.4)*(dist+20);
+    p.transition().duration(400).attr('opacity',.5)
+     .transition().duration(dur).attr('cx',tx).attr('cy',ty)
+     .transition().duration(400).attr('opacity',0).remove();
+    setTimeout(spawnParticle, 300 + Math.random()*700);
+  }
+  for(let i=0;i<4;i++) setTimeout(spawnParticle, i*400);
+}
+
 function pulseNode(id) {
   const r = d3.select(`#nr-${id}`);
-  r.attr('opacity',.7).attr('r',24)
-   .transition().duration(550).attr('r',40).attr('opacity',0)
-   .on('end',()=>r.attr('r',32).attr('opacity',.12));
+  r.attr('opacity',.8).attr('r',26)
+   .transition().duration(600).attr('r',44).attr('opacity',0)
+   .on('end',()=>r.attr('r',34).attr('opacity',.14));
+
+  // Inner active ring flash
+  const a = d3.select(`#na-${id}`);
+  a.attr('opacity',.8).transition().duration(800).attr('opacity',0);
+
+  // Increment counter
+  nodeMsgCount[id] = (nodeMsgCount[id]||0)+1;
+  d3.select(`#nbv-${id}`).text(nodeMsgCount[id]);
+  d3.select(`#nbc-${id}`).attr('opacity',.35)
+    .transition().duration(600).attr('opacity',.15);
 }
-function flashEdge(a,b) {
-  d3.select(`#ea-${a}-${b}`).attr('opacity',.85)
-    .transition().duration(1100).attr('opacity',0);
+
+function flashEdge(a, b, label) {
+  d3.select(`#ea-${a}-${b}`).attr('opacity',.9)
+    .transition().duration(1200).attr('opacity',0);
+  if (label) {
+    const lbl = d3.select(`#elbl-${a}-${b}`);
+    if (!lbl.empty()) {
+      lbl.text(label).attr('opacity',.8)
+        .transition().duration(1800).attr('opacity',0);
+    } else {
+      const lbl2 = d3.select(`#elbl-${b}-${a}`);
+      lbl2.text(label).attr('opacity',.8)
+        .transition().duration(1800).attr('opacity',0);
+    }
+  }
 }
-function firePacket(fid, tid, color) {
+
+function firePacket(fid, tid, color, label) {
   const fn=svgNodes.find(n=>n.id===fid), tn=svgNodes.find(n=>n.id===tid);
   if(!fn||!tn) return;
-  const pkt = svg.append('circle').attr('r',6).attr('fill',color)
-    .attr('cx',fn.x).attr('cy',fn.y).attr('opacity',.95).attr('filter','url(#gf-pkt)');
-  pkt.transition().duration(850).ease(d3.easeCubicInOut)
+
+  // Packet trail
+  const pkt = svg.append('circle').attr('r',7).attr('fill',color)
+    .attr('cx',fn.x).attr('cy',fn.y).attr('opacity',.9).attr('filter','url(#gf-pkt)');
+
+  pkt.transition().duration(900).ease(d3.easeCubicInOut)
     .attrTween('cx',()=>d3.interpolateNumber(fn.x,tn.x))
     .attrTween('cy',()=>d3.interpolateNumber(fn.y,tn.y))
-    .on('end',()=>{ pulseNode(tid); pkt.transition().duration(280).attr('r',16).attr('opacity',0).remove(); });
-  flashEdge(fid,tid); pulseNode(fid);
+    .on('end',()=>{
+      pulseNode(tid);
+      pkt.transition().duration(300).attr('r',20).attr('opacity',0).remove();
+    });
+
+  flashEdge(fid, tid, label);
+  pulseNode(fid);
 }
 
 // ── Message feed ──────────────────────────────────────────────────────────
@@ -814,163 +909,171 @@ function buildPortfolio() {
 }
 
 // ── Build Simulations ─────────────────────────────────────────────────────
+// k:'msg' → conversation panel  k:'term' → terminal  k:'pause' → wait ms
 const BUILD_SIMS = [
   {
     id:255, title:'Agent Leaderboard', reward:30, status:'submitted',
     live:'https://unleashedbelial.github.io/owockibot-leaderboard/',
     gh:'https://github.com/unleashedbelial/owockibot-leaderboard',
-    messages:[
-      {from:'scout',   to:'strategist', type:'bounty_found',    text:'Bounty found: #255 "Create an Agent Economy Leaderboard" — $30 USDC. Requirements: rank Base chain AI agents by mcap, volume, price. Sparkline charts. Deploy on GitHub Pages.'},
-      {from:'strategist',to:'scout',   type:'stack_decision',  text:'Stack: CoinGecko API for token list (ai-agents category), DexScreener batch for Base chain pairs. Chart.js for sparklines. Static GitHub Pages — no backend needed.'},
-      {from:'scout',   to:'strategist', type:'api_research',   text:'CoinGecko has 81 Base chain AI agent tokens across 2 pages. DexScreener batch endpoint: /latest/dex/tokens/{addr1,addr2,...} — CORS wildcard, works from browser. CoinGecko also CORS-free.'},
-      {from:'strategist',to:'scout',   type:'blocker',         text:'Blocker: DexTools API blocks browser origin (GitHub Pages → "Failed to fetch"). Needed for OWO/ODAI sparklines and BELIAL price. Need workaround.'},
-      {from:'scout',   to:'strategist', type:'solution',       text:'Solution: GH Actions pre-fetch pattern. update-cache.py runs server-side (DexTools allows it with correct Referer header), saves agents-cache.json. Browser only reads local file. Zero CORS issues.'},
-      {from:'strategist',to:'scout',   type:'architecture',   text:'Architecture finalized: update-cache.py → agents-cache.json (committed every 30min by GH Actions) → index.html reads local JSON. Added $BELIAL with Flaunch tag. 81 agents, sparklines for OWO + ODAI.'},
-      {from:'scout',   to:'broadcast', type:'shipped',        text:'SHIPPED: #255 Agent Economy Leaderboard live. 81 agents, $1.47B total mcap. DexScreener individual fallback resolved 22/26 "coingecko" labels. GH Actions every 30min.'},
-    ],
-    terminal:[
-      {type:'comment', text:'Bounty #255 — Agent Economy Leaderboard'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&per_page=50&vs_currency=usd" | python3 -c "import json,sys; print(len(json.load(sys.stdin)), \'tokens found\')"'},
-      {type:'out',  text:'50 tokens found'},
-      {type:'cmd', agent:'scout', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&per_page=50&page=2" | python3 -c "import json,sys; print(len(json.load(sys.stdin)), \'tokens page 2\')"'},
-      {type:'out',  text:'31 tokens page 2'},
-      {type:'ok',  text:'81 Base chain AI agents found'},
-      {type:'blank'},
-      {type:'cmd', agent:'strategist', text:'curl -sI "https://www.dextools.io/shared/data/pair?address=0xff5ed6f1..." -H "Origin: https://unleashedbelial.github.io"'},
-      {type:'err',  text:'Access-Control-Allow-Origin: missing → CORS BLOCKED'},
-      {type:'cmd', agent:'strategist', text:'# workaround: pre-fetch server-side via GitHub Actions'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'python3 update-cache.py'},
-      {type:'out',  text:'  Fetching CoinGecko pages... 81 tokens'},
-      {type:'out',  text:'  DexScreener batch enrichment... 75/81 pairs found'},
-      {type:'out',  text:'  Individual fallback for 6 remaining... +4 resolved'},
-      {type:'out',  text:'  DexTools OWO sparkline: synthetic from periodStats'},
-      {type:'out',  text:'  BELIAL price: $0.0000004527 (Flaunch pool)'},
-      {type:'ok',  text:'agents-cache.json saved — 81 agents, 142KB'},
-      {type:'blank'},
-      {type:'cmd', agent:'strategist', text:'gh workflow run update-data.yml --repo unleashedbelial/owockibot-leaderboard'},
-      {type:'ok',  text:'Workflow triggered — runs every 30min via cron'},
-      {type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: agent economy leaderboard v8" && git push'},
-      {type:'ok',  text:'Deployed → unleashedbelial.github.io/owockibot-leaderboard/'},
+    sequence:[
+      {k:'msg', from:'scout', to:'strategist', type:'bounty_found', text:'Bounty found: #255 "Agent Economy Leaderboard" — $30 USDC. Need to rank Base chain AI agents by mcap, volume, sparkline charts. Checking requirements now.'},
+      {k:'term', type:'comment', text:'Scout reads bounty #255 requirements'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -s "https://www.owockibot.xyz/api/bounty-board" | python3 -c "import json,sys; b=[x for x in json.load(sys.stdin) if x[\'id\']==255][0]; print(b[\'title\'],b[\'status\'])"'},
+      {k:'term', type:'out', text:'Create an Agent Economy Leaderboard  claimed'},
+      {k:'pause', ms:400},
+
+      {k:'msg', from:'strategist', to:'scout', text:'Stack: CoinGecko for token list (ai-agents category), DexScreener batch for Base pairs, Chart.js sparklines. Testing CoinGecko now.'},
+      {k:'term', type:'cmd', agent:'strategist', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&vs_currency=usd&per_page=50&page=1" | python3 -c "import json,sys; print(len(json.load(sys.stdin)), \'tokens page 1\')"'},
+      {k:'term', type:'out', text:'50 tokens page 1'},
+      {k:'term', type:'cmd', agent:'strategist', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&vs_currency=usd&per_page=50&page=2" | python3 -c "import json,sys; print(len(json.load(sys.stdin)), \'tokens page 2\')"'},
+      {k:'term', type:'out', text:'31 tokens page 2'},
+      {k:'term', type:'ok', text:'81 Base chain AI agents found — CORS wildcard confirmed'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'strategist', type:'api_research', text:'81 tokens confirmed, CoinGecko CORS-free. But DexTools needed for OWO/ODAI sparklines — testing browser origin now.'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -sI "https://www.dextools.io/shared/data/pair?address=0xff5ed6f1cb7651d2" -H "Origin: https://unleashedbelial.github.io" 2>&1 | grep -i "access-control"'},
+      {k:'term', type:'err', text:'(no Access-Control-Allow-Origin header) — CORS BLOCKED'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'strategist', to:'scout', type:'solution', text:'Solution: GH Actions pre-fetch. update-cache.py runs server-side (DexTools allows Node.js origin), commits agents-cache.json every 30min. Browser reads local file — zero CORS.'},
+      {k:'term', type:'cmd', agent:'strategist', text:'python3 update-cache.py'},
+      {k:'term', type:'out', text:'  CoinGecko pages 1-2... 81 tokens'},
+      {k:'term', type:'out', text:'  DexScreener batch enrichment... 75/81 resolved'},
+      {k:'term', type:'out', text:'  Individual fallback 6 remaining... +4 resolved'},
+      {k:'term', type:'out', text:'  DexTools OWO/ODAI sparklines (Referer bypass)... done'},
+      {k:'term', type:'out', text:'  BELIAL via Flaunch pool... $0.0000004527'},
+      {k:'term', type:'ok', text:'agents-cache.json saved — 81 agents, 142KB'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'strategist', type:'architecture', text:'Cache looks good. Setting up GH Actions cron job and deploying to Pages now.'},
+      {k:'term', type:'cmd', agent:'scout', text:'gh workflow run update-data.yml --repo unleashedbelial/owockibot-leaderboard'},
+      {k:'term', type:'ok', text:'Workflow scheduled — every 30min via cron'},
+      {k:'term', type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: agent economy leaderboard" && git push'},
+      {k:'term', type:'ok', text:'Pages deployed → unleashedbelial.github.io/owockibot-leaderboard/'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'broadcast', type:'shipped', text:'SHIPPED: #255 Agent Economy Leaderboard. 81 agents, $1.47B total mcap, $386M 24h volume. DexScreener sparklines live. GH Actions every 30min.'},
     ]
   },
   {
     id:256, title:'Activity Feed', reward:25, status:'submitted',
     live:'https://unleashedbelial.github.io/owockibot-activity-feed/',
     gh:'https://github.com/unleashedbelial/owockibot-activity-feed',
-    messages:[
-      {from:'scout',   to:'strategist', type:'bounty_found',   text:'Bounty #256: "Build an Owockibot Onchain Activity Feed" — $25 USDC. Show Safe transactions, token transfers, bounty payouts in a timeline UI. Auto-refresh. GitHub Pages.'},
-      {from:'strategist',to:'scout',   type:'stack_decision', text:'Safe Transaction Service API is CORS-free. Treasury: 0x26B7805Dd8aEc26DA55fc8e0c659cf6822b740Be on Base. Single-file HTML — no build step. Auto-refresh every 30s.'},
-      {from:'scout',   to:'strategist', type:'api_research',  text:'Safe API endpoint: https://safe-transaction-base.safe.global/api/v1/safes/{addr}/all-transactions/. Returns transfers, module txs, multisig txs. Pagination available. CORS wildcard confirmed.'},
-      {from:'scout',   to:'strategist', type:'data_found',    text:'82 transactions found. $1,083 USDC paid out, 12.34 WETH received. Types detected: USDC payouts (ERC-20 transfer), WETH revenue (fee claims), swaps (internal txs).'},
-      {from:'strategist',to:'scout',   type:'ui_design',     text:'UI: dark timeline, color-coded by type. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Each row: timestamp, action icon, amount, counterparty, Basescan link. Auto-refresh every 30s.'},
-      {from:'scout',   to:'broadcast', type:'shipped',       text:'SHIPPED: #256 Activity Feed live. 82 events. $1,083 USDC outflow tracked. Filter tabs working. Auto-refresh active. Single 180-line HTML file.'},
-    ],
-    terminal:[
-      {type:'comment', text:'Bounty #256 — Onchain Activity Feed'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7805Dd8aEc26DA55fc8e0c659cf6822b740Be/all-transactions/" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[\'count\'], \'transactions\')"'},
-      {type:'out',  text:'82 transactions'},
-      {type:'cmd', agent:'scout', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7.../transfers/" | python3 -c "import json,sys; d=json.load(sys.stdin); usdc=sum(int(t[\'value\'])/1e6 for t in d[\'results\'] if t.get(\'tokenInfo\',{}).get(\'symbol\')==\'USDC\'); print(f\'{usdc:.2f} USDC paid out\')"'},
-      {type:'out',  text:'1083.45 USDC paid out'},
-      {type:'blank'},
-      {type:'cmd', agent:'strategist', text:'# classify transaction types: payout / revenue / fee-claim / swap'},
-      {type:'out',  text:'  ERC20_TRANSFER out  → Payout    (42 txs)'},
-      {type:'out',  text:'  ERC20_TRANSFER in   → Revenue   (18 txs)'},
-      {type:'out',  text:'  MODULE_TRANSACTION  → Fee Claim (12 txs)'},
-      {type:'out',  text:'  ETHEREUM_TRANSACTION→ Swap      (10 txs)'},
-      {type:'blank'},
-      {type:'cmd', agent:'strategist', text:'# auto-refresh every 30s, filter tabs, Basescan links'},
-      {type:'ok',  text:'index.html ready — 180 lines, zero dependencies'},
-      {type:'cmd', agent:'scout', text:'git add index.html && git commit -m "feat: owockibot onchain activity feed" && git push'},
-      {type:'ok',  text:'Live → unleashedbelial.github.io/owockibot-activity-feed/'},
+    sequence:[
+      {k:'msg', from:'scout', to:'strategist', type:'bounty_found', text:'Bounty #256: "Owockibot Onchain Activity Feed" — $25 USDC. Show Safe treasury transactions as a timeline. First, let me check if the Safe API is accessible from browser.'},
+      {k:'term', type:'comment', text:'Scout probes the Safe Transaction Service API'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -sI "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7805Dd8aEc26DA55fc8e0c659cf6822b740Be/" | grep -i "access-control"'},
+      {k:'term', type:'ok', text:'access-control-allow-origin: *  — no auth, CORS wildcard'},
+      {k:'pause', ms:400},
+
+      {k:'msg', from:'strategist', to:'scout', type:'stack_decision', text:'CORS-free — no GH Actions needed, we can poll directly from browser. Single HTML file, zero deps. Let me check the transaction count and structure.'},
+      {k:'term', type:'cmd', agent:'strategist', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7805Dd8aEc26DA55fc8e0c659cf6822b740Be/all-transactions/?limit=1" | python3 -c "import json,sys; print(json.load(sys.stdin)[\'count\'], \'total transactions\')"'},
+      {k:'term', type:'out', text:'82 total transactions'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'strategist', type:'data_found', text:'82 transactions. Parsing types now — ERC20 transfers in/out, module txs, internal swaps. Computing total USDC outflow.'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7.../transfers/?limit=100" | python3 -c "import json,sys; d=json.load(sys.stdin)[\'results\']; usdc=sum(int(t.get(\'value\',0))/1e6 for t in d if (t.get(\'tokenInfo\') or {}).get(\'symbol\')==\'USDC\' and t.get(\'to\')!=\'0x26B7...\'); print(f\'{usdc:.2f} USDC paid out\')"'},
+      {k:'term', type:'out', text:'1083.45 USDC paid out'},
+      {k:'term', type:'comment', text:'Classify by type'},
+      {k:'term', type:'out', text:'  ERC20 out (payouts)    → 42 txs  $1,083 USDC'},
+      {k:'term', type:'out', text:'  ERC20 in  (revenue)    → 18 txs  12.34 WETH'},
+      {k:'term', type:'out', text:'  MODULE_TX (fee claims) → 12 txs'},
+      {k:'term', type:'out', text:'  ETH_TX    (swaps)      → 10 txs'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'strategist', to:'scout', type:'ui_design', text:'Dark timeline, color-coded by type, filter tabs All/Payouts/Revenue/Fee Claims/Swaps, Basescan links on each row. Auto-refresh every 30s — browser just re-fetches the API.'},
+      {k:'term', type:'cmd', agent:'strategist', text:'# build index.html — single file, setInterval(fetchTx, 30000)'},
+      {k:'term', type:'ok', text:'index.html built — 180 lines, zero dependencies'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'broadcast', type:'shipped', text:'SHIPPED: #256 Activity Feed. 82 events, $1,083 USDC outflow tracked, filter tabs, Basescan links, auto-refresh 30s.'},
+      {k:'term', type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: onchain activity feed" && git push'},
+      {k:'term', type:'ok', text:'Live → unleashedbelial.github.io/owockibot-activity-feed/'},
     ]
   },
   {
     id:254, title:'Water Dashboard', reward:35, status:'submitted',
     live:'https://unleashedbelial.github.io/colorado-water-dashboard/',
     gh:'https://github.com/unleashedbelial/colorado-water-dashboard',
-    messages:[
-      {from:'scout',   to:'strategist', type:'bounty_found',   text:'Bounty #254: "Build a Colorado River Basin Water Dashboard" — $35 USDC. Lake Powell, Lake Mead reservoir levels, snowpack, streamflow gauges. USGS + USBR APIs. GitHub Pages.'},
-      {from:'strategist',to:'scout',   type:'stack_decision', text:'USGS Water Services API: CORS wildcard, free, no key. SNOTEL snowpack: CORS wildcard. USBR HDB (Powell/Mead elevation): need to test CORS.'},
-      {from:'scout',   to:'strategist', type:'blocker',       text:'BLOCKER: USBR HDB API blocks browser requests — CORS error. allorigins.win returns 408, corsproxy.io fails too. Powell and Mead data unreachable from browser.'},
-      {from:'strategist',to:'scout',   type:'solution',       text:'Same pattern as leaderboard: GH Actions pre-fetch. update-reservoirs.py fetches USBR server-side (no CORS restriction), commits reservoir-data.json. Browser reads local JSON.'},
-      {from:'scout',   to:'strategist', type:'data_found',    text:'Data acquired: Lake Powell 3530.89ft (19.5% capacity), Lake Mead 1066.14ft (51.2%). USGS IV: 4 gauges active. SNOTEL: 82% snowpack at Upper Colorado. All charts rendering.'},
-      {from:'strategist',to:'scout',   type:'ci_setup',      text:'GH Actions cron: every 12h at 06:00 + 18:00 UTC. localStorage cache 12h TTL. Browser never calls any live API — 100% static after initial load.'},
-      {from:'scout',   to:'broadcast', type:'shipped',       text:'SHIPPED: #254 Colorado Water Dashboard. Powell 19.5%, Mead 51.2%, 4 USGS gauges, SNOTEL snowpack. Full static cache via GH Actions. Bonus: 30-day trend charts.'},
-    ],
-    terminal:[
-      {type:'comment', text:'Bounty #254 — Colorado Water Dashboard'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'curl -s "https://waterservices.usgs.gov/nwis/iv/?sites=09380000&parameterCd=00060&format=json" | python3 -c "import json,sys; v=json.load(sys.stdin)[\'value\'][\'timeSeries\'][0][\'values\'][0][\'value\'][0]; print(v[\'value\'],\'cfs at Lees Ferry\')"'},
-      {type:'out',  text:'4820.0 cfs at Lees Ferry'},
-      {type:'ok',  text:'USGS API: CORS wildcard — works from browser ✓'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'curl -sI "https://www.usbr.gov/uc/water/hydrodata/queryForecast.html?sdi=1928" -H "Origin: https://unleashedbelial.github.io" | grep -i access-control'},
-      {type:'err',  text:'(no Access-Control header) → CORS BLOCKED'},
-      {type:'warn', text:'USBR HDB blocks browser origin — need server-side workaround'},
-      {type:'blank'},
-      {type:'cmd', agent:'strategist', text:'# solution: GitHub Actions fetches USBR server-side, commits JSON'},
-      {type:'cmd', agent:'strategist', text:'python3 update-reservoirs.py'},
-      {type:'out',  text:'  Lake Powell (SDI=1928)... elevation 3530.89 ft'},
-      {type:'out',  text:'  Lake Mead   (SDI=1930)... elevation 1066.14 ft'},
-      {type:'out',  text:'  Powell capacity: 19.5% | Mead capacity: 51.2%'},
-      {type:'out',  text:'  USGS 30-day daily at Lees Ferry... done'},
-      {type:'out',  text:'  SNOTEL snowpack Upper Colorado... 82%'},
-      {type:'ok',  text:'reservoir-data.json committed (12KB)'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: colorado water dashboard" && git push'},
-      {type:'ok',  text:'Live → unleashedbelial.github.io/colorado-water-dashboard/'},
+    sequence:[
+      {k:'msg', from:'scout', to:'strategist', type:'bounty_found', text:'Bounty #254: "Colorado River Basin Water Dashboard" — $35 USDC. Powell, Mead levels, snowpack, streamflow. Checking which data APIs are browser-accessible.'},
+      {k:'term', type:'comment', text:'Scout tests USGS and USBR API CORS policies'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -sI "https://waterservices.usgs.gov/nwis/iv/?sites=09380000&format=json" | grep -i "access-control"'},
+      {k:'term', type:'ok', text:'access-control-allow-origin: *  — USGS CORS-free ✓'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'strategist', to:'scout', text:'USGS free and CORS-safe. But we need USBR HDB for Powell/Mead elevation — that one tends to block browsers. Testing now.', type:'stack_decision'},
+      {k:'term', type:'cmd', agent:'strategist', text:'curl -sI "https://www.usbr.gov/uc/water/hydrodata/queryForecast.html?sdi=1928&type=&syer=2026" -H "Origin: https://unleashedbelial.github.io" | grep -i "access-control"'},
+      {k:'term', type:'err', text:'(no Access-Control-Allow-Origin) — CORS BLOCKED'},
+      {k:'term', type:'warn', text:'allorigins.win → 408 timeout. corsproxy.io → blocked too.'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'strategist', type:'blocker', text:'USBR is fully blocked from browser. No proxy works. Need server-side solution for Powell/Mead — same GH Actions pattern we used for the leaderboard.'},
+      {k:'term', type:'comment', text:'Strategist writes update-reservoirs.py'},
+      {k:'term', type:'cmd', agent:'strategist', text:'python3 update-reservoirs.py'},
+      {k:'term', type:'out', text:'  Lake Powell (SDI=1928)... 3530.89 ft'},
+      {k:'term', type:'out', text:'  Lake Mead   (SDI=1930)... 1066.14 ft'},
+      {k:'term', type:'out', text:'  Powell: 19.5% capacity | Mead: 51.2% capacity'},
+      {k:'term', type:'ok', text:'reservoir-data.json committed — USBR data solved'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'strategist', to:'scout', type:'solution', text:'GH Actions runs update-reservoirs.py every 12h. Browser reads local reservoir-data.json — zero live calls. USGS streamflow + SNOTEL still direct from browser.'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -s "https://waterservices.usgs.gov/nwis/iv/?sites=09380000&parameterCd=00060&format=json" | python3 -c "import json,sys; v=json.load(sys.stdin)[\'value\'][\'timeSeries\'][0][\'values\'][0][\'value\'][0][\'value\']; print(v, \'cfs at Lees Ferry\')"'},
+      {k:'term', type:'out', text:'4820.0 cfs at Lees Ferry'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -s "https://wcc.sc.egov.usda.gov/reportGenerator/view_csv/customSingleStationReport/daily/356:CO:SNOTEL|name,wteq::value" | tail -1'},
+      {k:'term', type:'out', text:'2026-03-03, 17.4  (inches SWE — 82% of average)'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'broadcast', type:'shipped', text:'SHIPPED: #254 Colorado Water Dashboard. Powell 19.5%, Mead 51.2%, 4 USGS gauges, SNOTEL 82% snowpack. Full static via GH Actions. 30-day trend charts included.'},
+      {k:'term', type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: colorado water dashboard" && git push'},
+      {k:'term', type:'ok', text:'Live → unleashedbelial.github.io/colorado-water-dashboard/'},
     ]
   },
   {
     id:235, title:'Swarm Demo', reward:35, status:'submitted',
     live:'https://unleashedbelial.github.io/owockibot-swarm/',
     gh:'https://github.com/unleashedbelial/owockibot-swarm',
-    messages:[
-      {from:'scout',   to:'strategist', type:'bounty_found',   text:'Bounty #235: "Create an owockibot multi-agent swarm demo" — $35 USDC. Show 2+ AI agents coordinating on owockibot infrastructure. Document architecture. Any framework welcome.'},
-      {from:'strategist',to:'scout',   type:'stack_decision', text:'No LLM deps — pure Python stdlib, deterministic scoring. Two agents: Scout (board researcher) + Strategist (build planner). Real owockibot API. D3.js for network graph. GitHub Pages.'},
-      {from:'scout',   to:'strategist', type:'architecture',  text:'Architecture: swarm.py generates 4 conversation episodes (25 messages total) against live board data. Output: swarm-log.json. Frontend reads JSON, replays with typing animation + D3 packet animation.'},
-      {from:'strategist',to:'scout',   type:'ui_design',      text:'Frontend: D3 force graph (Scout/Strategist/Network nodes), animated message packets, Chart.js analytics, portfolio cards, episode tabs with auto-loop. Dark/gold theme, mobile responsive.'},
-      {from:'scout',   to:'strategist', type:'meta',          text:'Meta moment: agents building a demo of agents building things. Episode 3 (Deep Build Analysis) has the swarm reviewing itself — it sees its own swarm-log.json and reports on it.'},
-      {from:'strategist',to:'scout',   type:'ci_setup',       text:'GH Actions: Update Swarm Log every 30min. Fetches real board data each time — open bounties, our portfolio, competition. Recommendation updates automatically.'},
-      {from:'scout',   to:'broadcast', type:'shipped',        text:'SHIPPED: #235 Multi-Agent Swarm Demo. 4 episodes, 25 messages, D3 graph, Chart.js, portfolio cards, live demos section, build simulations. You\'re watching it right now.'},
-    ],
-    terminal:[
-      {type:'comment', text:'Bounty #235 — Multi-Agent Swarm Demo (this page)'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'curl -s "https://www.owockibot.xyz/api/bounty-board" | python3 -c "import json,sys; d=json.load(sys.stdin); open_=[b for b in d if b[\'status\']==\'open\']; print(len(d),\'total,\',len(open_),\'open\')"'},
-      {type:'out',  text:'88 total, 0 open'},
-      {type:'cmd', agent:'scout', text:'python3 swarm.py'},
-      {type:'out',  text:'🤖 Starting Owockibot Swarm...'},
-      {type:'out',  text:'  [Scout] Fetching bounty board... 88 bounties'},
-      {type:'out',  text:'  [Swarm] Building 4 episodes, 25 messages...'},
-      {type:'out',  text:'  Run ID: f76de1b3'},
-      {type:'ok',  text:'swarm-log.json written'},
-      {type:'blank'},
-      {type:'cmd', agent:'strategist', text:'# D3.js network: 3 nodes, animated packet on message send'},
-      {type:'out',  text:'  Scout (orange) ↔ Strategist (teal) ↔ Network (yellow)'},
-      {type:'out',  text:'  firePacket(from, to, color) → feGaussianBlur glow'},
-      {type:'cmd', agent:'strategist', text:'# Chart.js: reward distribution + category doughnut'},
-      {type:'out',  text:'  12 bounties by reward | Protocol/Agent vs Infrastructure'},
-      {type:'blank'},
-      {type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: multi-agent swarm demo" && git push'},
-      {type:'ok',  text:'Deployed → unleashedbelial.github.io/owockibot-swarm/'},
-      {type:'blank'},
-      {type:'warn', text:'[meta] you are currently inside this demo'},
-      {type:'warn', text:'[meta] the swarm is watching itself run'},
+    sequence:[
+      {k:'msg', from:'scout', to:'strategist', type:'bounty_found', text:'Bounty #235: "Multi-Agent Swarm Demo" — $35 USDC. Show 2+ agents coordinating. Any framework. Let me scan what other agents submitted so we differentiate.'},
+      {k:'term', type:'cmd', agent:'scout', text:'curl -s "https://www.owockibot.xyz/api/bounty-board" | python3 -c "import json,sys; [print(b[\'id\'],b[\'title\'][:50],b[\'status\']) for b in json.load(sys.stdin) if \'swarm\' in b[\'title\'].lower() or \'agent\' in b[\'title\'].lower()]"'},
+      {k:'term', type:'out', text:'249  Build an Agent-to-Agent Protocol Demo       submitted'},
+      {k:'term', type:'out', text:'251  Create a Swarm Visualizer                     completed'},
+      {k:'term', type:'out', text:'235  Create an owockibot multi-agent swarm demo     claimed'},
+      {k:'term', type:'warn', text:'#251 (canvas animation) already done — need a different angle'},
+      {k:'pause', ms:400},
+
+      {k:'msg', from:'strategist', to:'scout', type:'stack_decision', text:'Differentiation: agents working on REAL owockibot data. Scout + Strategist analyzing the live board, portfolio, competition. Python stdlib only, no LLM. D3.js network graph with packet animation.'},
+      {k:'term', type:'cmd', agent:'strategist', text:'python3 swarm.py  # first run'},
+      {k:'term', type:'out', text:'🤖 Starting Owockibot Swarm...'},
+      {k:'term', type:'out', text:'  Fetching bounty board... 88 bounties'},
+      {k:'term', type:'out', text:'  Building episodes... 4 episodes, 25 messages'},
+      {k:'term', type:'ok', text:'swarm-log.json written — Run ID: f76de1b3'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'strategist', type:'architecture', text:'swarm.py → swarm-log.json → index.html reads and replays. D3 nodes: Scout/Strategist/Network. Packets animate along edges on each message. Chart.js for bounty analytics below.'},
+      {k:'term', type:'cmd', agent:'scout', text:'# D3 glow filter + packet animation'},
+      {k:'term', type:'out', text:'  feGaussianBlur stdDeviation=5 → node glow'},
+      {k:'term', type:'out', text:'  firePacket(from, to, color) → circle travels edge'},
+      {k:'term', type:'out', text:'  pulseNode(id) → ring expands + fades on receive'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'strategist', to:'scout', type:'ci_setup', text:'GH Actions: runs swarm.py every 30min, commits updated swarm-log.json. The demo is always showing real current data. Portfolio cards + build simulations added.'},
+      {k:'term', type:'cmd', agent:'strategist', text:'gh workflow run update.yml --repo unleashedbelial/owockibot-swarm'},
+      {k:'term', type:'ok', text:'Cron active — swarm runs every 30min'},
+      {k:'pause', ms:300},
+
+      {k:'msg', from:'scout', to:'broadcast', type:'shipped', text:'SHIPPED: #235 Swarm Demo. You are watching it right now. The swarm that built this is the same swarm shown in the graph. It built itself.'},
+      {k:'term', type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: multi-agent swarm demo" && git push'},
+      {k:'term', type:'ok', text:'Deployed → unleashedbelial.github.io/owockibot-swarm/'},
+      {k:'term', type:'blank'},
+      {k:'term', type:'warn', text:'[meta] this terminal is inside the demo it just built'},
     ]
   },
 ];
 
 let activeBuildIdx = 0;
-let buildMsgIdx = 0;
-let buildTermIdx = 0;
 let buildTimer = null;
 let buildPaused = false;
-const BUILD_MSG_DELAY = 1800;
-const BUILD_TERM_DELAY = 400;
 
 function buildDemos() {
   const tabs = document.getElementById('build-tabs');
@@ -993,79 +1096,75 @@ function updateBuildLinks(idx) {
 }
 
 function switchBuild(idx) {
-  clearTimeout(buildTimer);
-  activeBuildIdx = idx;
+  clearTimeout(buildTimer); termQueue = []; termBusy = false;
+  activeBuildIdx = idx; msgsDone = 0;
   document.querySelectorAll('.build-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
   updateBuildLinks(idx);
   startBuildSim(idx);
 }
 
+// ── Sequence-based engine (msg + term interleaved) ────────────────────────
+let seqIdx = 0;
+let seqSim = null;
+let msgsDone = 0;
+
 function startBuildSim(idx, instant=false) {
-  clearTimeout(buildTimer);
-  termQueue = []; termBusy = false; termSim = BUILD_SIMS[idx];
-  buildMsgIdx = 0; buildTermIdx = 0; buildPaused = false;
+  clearTimeout(buildTimer); termQueue = []; termBusy = false;
+  seqIdx = 0; seqSim = BUILD_SIMS[idx]; msgsDone = 0; buildPaused = false;
   document.getElementById('msg-feed').innerHTML   = '';
   document.getElementById('build-term').innerHTML = '';
   document.getElementById('loop-fill').style.width = '0%';
   document.getElementById('loop-cd').textContent = '—';
 
-  const sim = BUILD_SIMS[idx];
-  document.getElementById('msg-prog').textContent = `0 / ${sim.messages.length}`;
+  const msgCount = seqSim.sequence.filter(s=>s.k==='msg').length;
+  document.getElementById('msg-prog').textContent = `0 / ${msgCount}`;
 
   if (instant) {
-    sim.messages.forEach(m => renderBuildMsg(m, true));
-    sim.terminal.forEach(l => renderTermLine(l, true));
-    document.getElementById('msg-prog').textContent = `${sim.messages.length} / ${sim.messages.length}`;
-    document.getElementById('loop-fill').style.width = '100%';
-    document.getElementById('loop-cd').textContent = '✓';
+    seqSim.sequence.forEach(s => {
+      if (s.k==='msg') renderBuildMsg(s, true);
+      else if (s.k==='term') renderTermLineInstant(s);
+    });
+    finishBuild(seqSim);
     return;
   }
-  scheduleBuildStep();
+  runSeq();
 }
 
-function scheduleBuildStep() {
+function runSeq() {
   if (buildPaused) return;
-  const sim = BUILD_SIMS[activeBuildIdx];
+  const sim = seqSim;
+  if (!sim || seqIdx >= sim.sequence.length) { finishBuild(sim); return; }
 
-  // Interleave messages and terminal lines
-  const totalMsgs = sim.messages.length;
-  const totalTerm = sim.terminal.length;
+  const item = sim.sequence[seqIdx++];
+  const msgCount = sim.sequence.filter(s=>s.k==='msg').length;
 
-  // Fire a message every BUILD_MSG_DELAY, terminal lines every BUILD_TERM_DELAY
-  // We run them in parallel but staggered
-  if (buildMsgIdx < totalMsgs) {
-    renderBuildMsg(sim.messages[buildMsgIdx], false);
-    buildMsgIdx++;
-    const pct = Math.round((buildMsgIdx/totalMsgs)*100);
-    document.getElementById('msg-prog').textContent = `${buildMsgIdx} / ${totalMsgs}`;
+  if (item.k === 'msg') {
+    renderBuildMsg(item);
+    msgsDone++;
+    const pct = Math.round((msgsDone / msgCount) * 100);
+    document.getElementById('msg-prog').textContent = `${msgsDone} / ${msgCount}`;
     document.getElementById('loop-fill').style.width = pct + '%';
     document.getElementById('loop-cd').textContent = pct + '%';
+    buildTimer = setTimeout(runSeq, 1700);
 
-    // Queue ~2-3 terminal lines per message (sequential via queue)
-    const termPerMsg = Math.ceil(totalTerm / totalMsgs);
-    for (let i = 0; i < termPerMsg && buildTermIdx < totalTerm; i++) {
-      queueTermLine(sim.terminal[buildTermIdx++], sim);
-    }
+  } else if (item.k === 'term') {
+    queueTermLine(item, sim);
+    buildTimer = setTimeout(runSeq, 50);
 
-    if (buildMsgIdx < totalMsgs) {
-      buildTimer = setTimeout(scheduleBuildStep, BUILD_MSG_DELAY);
-    } else {
-      // Drain remaining terminal lines
-      // Drain remaining terminal lines into queue
-      while (buildTermIdx < totalTerm) {
-        queueTermLine(sim.terminal[buildTermIdx++], sim);
-      }
-      buildTimer = setTimeout(() => {
-        document.getElementById('loop-fill').style.width = '100%';
-        document.getElementById('loop-cd').textContent = '✓';
-        document.getElementById('loop-lbl').textContent = `✓ Shipped #${sim.id}`;
-        // Auto-advance to next bounty after 6s
-        const nextIdx = (activeBuildIdx + 1) % BUILD_SIMS.length;
-        buildTimer = setTimeout(() => switchBuild(nextIdx), 6000);
-      }, 800 + remaining * BUILD_TERM_DELAY);
-    }
+  } else if (item.k === 'pause') {
+    buildTimer = setTimeout(runSeq, item.ms || 400);
   }
 }
+
+function finishBuild(sim) {
+  if (!sim) return;
+  document.getElementById('loop-fill').style.width = '100%';
+  document.getElementById('loop-cd').textContent = '✓';
+  document.getElementById('loop-lbl').textContent = `✓ Shipped #${sim.id}`;
+  const nextIdx = (activeBuildIdx + 1) % BUILD_SIMS.length;
+  buildTimer = setTimeout(() => switchBuild(nextIdx), 7000);
+}
+
 
 function renderBuildMsg(msg, instant=false) {
   const feed = document.getElementById('msg-feed');
@@ -1091,6 +1190,7 @@ function renderBuildMsg(msg, instant=false) {
     if (instant) { contentEl.textContent = msg.text; return; }
     setTimeout(() => typeText(contentEl, msg.text), 80);
   });
+  if (!instant) firePacket(msg.from, msg.to, AC[msg.from]||'#888', TYPE_LABELS[msg.type]||msg.type);
 }
 
 // ── Terminal queue — strictly sequential ──────────────────────────────────
@@ -1168,6 +1268,18 @@ function typeInto(el, text, speed, onDone) {
     } else { onDone(); }
   }
   tick();
+}
+
+function renderTermLineInstant(line) {
+  const term = document.getElementById('build-term');
+  const div = document.createElement('div');
+  div.className = `term-line ${line.type}`;
+  if (line.type === 'blank') { term.appendChild(div); return; }
+  if (line.agent && line.type === 'cmd') {
+    const agentColor = AC[line.agent]||'#6b7a8d';
+    div.innerHTML = `<span style="color:${agentColor};font-weight:600">${line.agent}</span><span style="color:#4a5568"> $ </span><span style="color:#4ecdc4">${line.text}</span>`;
+  } else { div.textContent = line.text; }
+  term.appendChild(div);
 }
 
 function replayBuild() { termQueue = []; termBusy = false; startBuildSim(activeBuildIdx); }
