@@ -204,72 +204,76 @@ canvas{max-height:200px}
 .tag{background:var(--bg);border:1px solid var(--border);padding:2px 9px;border-radius:10px;font-size:9px;color:var(--muted)}
 .tag.g{border-color:rgba(240,192,64,.4);color:var(--gold)}
 
-/* ── LIVE DEMOS ── */
-#demos-panel{grid-column:1/-1}
-.demo-tabs{
-  display:flex;gap:0;overflow-x:auto;background:var(--bg3);
+/* ── BUILD SIMULATION ── */
+.build-tabs{
+  display:flex;overflow-x:auto;background:var(--bg3);
   border-bottom:1px solid var(--border);scrollbar-width:none;
 }
-.demo-tabs::-webkit-scrollbar{display:none}
-.demo-tab{
-  flex-shrink:0;padding:10px 20px;font-size:10px;color:var(--muted);
+.build-tabs::-webkit-scrollbar{display:none}
+.build-tab{
+  flex-shrink:0;padding:10px 18px;font-size:10px;color:var(--muted);
   cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;
   text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;
-  border-right:1px solid var(--border);display:flex;align-items:center;gap:8px;
+  border-right:1px solid var(--border);display:flex;align-items:center;gap:7px;
 }
-.demo-tab:hover{color:var(--text);background:rgba(255,255,255,.03)}
-.demo-tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(240,192,64,.05)}
-.demo-tab .reward{
-  font-size:9px;padding:1px 6px;border-radius:8px;
-  background:rgba(240,192,64,.15);color:var(--gold);border:1px solid rgba(240,192,64,.3);
-}
-.demo-tab .status-dot{
-  width:5px;height:5px;border-radius:50%;background:var(--strat);flex-shrink:0;
-}
-.demo-tab.active .status-dot{background:var(--gold)}
+.build-tab:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.build-tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(240,192,64,.05)}
+.build-tab .breward{font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(240,192,64,.12);color:var(--gold);border:1px solid rgba(240,192,64,.25)}
 
-.demo-body{position:relative;background:var(--bg);height:520px}
-.demo-frame{
-  width:100%;height:100%;border:none;display:none;
-  background:var(--bg2);
+.build-body{
+  display:grid;grid-template-columns:1fr 1fr;
+  height:420px;gap:1px;background:var(--border);
 }
-.demo-frame.active{display:block}
-.demo-meta{
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(0deg, rgba(8,11,15,.95) 0%, transparent 100%);
-  padding:12px 18px 14px;
+.build-msgs{
+  background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;
+}
+.build-msgs-inner{flex:1;min-height:0;overflow-y:auto;padding:12px;scrollbar-width:none}
+.build-msgs-inner::-webkit-scrollbar{display:none}
+.build-term{
+  background:#020609;display:flex;flex-direction:column;overflow:hidden;
+  font-family:'SF Mono','Fira Code','Consolas',monospace;
+}
+.term-titlebar{
+  flex-shrink:0;display:flex;align-items:center;gap:6px;
+  padding:8px 14px;background:#0a0d11;border-bottom:1px solid #1a2430;
+}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.term-title{font-size:10px;color:#4a5568;margin-left:4px;flex:1;text-align:center}
+.term-inner{flex:1;min-height:0;overflow-y:auto;padding:12px 16px;scrollbar-width:none}
+.term-inner::-webkit-scrollbar{display:none}
+.term-line{font-size:11px;line-height:1.7;white-space:pre-wrap;word-break:break-all}
+.term-line.cmd{color:#4ecdc4}
+.term-line.cmd::before{content:'$ ';color:#4a5568}
+.term-line.out{color:#718096}
+.term-line.ok{color:#48bb78}
+.term-line.ok::before{content:'✓ ';color:#48bb78}
+.term-line.err{color:#fc8181}
+.term-line.warn{color:#f6c90e}
+.term-line.comment{color:#2d4a6b}
+.term-line.comment::before{content:'# '}
+.term-line.blank{height:6px}
+
+.build-footer{
   display:flex;align-items:center;justify-content:space-between;
-  pointer-events:none;
+  padding:10px 16px;background:var(--bg3);border-top:1px solid var(--border);flex-shrink:0;
 }
-.demo-meta-left{display:flex;align-items:center;gap:10px}
-.demo-meta-title{font-size:11px;color:var(--text);font-weight:600}
-.demo-meta-tech{font-size:9px;color:var(--muted)}
-.demo-meta-right{display:flex;align-items:center;gap:8px;pointer-events:all}
-.demo-open-btn{
-  font-size:9px;padding:4px 10px;border-radius:4px;
-  background:rgba(240,192,64,.15);border:1px solid rgba(240,192,64,.4);
-  color:var(--gold);text-decoration:none;text-transform:uppercase;
-  letter-spacing:.07em;transition:all .15s;
+.build-footer-left{font-size:10px;color:var(--muted)}
+.build-footer-right{display:flex;gap:8px}
+.live-link{
+  font-size:10px;padding:4px 12px;border-radius:4px;text-decoration:none;
+  background:rgba(240,192,64,.12);border:1px solid rgba(240,192,64,.35);
+  color:var(--gold);transition:all .15s;text-transform:uppercase;letter-spacing:.06em;
 }
-.demo-open-btn:hover{background:var(--gold);color:#000}
-.demo-this{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  height:100%;gap:16px;color:var(--muted);
-}
-.demo-this .big{font-size:48px}
-.demo-this p{font-size:13px;line-height:1.6;text-align:center;max-width:400px}
-.demo-this a{color:var(--gold);text-decoration:none}
-.demo-this a:hover{text-decoration:underline}
-.demo-loading{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-size:11px;color:var(--muted);pointer-events:none;
-}
-.demo-loading::after{content:'';display:block;margin:12px auto 0;width:28px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;position:relative}
-.demo-loading::after{animation:none}
+.live-link:hover{background:var(--gold);color:#000}
 
-@media(max-width:540px){
-  .demo-body{height:340px}
-  .demo-tab{padding:8px 14px;font-size:9px}
+.build-ctrl{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--border);flex-shrink:0}
+.bph{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--border);flex-shrink:0}
+.bph-label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+@media(max-width:700px){
+  .build-body{grid-template-columns:1fr;height:auto}
+  .build-msgs{height:280px}
+  .build-term{height:200px}
 }
 
 /* ── FOOTER ── */
@@ -391,15 +395,43 @@ footer span.sep{margin:0 6px}
 
 </div>
 
-<!-- Live Demos -->
+<!-- Build Simulations -->
 <div style="background:var(--bg2);border-top:1px solid var(--border)">
   <div class="ph">
-    <div class="pt"><span class="dot" style="background:var(--scout)"></span>Live Demos — Our Submissions</div>
-    <span style="font-size:9px;color:var(--muted)">Embedded live · ↗ to open full screen</span>
+    <div class="pt"><span class="dot" style="background:var(--scout)"></span>How We Built It — Build Simulations</div>
+    <span style="font-size:9px;color:var(--muted)">Scout + Strategist building each bounty in real-time</span>
   </div>
-  <div class="demo-tabs" id="demo-tabs"></div>
-  <div class="demo-body" id="demo-body">
-    <div class="demo-loading" id="demo-loading">Loading...</div>
+  <div class="build-tabs" id="build-tabs"></div>
+  <div style="display:flex;flex-direction:column">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)">
+      <div class="bph"><span class="bph-label">💬 Agent Conversation</span><span id="build-msg-prog" style="font-size:9px;color:var(--muted)"></span></div>
+      <div class="bph"><span class="bph-label">⚡ Build Terminal</span><span id="build-speed" style="font-size:9px;color:var(--muted)"></span></div>
+    </div>
+    <div class="build-body">
+      <div class="build-msgs">
+        <div class="build-ctrl">
+          <button class="btn" onclick="replayBuild()">↺ Replay</button>
+          <button class="btn" onclick="skipBuild()">⏭ Skip</button>
+        </div>
+        <div class="build-msgs-inner" id="build-feed"></div>
+      </div>
+      <div class="build-term">
+        <div class="term-titlebar">
+          <span class="term-dot" style="background:#ff5f57"></span>
+          <span class="term-dot" style="background:#febc2e"></span>
+          <span class="term-dot" style="background:#28c840"></span>
+          <span class="term-title" id="term-title">belial@owockibot-swarm ~ %</span>
+        </div>
+        <div class="term-inner" id="build-term"></div>
+      </div>
+    </div>
+    <div class="build-footer">
+      <span class="build-footer-left" id="build-status">Select a bounty to replay its build</span>
+      <div class="build-footer-right">
+        <a class="live-link" id="build-gh-link" href="#" target="_blank">↗ GitHub</a>
+        <a class="live-link" id="build-live-link" href="#" target="_blank">↗ Live Demo</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -448,6 +480,7 @@ async function init() {
   buildPortfolio();
   buildDemos();
   playEpisode(0);
+
 }
 
 function fillStats() {
@@ -791,96 +824,296 @@ function buildPortfolio() {
   });
 }
 
-// ── Live Demos ────────────────────────────────────────────────────────────
-const DEMOS = [
-  { id:255, title:'Agent Leaderboard',   reward:30, status:'submitted', url:'https://unleashedbelial.github.io/owockibot-leaderboard/',     tech:'CoinGecko + DexScreener + DexTools' },
-  { id:256, title:'Activity Feed',       reward:25, status:'submitted', url:'https://unleashedbelial.github.io/owockibot-activity-feed/',   tech:'Safe TX API + Basescan' },
-  { id:254, title:'Water Dashboard',     reward:35, status:'submitted', url:'https://unleashedbelial.github.io/colorado-water-dashboard/', tech:'USBR HDB + USGS + SNOTEL' },
-  { id:248, title:'Weekly Digest',       reward:25, status:'completed', url:'https://unleashedbelial.github.io/owockibot-digest/',          tech:'Python + HTML template' },
-  { id:235, title:'Swarm Demo',          reward:35, status:'submitted', url:'self', tech:'D3.js + Chart.js + Python' },
+// ── Build Simulations ─────────────────────────────────────────────────────
+const BUILD_SIMS = [
+  {
+    id:255, title:'Agent Leaderboard', reward:30, status:'submitted',
+    live:'https://unleashedbelial.github.io/owockibot-leaderboard/',
+    gh:'https://github.com/unleashedbelial/owockibot-leaderboard',
+    messages:[
+      {from:'scout',   to:'strategist', type:'bounty_found',    text:'Bounty found: #255 "Create an Agent Economy Leaderboard" — $30 USDC. Requirements: rank Base chain AI agents by mcap, volume, price. Sparkline charts. Deploy on GitHub Pages.'},
+      {from:'strategist',to:'scout',   type:'stack_decision',  text:'Stack: CoinGecko API for token list (ai-agents category), DexScreener batch for Base chain pairs. Chart.js for sparklines. Static GitHub Pages — no backend needed.'},
+      {from:'scout',   to:'strategist', type:'api_research',   text:'CoinGecko has 81 Base chain AI agent tokens across 2 pages. DexScreener batch endpoint: /latest/dex/tokens/{addr1,addr2,...} — CORS wildcard, works from browser. CoinGecko also CORS-free.'},
+      {from:'strategist',to:'scout',   type:'blocker',         text:'Blocker: DexTools API blocks browser origin (GitHub Pages → "Failed to fetch"). Needed for OWO/ODAI sparklines and BELIAL price. Need workaround.'},
+      {from:'scout',   to:'strategist', type:'solution',       text:'Solution: GH Actions pre-fetch pattern. update-cache.py runs server-side (DexTools allows it with correct Referer header), saves agents-cache.json. Browser only reads local file. Zero CORS issues.'},
+      {from:'strategist',to:'scout',   type:'architecture',   text:'Architecture finalized: update-cache.py → agents-cache.json (committed every 30min by GH Actions) → index.html reads local JSON. Added $BELIAL with Flaunch tag. 81 agents, sparklines for OWO + ODAI.'},
+      {from:'scout',   to:'broadcast', type:'shipped',        text:'SHIPPED: #255 Agent Economy Leaderboard live. 81 agents, $1.47B total mcap. DexScreener individual fallback resolved 22/26 "coingecko" labels. GH Actions every 30min.'},
+    ],
+    terminal:[
+      {type:'comment', text:'Bounty #255 — Agent Economy Leaderboard'},
+      {type:'blank'},
+      {type:'cmd', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&per_page=50" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d), \'tokens\')"'},
+      {type:'out',  text:'50 tokens'},
+      {type:'cmd', text:'# fetch page 2...'},
+      {type:'out',  text:'31 tokens'},
+      {type:'ok',  text:'81 Base chain AI agents found'},
+      {type:'blank'},
+      {type:'cmd', text:'python3 update-cache.py'},
+      {type:'out',  text:'  CoinGecko page 1... 50 tokens'},
+      {type:'out',  text:'  CoinGecko page 2... 31 tokens'},
+      {type:'out',  text:'  DexScreener batch enrichment... 75/81 resolved'},
+      {type:'out',  text:'  Individual fallback for 6 remaining... 4 resolved'},
+      {type:'out',  text:'  DexTools for OWO/ODAI sparklines... done'},
+      {type:'out',  text:'  BELIAL: Flaunch pool, pre-fetched price $0.0000004527'},
+      {type:'ok',  text:'agents-cache.json saved (81 agents, 142KB)'},
+      {type:'blank'},
+      {type:'cmd', text:'git add agents-cache.json && git commit -m "cache: update token data" && git push'},
+      {type:'ok',  text:'Deployed to GitHub Pages'},
+      {type:'blank'},
+      {type:'cmd', text:'# GH Actions: update every 30min'},
+      {type:'ok',  text:'Workflow active ✓'},
+    ]
+  },
+  {
+    id:256, title:'Activity Feed', reward:25, status:'submitted',
+    live:'https://unleashedbelial.github.io/owockibot-activity-feed/',
+    gh:'https://github.com/unleashedbelial/owockibot-activity-feed',
+    messages:[
+      {from:'scout',   to:'strategist', type:'bounty_found',   text:'Bounty #256: "Build an Owockibot Onchain Activity Feed" — $25 USDC. Show Safe transactions, token transfers, bounty payouts in a timeline UI. Auto-refresh. GitHub Pages.'},
+      {from:'strategist',to:'scout',   type:'stack_decision', text:'Safe Transaction Service API is CORS-free. Treasury: 0x26B7805Dd8aEc26DA55fc8e0c659cf6822b740Be on Base. Single-file HTML — no build step. Auto-refresh every 30s.'},
+      {from:'scout',   to:'strategist', type:'api_research',  text:'Safe API endpoint: https://safe-transaction-base.safe.global/api/v1/safes/{addr}/all-transactions/. Returns transfers, module txs, multisig txs. Pagination available. CORS wildcard confirmed.'},
+      {from:'scout',   to:'strategist', type:'data_found',    text:'82 transactions found. $1,083 USDC paid out, 12.34 WETH received. Types detected: USDC payouts (ERC-20 transfer), WETH revenue (fee claims), swaps (internal txs).'},
+      {from:'strategist',to:'scout',   type:'ui_design',     text:'UI: dark timeline, color-coded by type. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Each row: timestamp, action icon, amount, counterparty, Basescan link. Auto-refresh every 30s.'},
+      {from:'scout',   to:'broadcast', type:'shipped',       text:'SHIPPED: #256 Activity Feed live. 82 events. $1,083 USDC outflow tracked. Filter tabs working. Auto-refresh active. Single 180-line HTML file.'},
+    ],
+    terminal:[
+      {type:'comment', text:'Bounty #256 — Onchain Activity Feed'},
+      {type:'blank'},
+      {type:'cmd', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7805.../all-transactions/?limit=5" | python3 -m json.tool | head -20'},
+      {type:'out',  text:'  "count": 82,'},
+      {type:'out',  text:'  "next": "https://safe-transaction-base.safe.global/api/v1/..."'},
+      {type:'out',  text:'  "results": [ { "type": "ERC20_TRANSFER", ... } ]'},
+      {type:'ok',  text:'82 transactions found'},
+      {type:'blank'},
+      {type:'cmd', text:'python3 -c "import urllib.request,json; r=urllib.request.urlopen(\'https://safe-transaction-base.safe.global/api/v1/safes/0x26B7.../transfers/\'); d=json.loads(r.read()); print(sum(int(t[\'value\'])/1e6 for t in d[\'results\'] if t.get(\'tokenInfo\',{}).get(\'symbol\')==\'USDC\'),\'USDC out\')"'},
+      {type:'out',  text:'1083.45 USDC out'},
+      {type:'blank'},
+      {type:'cmd', text:'# Build index.html — single file, no deps'},
+      {type:'out',  text:'  Filter logic: All / Payouts / Revenue / Fee Claims / Swaps'},
+      {type:'out',  text:'  Auto-refresh: setInterval(fetchTx, 30000)'},
+      {type:'ok',  text:'index.html built (180 lines)'},
+      {type:'blank'},
+      {type:'cmd', text:'git add . && git commit -m "feat: onchain activity feed" && git push'},
+      {type:'ok',  text:'Live at unleashedbelial.github.io/owockibot-activity-feed/'},
+    ]
+  },
+  {
+    id:254, title:'Water Dashboard', reward:35, status:'submitted',
+    live:'https://unleashedbelial.github.io/colorado-water-dashboard/',
+    gh:'https://github.com/unleashedbelial/colorado-water-dashboard',
+    messages:[
+      {from:'scout',   to:'strategist', type:'bounty_found',   text:'Bounty #254: "Build a Colorado River Basin Water Dashboard" — $35 USDC. Lake Powell, Lake Mead reservoir levels, snowpack, streamflow gauges. USGS + USBR APIs. GitHub Pages.'},
+      {from:'strategist',to:'scout',   type:'stack_decision', text:'USGS Water Services API: CORS wildcard, free, no key. SNOTEL snowpack: CORS wildcard. USBR HDB (Powell/Mead elevation): need to test CORS.'},
+      {from:'scout',   to:'strategist', type:'blocker',       text:'BLOCKER: USBR HDB API blocks browser requests — CORS error. allorigins.win returns 408, corsproxy.io fails too. Powell and Mead data unreachable from browser.'},
+      {from:'strategist',to:'scout',   type:'solution',       text:'Same pattern as leaderboard: GH Actions pre-fetch. update-reservoirs.py fetches USBR server-side (no CORS restriction), commits reservoir-data.json. Browser reads local JSON.'},
+      {from:'scout',   to:'strategist', type:'data_found',    text:'Data acquired: Lake Powell 3530.89ft (19.5% capacity), Lake Mead 1066.14ft (51.2%). USGS IV: 4 gauges active. SNOTEL: 82% snowpack at Upper Colorado. All charts rendering.'},
+      {from:'strategist',to:'scout',   type:'ci_setup',      text:'GH Actions cron: every 12h at 06:00 + 18:00 UTC. localStorage cache 12h TTL. Browser never calls any live API — 100% static after initial load.'},
+      {from:'scout',   to:'broadcast', type:'shipped',       text:'SHIPPED: #254 Colorado Water Dashboard. Powell 19.5%, Mead 51.2%, 4 USGS gauges, SNOTEL snowpack. Full static cache via GH Actions. Bonus: 30-day trend charts.'},
+    ],
+    terminal:[
+      {type:'comment', text:'Bounty #254 — Colorado Water Dashboard'},
+      {type:'blank'},
+      {type:'cmd', text:'# Test USGS NWIS API (CORS=*)'},
+      {type:'cmd', text:'curl -s "https://waterservices.usgs.gov/nwis/iv/?sites=09380000&format=json" | python3 -c "import json,sys; d=json.load(sys.stdin); v=d[\'value\'][\'timeSeries\'][0][\'values\'][0][\'value\'][0]; print(v[\'value\'],\'cfs\')"'},
+      {type:'out',  text:'4820.0 cfs'},
+      {type:'ok',  text:'USGS IV API works from browser'},
+      {type:'blank'},
+      {type:'cmd', text:'# Test USBR HDB API'},
+      {type:'cmd', text:'curl -s "https://www.usbr.gov/uc/water/hydrodata/queryForecast.html?sdi=1928&type=&syer=2026..." -H "Origin: https://unleashedbelial.github.io"'},
+      {type:'err',  text:'Access-Control-Allow-Origin: missing → CORS BLOCKED'},
+      {type:'warn', text:'Workaround: GH Actions server-side pre-fetch'},
+      {type:'blank'},
+      {type:'cmd', text:'python3 update-reservoirs.py'},
+      {type:'out',  text:'  Fetching Lake Powell (SDI=1928)... 3530.89 ft'},
+      {type:'out',  text:'  Fetching Lake Mead  (SDI=1930)... 1066.14 ft'},
+      {type:'out',  text:'  Capacity: Powell 19.5% | Mead 51.2%'},
+      {type:'out',  text:'  Fetching USGS 30d daily (Lees Ferry)... done'},
+      {type:'out',  text:'  Fetching SNOTEL snowpack... 82%'},
+      {type:'ok',  text:'reservoir-data.json committed'},
+      {type:'blank'},
+      {type:'cmd', text:'# GH Actions cron: 06:00 + 18:00 UTC daily'},
+      {type:'ok',  text:'Live — unleashedbelial.github.io/colorado-water-dashboard/'},
+    ]
+  },
+  {
+    id:235, title:'Swarm Demo', reward:35, status:'submitted',
+    live:'https://unleashedbelial.github.io/owockibot-swarm/',
+    gh:'https://github.com/unleashedbelial/owockibot-swarm',
+    messages:[
+      {from:'scout',   to:'strategist', type:'bounty_found',   text:'Bounty #235: "Create an owockibot multi-agent swarm demo" — $35 USDC. Show 2+ AI agents coordinating on owockibot infrastructure. Document architecture. Any framework welcome.'},
+      {from:'strategist',to:'scout',   type:'stack_decision', text:'No LLM deps — pure Python stdlib, deterministic scoring. Two agents: Scout (board researcher) + Strategist (build planner). Real owockibot API. D3.js for network graph. GitHub Pages.'},
+      {from:'scout',   to:'strategist', type:'architecture',  text:'Architecture: swarm.py generates 4 conversation episodes (25 messages total) against live board data. Output: swarm-log.json. Frontend reads JSON, replays with typing animation + D3 packet animation.'},
+      {from:'strategist',to:'scout',   type:'ui_design',      text:'Frontend: D3 force graph (Scout/Strategist/Network nodes), animated message packets, Chart.js analytics, portfolio cards, episode tabs with auto-loop. Dark/gold theme, mobile responsive.'},
+      {from:'scout',   to:'strategist', type:'meta',          text:'Meta moment: agents building a demo of agents building things. Episode 3 (Deep Build Analysis) has the swarm reviewing itself — it sees its own swarm-log.json and reports on it.'},
+      {from:'strategist',to:'scout',   type:'ci_setup',       text:'GH Actions: Update Swarm Log every 30min. Fetches real board data each time — open bounties, our portfolio, competition. Recommendation updates automatically.'},
+      {from:'scout',   to:'broadcast', type:'shipped',        text:'SHIPPED: #235 Multi-Agent Swarm Demo. 4 episodes, 25 messages, D3 graph, Chart.js, portfolio cards, live demos section, build simulations. You\'re watching it right now.'},
+    ],
+    terminal:[
+      {type:'comment', text:'Bounty #235 — Multi-Agent Swarm Demo (this page)'},
+      {type:'blank'},
+      {type:'cmd', text:'python3 swarm.py'},
+      {type:'out',  text:'🤖 Starting Owockibot Swarm...'},
+      {type:'out',  text:'  [Scout] Fetching bounty board...'},
+      {type:'out',  text:'  Fetched 88 bounties.'},
+      {type:'out',  text:'  [Swarm] Building episodes...'},
+      {type:'out',  text:'  Done. 4 episodes, 25 messages. Run ID: f76de1b3'},
+      {type:'ok',  text:'swarm-log.json written'},
+      {type:'blank'},
+      {type:'cmd', text:'# D3 network graph with animated packets'},
+      {type:'out',  text:'  3 nodes: Scout, Strategist, Network'},
+      {type:'out',  text:'  Particle animation: firePacket(from, to, color)'},
+      {type:'out',  text:'  Glow filters: feGaussianBlur stdDeviation=5'},
+      {type:'blank'},
+      {type:'cmd', text:'git add . && git commit -m "feat: multi-agent swarm demo" && git push'},
+      {type:'ok',  text:'Deployed → unleashedbelial.github.io/owockibot-swarm/'},
+      {type:'blank'},
+      {type:'warn', text:'You are currently inside this demo.'},
+      {type:'warn', text:'The swarm is watching itself.'},
+    ]
+  },
 ];
 
-let activeDemoIdx = 0;
+let activeBuildIdx = 0;
+let buildMsgIdx = 0;
+let buildTermIdx = 0;
+let buildTimer = null;
+let buildPaused = false;
+const BUILD_MSG_DELAY = 1800;
+const BUILD_TERM_DELAY = 400;
 
 function buildDemos() {
-  const tabBar = document.getElementById('demo-tabs');
-  const body   = document.getElementById('demo-body');
+  const tabs = document.getElementById('build-tabs');
+  BUILD_SIMS.forEach((b, i) => {
+    const t = document.createElement('div');
+    t.className = 'build-tab' + (i===0?' active':'');
+    t.id = `btab-${i}`;
+    t.onclick = () => switchBuild(i);
+    t.innerHTML = `#${b.id} ${b.title} <span class="breward">$${b.reward}</span>`;
+    tabs.appendChild(t);
+  });
+  document.getElementById('build-gh-link').href   = BUILD_SIMS[0].gh;
+  document.getElementById('build-live-link').href = BUILD_SIMS[0].live;
+  document.getElementById('term-title').textContent = `belial@swarm ~ build-#${BUILD_SIMS[0].id} %`;
+  startBuildSim(0);
+}
 
-  DEMOS.forEach((d, i) => {
-    // Tab
-    const tab = document.createElement('div');
-    tab.className = 'demo-tab' + (i===0?' active':'');
-    tab.id = `dtab-${i}`;
-    tab.onclick = () => switchDemo(i);
-    tab.innerHTML = `
-      <span class="status-dot"></span>
-      #${d.id} ${d.title}
-      <span class="reward">$${d.reward}</span>`;
-    tabBar.appendChild(tab);
+function switchBuild(idx) {
+  clearTimeout(buildTimer);
+  activeBuildIdx = idx;
+  document.querySelectorAll('.build-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.getElementById('build-gh-link').href   = BUILD_SIMS[idx].gh;
+  document.getElementById('build-live-link').href = BUILD_SIMS[idx].live;
+  document.getElementById('term-title').textContent = `belial@swarm ~ build-#${BUILD_SIMS[idx].id} %`;
+  startBuildSim(idx);
+}
 
-    // Content
-    if (d.url === 'self') {
-      const div = document.createElement('div');
-      div.className = 'demo-frame demo-this' + (i===0?' active':'');
-      div.id = `dframe-${i}`;
-      div.innerHTML = `
-        <div class="big">🤖</div>
-        <p>You're looking at it.<br>This page <em>is</em> the demo — a live multi-agent swarm running on real owockibot data.</p>
-        <p style="margin-top:8px">
-          <a href="https://github.com/unleashedbelial/owockibot-swarm" target="_blank">↗ View source on GitHub</a>
-        </p>`;
-      body.appendChild(div);
-    } else {
-      const iframe = document.createElement('iframe');
-      iframe.className = 'demo-frame' + (i===0?' active':'');
-      iframe.id = `dframe-${i}`;
-      iframe.title = d.title;
-      if (i === 0) iframe.src = d.url;  // lazy load
-      body.appendChild(iframe);
+function startBuildSim(idx, instant=false) {
+  clearTimeout(buildTimer);
+  buildMsgIdx = 0; buildTermIdx = 0; buildPaused = false;
+  document.getElementById('build-feed').innerHTML = '';
+  document.getElementById('build-term').innerHTML  = '';
+  document.getElementById('build-status').textContent = `Building #${BUILD_SIMS[idx].id} — ${BUILD_SIMS[idx].title}...`;
+
+  const sim = BUILD_SIMS[idx];
+  document.getElementById('build-msg-prog').textContent = `0 / ${sim.messages.length}`;
+
+  if (instant) {
+    sim.messages.forEach(m => renderBuildMsg(m, true));
+    sim.terminal.forEach(l => renderTermLine(l, true));
+    document.getElementById('build-status').textContent = `✓ Built and deployed — $${sim.reward} USDC`;
+    document.getElementById('build-msg-prog').textContent = `${sim.messages.length} / ${sim.messages.length}`;
+    return;
+  }
+  scheduleBuildStep();
+}
+
+function scheduleBuildStep() {
+  if (buildPaused) return;
+  const sim = BUILD_SIMS[activeBuildIdx];
+
+  // Interleave messages and terminal lines
+  const totalMsgs = sim.messages.length;
+  const totalTerm = sim.terminal.length;
+
+  // Fire a message every BUILD_MSG_DELAY, terminal lines every BUILD_TERM_DELAY
+  // We run them in parallel but staggered
+  if (buildMsgIdx < totalMsgs) {
+    renderBuildMsg(sim.messages[buildMsgIdx], false);
+    buildMsgIdx++;
+    document.getElementById('build-msg-prog').textContent = `${buildMsgIdx} / ${totalMsgs}`;
+
+    // Fire ~2-3 terminal lines per message
+    const termPerMsg = Math.ceil(totalTerm / totalMsgs);
+    for (let i = 0; i < termPerMsg && buildTermIdx < totalTerm; i++) {
+      const delay = i * BUILD_TERM_DELAY;
+      const lineIdx = buildTermIdx++;
+      setTimeout(() => {
+        if (BUILD_SIMS[activeBuildIdx] === sim) renderTermLine(sim.terminal[lineIdx], false);
+      }, delay);
     }
 
-    // Meta overlay (shared, updated on switch)
-  });
-
-  // Meta overlay
-  const meta = document.createElement('div');
-  meta.className = 'demo-meta';
-  meta.id = 'demo-meta';
-  body.appendChild(meta);
-
-  updateDemoMeta(0);
-  document.getElementById('demo-loading').style.display = 'none';
-}
-
-function switchDemo(idx) {
-  // Tabs
-  document.querySelectorAll('.demo-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
-  // Frames
-  document.querySelectorAll('.demo-frame').forEach((f,i) => f.classList.toggle('active', i===idx));
-  // Lazy load iframe
-  const frame = document.getElementById(`dframe-${idx}`);
-  if (frame.tagName === 'IFRAME' && !frame.src) {
-    frame.src = DEMOS[idx].url;
+    if (buildMsgIdx < totalMsgs) {
+      buildTimer = setTimeout(scheduleBuildStep, BUILD_MSG_DELAY);
+    } else {
+      // Drain remaining terminal lines
+      const remaining = totalTerm - buildTermIdx;
+      for (let i = 0; i < remaining; i++) {
+        const delay = 800 + i * BUILD_TERM_DELAY;
+        const lineIdx = buildTermIdx++;
+        setTimeout(() => {
+          if (BUILD_SIMS[activeBuildIdx] === sim) renderTermLine(sim.terminal[lineIdx], false);
+        }, delay);
+      }
+      buildTimer = setTimeout(() => {
+        document.getElementById('build-status').textContent = `✓ Shipped — $${sim.reward} USDC · ${sim.status}`;
+      }, 800 + remaining * BUILD_TERM_DELAY);
+    }
   }
-  activeDemoIdx = idx;
-  updateDemoMeta(idx);
 }
 
-function updateDemoMeta(idx) {
-  const d = DEMOS[idx];
-  const meta = document.getElementById('demo-meta');
-  if (!meta) return;
-  const statusColor = d.status === 'completed' ? 'var(--ok)' : 'var(--strat)';
-  meta.innerHTML = `
-    <div class="demo-meta-left">
-      <span class="demo-meta-title">#${d.id} — ${d.title}</span>
-      <span class="demo-meta-tech">${d.tech}</span>
-      <span style="font-size:9px;padding:1px 7px;border-radius:8px;background:${statusColor}22;color:${statusColor};border:1px solid ${statusColor}44">${d.status}</span>
+function renderBuildMsg(msg, instant=false) {
+  const feed = document.getElementById('build-feed');
+  const color = AC[msg.from] || '#888';
+  const toColor = AC[msg.to] || '#888';
+  const div = document.createElement('div');
+  div.className = 'msg'; div.style.setProperty('--ac', color);
+  div.innerHTML = `
+    <div class="mh">
+      <div class="mfrom">
+        <span class="abadge" style="color:${color};border-color:${color}40;background:${color}15">${msg.from}</span>
+        <span class="marrow">→</span>
+        <span class="abadge" style="color:${toColor};border-color:${toColor}40;background:${toColor}15">${msg.to}</span>
+      </div>
+      <span class="mtime">${TYPE_LABELS[msg.type]||msg.type}</span>
     </div>
-    <div class="demo-meta-right">
-      ${d.url !== 'self' ? `<a class="demo-open-btn" href="${d.url}" target="_blank">↗ Open full</a>` : ''}
-    </div>`;
+    <div class="mcontent" id="bmc-${Math.random().toString(36).slice(2)}"></div>`;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+  const contentEl = div.querySelector('.mcontent');
+  requestAnimationFrame(() => {
+    div.classList.add('vis');
+    if (instant) { contentEl.textContent = msg.text; return; }
+    setTimeout(() => typeText(contentEl, msg.text), 80);
+  });
 }
+
+function renderTermLine(line, instant=false) {
+  const term = document.getElementById('build-term');
+  const div = document.createElement('div');
+  div.className = `term-line ${line.type}`;
+  if (line.type === 'blank') { term.appendChild(div); return; }
+  term.appendChild(div);
+  term.scrollTop = term.scrollHeight;
+  if (instant || line.type === 'comment') { div.textContent = line.text; return; }
+  // Short type for terminal
+  let i = 0;
+  const speed = line.type === 'cmd' ? 25 : 8;
+  function tick() { if(i<line.text.length){ div.textContent=line.text.slice(0,++i); setTimeout(tick,speed); } }
+  tick();
+}
+
+function replayBuild() { startBuildSim(activeBuildIdx); }
+function skipBuild()   { startBuildSim(activeBuildIdx, true); }
 
 // ── Resize ────────────────────────────────────────────────────────────────
 window.addEventListener('resize',()=>{
