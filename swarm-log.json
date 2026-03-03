@@ -1,6 +1,6 @@
 {
-  "run_id": "b856417f",
-  "generated_at": "2026-03-03T10:24:30.594184Z",
+  "run_id": "1e33d168",
+  "generated_at": "2026-03-03T10:27:31.795014Z",
   "agents": [
     {
       "id": "scout",
@@ -40,7 +40,7 @@
         "claimed_by_others": 21,
         "open_unclaimed_list": []
       },
-      "timestamp": "2026-03-03T10:24:30.590605Z"
+      "timestamp": "2026-03-03T10:27:31.790340Z"
     },
     {
       "id": 2,
@@ -82,7 +82,7 @@
           }
         ]
       },
-      "timestamp": "2026-03-03T10:24:30.590867Z"
+      "timestamp": "2026-03-03T10:27:31.790397Z"
     },
     {
       "id": 3,
@@ -277,7 +277,7 @@
           ]
         }
       },
-      "timestamp": "2026-03-03T10:24:30.593946Z"
+      "timestamp": "2026-03-03T10:27:31.794958Z"
     },
     {
       "id": 4,
@@ -292,7 +292,7 @@
         "earned_usdc": 45,
         "pipeline_value": 125
       },
-      "timestamp": "2026-03-03T10:24:30.594017Z"
+      "timestamp": "2026-03-03T10:27:31.794974Z"
     },
     {
       "id": 5,
@@ -311,7 +311,7 @@
         },
         "top_open": []
       },
-      "timestamp": "2026-03-03T10:24:30.594072Z"
+      "timestamp": "2026-03-03T10:27:31.794985Z"
     },
     {
       "id": 6,
@@ -329,7 +329,7 @@
         "watch_category": "Protocol/Agent",
         "status": "MONITOR"
       },
-      "timestamp": "2026-03-03T10:24:30.594104Z"
+      "timestamp": "2026-03-03T10:27:31.794991Z"
     }
   ],
   "summary": {
