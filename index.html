@@ -83,8 +83,8 @@ header{
 
 /* ── MAIN GRID ── */
 .main{
-  display:grid;grid-template-columns:1fr 360px;
-  grid-template-rows:460px auto;
+  display:grid;grid-template-columns:1fr 380px;
+  grid-template-rows:560px auto;
   gap:1px;background:var(--border);
 }
 .panel{background:var(--bg2);overflow:hidden}
@@ -112,8 +112,8 @@ header{
 
 /* ── RIGHT PANEL (messages + terminal) ── */
 #right-panel{display:flex;flex-direction:column;overflow:hidden}
-#feed-panel{display:flex;flex-direction:column;overflow:hidden;flex:3;min-height:0;border-bottom:1px solid var(--border)}
-#term-panel{display:flex;flex-direction:column;overflow:hidden;flex:2;min-height:0;background:#020609}
+#feed-panel{display:flex;flex-direction:column;overflow:hidden;flex:5;min-height:0;border-bottom:1px solid var(--border)}
+#term-panel{display:flex;flex-direction:column;overflow:hidden;flex:3;min-height:0;background:#020609}
 .term-inner{flex:1;min-height:0;overflow-y:auto;padding:10px 14px;scrollbar-width:none}
 .term-inner::-webkit-scrollbar{display:none}
 
@@ -831,26 +831,28 @@ const BUILD_SIMS = [
     terminal:[
       {type:'comment', text:'Bounty #255 — Agent Economy Leaderboard'},
       {type:'blank'},
-      {type:'cmd', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&per_page=50" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d), \'tokens\')"'},
-      {type:'out',  text:'50 tokens'},
-      {type:'cmd', text:'# fetch page 2...'},
-      {type:'out',  text:'31 tokens'},
+      {type:'cmd', agent:'scout', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&per_page=50&vs_currency=usd" | python3 -c "import json,sys; print(len(json.load(sys.stdin)), \'tokens found\')"'},
+      {type:'out',  text:'50 tokens found'},
+      {type:'cmd', agent:'scout', text:'curl -s "https://api.coingecko.com/api/v3/coins/markets?category=ai-agents&per_page=50&page=2" | python3 -c "import json,sys; print(len(json.load(sys.stdin)), \'tokens page 2\')"'},
+      {type:'out',  text:'31 tokens page 2'},
       {type:'ok',  text:'81 Base chain AI agents found'},
       {type:'blank'},
-      {type:'cmd', text:'python3 update-cache.py'},
-      {type:'out',  text:'  CoinGecko page 1... 50 tokens'},
-      {type:'out',  text:'  CoinGecko page 2... 31 tokens'},
-      {type:'out',  text:'  DexScreener batch enrichment... 75/81 resolved'},
-      {type:'out',  text:'  Individual fallback for 6 remaining... 4 resolved'},
-      {type:'out',  text:'  DexTools for OWO/ODAI sparklines... done'},
-      {type:'out',  text:'  BELIAL: Flaunch pool, pre-fetched price $0.0000004527'},
-      {type:'ok',  text:'agents-cache.json saved (81 agents, 142KB)'},
+      {type:'cmd', agent:'strategist', text:'curl -sI "https://www.dextools.io/shared/data/pair?address=0xff5ed6f1..." -H "Origin: https://unleashedbelial.github.io"'},
+      {type:'err',  text:'Access-Control-Allow-Origin: missing → CORS BLOCKED'},
+      {type:'cmd', agent:'strategist', text:'# workaround: pre-fetch server-side via GitHub Actions'},
       {type:'blank'},
-      {type:'cmd', text:'git add agents-cache.json && git commit -m "cache: update token data" && git push'},
-      {type:'ok',  text:'Deployed to GitHub Pages'},
+      {type:'cmd', agent:'scout', text:'python3 update-cache.py'},
+      {type:'out',  text:'  Fetching CoinGecko pages... 81 tokens'},
+      {type:'out',  text:'  DexScreener batch enrichment... 75/81 pairs found'},
+      {type:'out',  text:'  Individual fallback for 6 remaining... +4 resolved'},
+      {type:'out',  text:'  DexTools OWO sparkline: synthetic from periodStats'},
+      {type:'out',  text:'  BELIAL price: $0.0000004527 (Flaunch pool)'},
+      {type:'ok',  text:'agents-cache.json saved — 81 agents, 142KB'},
       {type:'blank'},
-      {type:'cmd', text:'# GH Actions: update every 30min'},
-      {type:'ok',  text:'Workflow active ✓'},
+      {type:'cmd', agent:'strategist', text:'gh workflow run update-data.yml --repo unleashedbelial/owockibot-leaderboard'},
+      {type:'ok',  text:'Workflow triggered — runs every 30min via cron'},
+      {type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: agent economy leaderboard v8" && git push'},
+      {type:'ok',  text:'Deployed → unleashedbelial.github.io/owockibot-leaderboard/'},
     ]
   },
   {
@@ -868,22 +870,21 @@ const BUILD_SIMS = [
     terminal:[
       {type:'comment', text:'Bounty #256 — Onchain Activity Feed'},
       {type:'blank'},
-      {type:'cmd', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7805.../all-transactions/?limit=5" | python3 -m json.tool | head -20'},
-      {type:'out',  text:'  "count": 82,'},
-      {type:'out',  text:'  "next": "https://safe-transaction-base.safe.global/api/v1/..."'},
-      {type:'out',  text:'  "results": [ { "type": "ERC20_TRANSFER", ... } ]'},
-      {type:'ok',  text:'82 transactions found'},
+      {type:'cmd', agent:'scout', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7805Dd8aEc26DA55fc8e0c659cf6822b740Be/all-transactions/" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[\'count\'], \'transactions\')"'},
+      {type:'out',  text:'82 transactions'},
+      {type:'cmd', agent:'scout', text:'curl -s "https://safe-transaction-base.safe.global/api/v1/safes/0x26B7.../transfers/" | python3 -c "import json,sys; d=json.load(sys.stdin); usdc=sum(int(t[\'value\'])/1e6 for t in d[\'results\'] if t.get(\'tokenInfo\',{}).get(\'symbol\')==\'USDC\'); print(f\'{usdc:.2f} USDC paid out\')"'},
+      {type:'out',  text:'1083.45 USDC paid out'},
       {type:'blank'},
-      {type:'cmd', text:'python3 -c "import urllib.request,json; r=urllib.request.urlopen(\'https://safe-transaction-base.safe.global/api/v1/safes/0x26B7.../transfers/\'); d=json.loads(r.read()); print(sum(int(t[\'value\'])/1e6 for t in d[\'results\'] if t.get(\'tokenInfo\',{}).get(\'symbol\')==\'USDC\'),\'USDC out\')"'},
-      {type:'out',  text:'1083.45 USDC out'},
+      {type:'cmd', agent:'strategist', text:'# classify transaction types: payout / revenue / fee-claim / swap'},
+      {type:'out',  text:'  ERC20_TRANSFER out  → Payout    (42 txs)'},
+      {type:'out',  text:'  ERC20_TRANSFER in   → Revenue   (18 txs)'},
+      {type:'out',  text:'  MODULE_TRANSACTION  → Fee Claim (12 txs)'},
+      {type:'out',  text:'  ETHEREUM_TRANSACTION→ Swap      (10 txs)'},
       {type:'blank'},
-      {type:'cmd', text:'# Build index.html — single file, no deps'},
-      {type:'out',  text:'  Filter logic: All / Payouts / Revenue / Fee Claims / Swaps'},
-      {type:'out',  text:'  Auto-refresh: setInterval(fetchTx, 30000)'},
-      {type:'ok',  text:'index.html built (180 lines)'},
-      {type:'blank'},
-      {type:'cmd', text:'git add . && git commit -m "feat: onchain activity feed" && git push'},
-      {type:'ok',  text:'Live at unleashedbelial.github.io/owockibot-activity-feed/'},
+      {type:'cmd', agent:'strategist', text:'# auto-refresh every 30s, filter tabs, Basescan links'},
+      {type:'ok',  text:'index.html ready — 180 lines, zero dependencies'},
+      {type:'cmd', agent:'scout', text:'git add index.html && git commit -m "feat: owockibot onchain activity feed" && git push'},
+      {type:'ok',  text:'Live → unleashedbelial.github.io/owockibot-activity-feed/'},
     ]
   },
   {
@@ -902,26 +903,25 @@ const BUILD_SIMS = [
     terminal:[
       {type:'comment', text:'Bounty #254 — Colorado Water Dashboard'},
       {type:'blank'},
-      {type:'cmd', text:'# Test USGS NWIS API (CORS=*)'},
-      {type:'cmd', text:'curl -s "https://waterservices.usgs.gov/nwis/iv/?sites=09380000&format=json" | python3 -c "import json,sys; d=json.load(sys.stdin); v=d[\'value\'][\'timeSeries\'][0][\'values\'][0][\'value\'][0]; print(v[\'value\'],\'cfs\')"'},
-      {type:'out',  text:'4820.0 cfs'},
-      {type:'ok',  text:'USGS IV API works from browser'},
+      {type:'cmd', agent:'scout', text:'curl -s "https://waterservices.usgs.gov/nwis/iv/?sites=09380000&parameterCd=00060&format=json" | python3 -c "import json,sys; v=json.load(sys.stdin)[\'value\'][\'timeSeries\'][0][\'values\'][0][\'value\'][0]; print(v[\'value\'],\'cfs at Lees Ferry\')"'},
+      {type:'out',  text:'4820.0 cfs at Lees Ferry'},
+      {type:'ok',  text:'USGS API: CORS wildcard — works from browser ✓'},
       {type:'blank'},
-      {type:'cmd', text:'# Test USBR HDB API'},
-      {type:'cmd', text:'curl -s "https://www.usbr.gov/uc/water/hydrodata/queryForecast.html?sdi=1928&type=&syer=2026..." -H "Origin: https://unleashedbelial.github.io"'},
-      {type:'err',  text:'Access-Control-Allow-Origin: missing → CORS BLOCKED'},
-      {type:'warn', text:'Workaround: GH Actions server-side pre-fetch'},
+      {type:'cmd', agent:'scout', text:'curl -sI "https://www.usbr.gov/uc/water/hydrodata/queryForecast.html?sdi=1928" -H "Origin: https://unleashedbelial.github.io" | grep -i access-control'},
+      {type:'err',  text:'(no Access-Control header) → CORS BLOCKED'},
+      {type:'warn', text:'USBR HDB blocks browser origin — need server-side workaround'},
       {type:'blank'},
-      {type:'cmd', text:'python3 update-reservoirs.py'},
-      {type:'out',  text:'  Fetching Lake Powell (SDI=1928)... 3530.89 ft'},
-      {type:'out',  text:'  Fetching Lake Mead  (SDI=1930)... 1066.14 ft'},
-      {type:'out',  text:'  Capacity: Powell 19.5% | Mead 51.2%'},
-      {type:'out',  text:'  Fetching USGS 30d daily (Lees Ferry)... done'},
-      {type:'out',  text:'  Fetching SNOTEL snowpack... 82%'},
-      {type:'ok',  text:'reservoir-data.json committed'},
+      {type:'cmd', agent:'strategist', text:'# solution: GitHub Actions fetches USBR server-side, commits JSON'},
+      {type:'cmd', agent:'strategist', text:'python3 update-reservoirs.py'},
+      {type:'out',  text:'  Lake Powell (SDI=1928)... elevation 3530.89 ft'},
+      {type:'out',  text:'  Lake Mead   (SDI=1930)... elevation 1066.14 ft'},
+      {type:'out',  text:'  Powell capacity: 19.5% | Mead capacity: 51.2%'},
+      {type:'out',  text:'  USGS 30-day daily at Lees Ferry... done'},
+      {type:'out',  text:'  SNOTEL snowpack Upper Colorado... 82%'},
+      {type:'ok',  text:'reservoir-data.json committed (12KB)'},
       {type:'blank'},
-      {type:'cmd', text:'# GH Actions cron: 06:00 + 18:00 UTC daily'},
-      {type:'ok',  text:'Live — unleashedbelial.github.io/colorado-water-dashboard/'},
+      {type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: colorado water dashboard" && git push'},
+      {type:'ok',  text:'Live → unleashedbelial.github.io/colorado-water-dashboard/'},
     ]
   },
   {
@@ -940,24 +940,26 @@ const BUILD_SIMS = [
     terminal:[
       {type:'comment', text:'Bounty #235 — Multi-Agent Swarm Demo (this page)'},
       {type:'blank'},
-      {type:'cmd', text:'python3 swarm.py'},
+      {type:'cmd', agent:'scout', text:'curl -s "https://www.owockibot.xyz/api/bounty-board" | python3 -c "import json,sys; d=json.load(sys.stdin); open_=[b for b in d if b[\'status\']==\'open\']; print(len(d),\'total,\',len(open_),\'open\')"'},
+      {type:'out',  text:'88 total, 0 open'},
+      {type:'cmd', agent:'scout', text:'python3 swarm.py'},
       {type:'out',  text:'🤖 Starting Owockibot Swarm...'},
-      {type:'out',  text:'  [Scout] Fetching bounty board...'},
-      {type:'out',  text:'  Fetched 88 bounties.'},
-      {type:'out',  text:'  [Swarm] Building episodes...'},
-      {type:'out',  text:'  Done. 4 episodes, 25 messages. Run ID: f76de1b3'},
+      {type:'out',  text:'  [Scout] Fetching bounty board... 88 bounties'},
+      {type:'out',  text:'  [Swarm] Building 4 episodes, 25 messages...'},
+      {type:'out',  text:'  Run ID: f76de1b3'},
       {type:'ok',  text:'swarm-log.json written'},
       {type:'blank'},
-      {type:'cmd', text:'# D3 network graph with animated packets'},
-      {type:'out',  text:'  3 nodes: Scout, Strategist, Network'},
-      {type:'out',  text:'  Particle animation: firePacket(from, to, color)'},
-      {type:'out',  text:'  Glow filters: feGaussianBlur stdDeviation=5'},
+      {type:'cmd', agent:'strategist', text:'# D3.js network: 3 nodes, animated packet on message send'},
+      {type:'out',  text:'  Scout (orange) ↔ Strategist (teal) ↔ Network (yellow)'},
+      {type:'out',  text:'  firePacket(from, to, color) → feGaussianBlur glow'},
+      {type:'cmd', agent:'strategist', text:'# Chart.js: reward distribution + category doughnut'},
+      {type:'out',  text:'  12 bounties by reward | Protocol/Agent vs Infrastructure'},
       {type:'blank'},
-      {type:'cmd', text:'git add . && git commit -m "feat: multi-agent swarm demo" && git push'},
+      {type:'cmd', agent:'scout', text:'git add . && git commit -m "feat: multi-agent swarm demo" && git push'},
       {type:'ok',  text:'Deployed → unleashedbelial.github.io/owockibot-swarm/'},
       {type:'blank'},
-      {type:'warn', text:'You are currently inside this demo.'},
-      {type:'warn', text:'The swarm is watching itself.'},
+      {type:'warn', text:'[meta] you are currently inside this demo'},
+      {type:'warn', text:'[meta] the swarm is watching itself run'},
     ]
   },
 ];
@@ -1000,6 +1002,7 @@ function switchBuild(idx) {
 
 function startBuildSim(idx, instant=false) {
   clearTimeout(buildTimer);
+  termQueue = []; termBusy = false; termSim = BUILD_SIMS[idx];
   buildMsgIdx = 0; buildTermIdx = 0; buildPaused = false;
   document.getElementById('msg-feed').innerHTML   = '';
   document.getElementById('build-term').innerHTML = '';
@@ -1038,27 +1041,19 @@ function scheduleBuildStep() {
     document.getElementById('loop-fill').style.width = pct + '%';
     document.getElementById('loop-cd').textContent = pct + '%';
 
-    // Fire ~2-3 terminal lines per message
+    // Queue ~2-3 terminal lines per message (sequential via queue)
     const termPerMsg = Math.ceil(totalTerm / totalMsgs);
     for (let i = 0; i < termPerMsg && buildTermIdx < totalTerm; i++) {
-      const delay = i * BUILD_TERM_DELAY;
-      const lineIdx = buildTermIdx++;
-      setTimeout(() => {
-        if (BUILD_SIMS[activeBuildIdx] === sim) renderTermLine(sim.terminal[lineIdx], false);
-      }, delay);
+      queueTermLine(sim.terminal[buildTermIdx++], sim);
     }
 
     if (buildMsgIdx < totalMsgs) {
       buildTimer = setTimeout(scheduleBuildStep, BUILD_MSG_DELAY);
     } else {
       // Drain remaining terminal lines
-      const remaining = totalTerm - buildTermIdx;
-      for (let i = 0; i < remaining; i++) {
-        const delay = 800 + i * BUILD_TERM_DELAY;
-        const lineIdx = buildTermIdx++;
-        setTimeout(() => {
-          if (BUILD_SIMS[activeBuildIdx] === sim) renderTermLine(sim.terminal[lineIdx], false);
-        }, delay);
+      // Drain remaining terminal lines into queue
+      while (buildTermIdx < totalTerm) {
+        queueTermLine(sim.terminal[buildTermIdx++], sim);
       }
       buildTimer = setTimeout(() => {
         document.getElementById('loop-fill').style.width = '100%';
@@ -1098,23 +1093,85 @@ function renderBuildMsg(msg, instant=false) {
   });
 }
 
-function renderTermLine(line, instant=false) {
+// ── Terminal queue — strictly sequential ──────────────────────────────────
+let termQueue = [];
+let termBusy  = false;
+let termSim   = null; // which sim the queue belongs to
+
+function queueTermLine(line, sim) {
+  termQueue.push({line, sim});
+  if (!termBusy) drainTerm();
+}
+
+function drainTerm() {
+  if (termQueue.length === 0) { termBusy = false; return; }
+  termBusy = true;
+  const {line, sim} = termQueue.shift();
+  // Stale queue item from a previous build — discard silently
+  if (sim !== BUILD_SIMS[activeBuildIdx]) { drainTerm(); return; }
+  renderTermLineTyped(line, drainTerm);
+}
+
+function renderTermLineTyped(line, onDone) {
   const term = document.getElementById('build-term');
   const div = document.createElement('div');
   div.className = `term-line ${line.type}`;
-  if (line.type === 'blank') { term.appendChild(div); return; }
+
+  if (line.type === 'blank') {
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+    setTimeout(onDone, 60);
+    return;
+  }
+
+  // For cmd lines with agent: prefix badge then type command
+  if ((line.type === 'cmd' || line.type === 'comment') && line.agent) {
+    const agentColor = AC[line.agent] || '#6b7a8d';
+    const badge = document.createElement('span');
+    badge.style.cssText = `color:${agentColor};font-weight:600;margin-right:4px`;
+    badge.textContent = line.agent;
+    const prompt = document.createElement('span');
+    prompt.style.cssText = 'color:#4a5568;margin-right:4px';
+    prompt.textContent = ' $ ';
+    const textSpan = document.createElement('span');
+    textSpan.style.color = '#4ecdc4';
+    div.appendChild(badge);
+    div.appendChild(prompt);
+    div.appendChild(textSpan);
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+    typeInto(textSpan, line.text, 28, () => setTimeout(onDone, 180));
+    return;
+  }
+
   term.appendChild(div);
   term.scrollTop = term.scrollHeight;
-  if (instant || line.type === 'comment') { div.textContent = line.text; return; }
-  // Short type for terminal
+
+  if (line.type === 'comment') {
+    div.textContent = line.text;
+    setTimeout(onDone, 80);
+    return;
+  }
+
+  const speed = line.type === 'out' ? 7 : 14;
+  typeInto(div, line.text, speed, () => setTimeout(onDone, line.type === 'ok' ? 120 : 40));
+}
+
+function typeInto(el, text, speed, onDone) {
   let i = 0;
-  const speed = line.type === 'cmd' ? 25 : 8;
-  function tick() { if(i<line.text.length){ div.textContent=line.text.slice(0,++i); setTimeout(tick,speed); } }
+  const term = document.getElementById('build-term');
+  function tick() {
+    if (i < text.length) {
+      el.textContent = text.slice(0, ++i);
+      term.scrollTop = term.scrollHeight;
+      setTimeout(tick, speed);
+    } else { onDone(); }
+  }
   tick();
 }
 
-function replayBuild() { startBuildSim(activeBuildIdx); }
-function skipBuild()   { startBuildSim(activeBuildIdx, true); }
+function replayBuild() { termQueue = []; termBusy = false; startBuildSim(activeBuildIdx); }
+function skipBuild()   { termQueue = []; termBusy = false; startBuildSim(activeBuildIdx, true); }
 
 // ── Resize ────────────────────────────────────────────────────────────────
 window.addEventListener('resize',()=>{
