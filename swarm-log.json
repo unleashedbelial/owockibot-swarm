@@ -1,0 +1,499 @@
+{
+  "run_id": "b856417f",
+  "generated_at": "2026-03-03T10:24:30.594184Z",
+  "agents": [
+    {
+      "id": "scout",
+      "name": "Scout",
+      "role": "Bounty Researcher",
+      "color": "#ff6b35"
+    },
+    {
+      "id": "strategist",
+      "name": "Strategist",
+      "role": "Build Planner",
+      "color": "#4ecdc4"
+    },
+    {
+      "id": "broadcast",
+      "name": "Network",
+      "role": "Broadcast Hub",
+      "color": "#ffe66d"
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "from": "scout",
+      "to": "strategist",
+      "type": "board_scan",
+      "content": "Board scan complete. 88 total bounties. No unclaimed open bounties \u2014 board fully claimed. 21 claimed by competitors.",
+      "data": {
+        "total": 88,
+        "by_status": {
+          "claimed": 22,
+          "submitted": 7,
+          "cancelled": 16,
+          "completed": 43
+        },
+        "open_unclaimed": 0,
+        "claimed_by_others": 21,
+        "open_unclaimed_list": []
+      },
+      "timestamp": "2026-03-03T10:24:30.590605Z"
+    },
+    {
+      "id": 2,
+      "from": "scout",
+      "to": "strategist",
+      "type": "portfolio_report",
+      "content": "Portfolio status: 1 active, 3 submitted ($90 pending), $45 earned total. Current pipeline: #256, #255, #254.",
+      "data": {
+        "total_ours": 6,
+        "by_status": {
+          "submitted": 3,
+          "completed": 2,
+          "claimed": 1
+        },
+        "submitted_pending_usdc": 90,
+        "completed_earned_usdc": 45,
+        "active": [
+          {
+            "id": 235,
+            "title": "Create an owockibot multi-agent swarm demo",
+            "reward": 35
+          }
+        ],
+        "submitted": [
+          {
+            "id": 256,
+            "title": "Build an Owockibot Onchain Activity Feed",
+            "reward": 25
+          },
+          {
+            "id": 255,
+            "title": "Create an Agent Economy Leaderboard",
+            "reward": 30
+          },
+          {
+            "id": 254,
+            "title": "Build a Colorado River Basin Water Dashboard",
+            "reward": 35
+          }
+        ]
+      },
+      "timestamp": "2026-03-03T10:24:30.590867Z"
+    },
+    {
+      "id": 3,
+      "from": "scout",
+      "to": "strategist",
+      "type": "competitive_analysis",
+      "content": "Competitive landscape: 14 unique builders. Top category by reward: Protocol/Agent (avg $29.0 USDC, 15 completed). Top competitor has 17 completed bounties.",
+      "data": {
+        "competition": {
+          "top_competitors": [
+            {
+              "addr": "0x80370645...",
+              "claims": 27,
+              "completed": 17,
+              "usdc": 805
+            },
+            {
+              "addr": "0x7284e940...",
+              "claims": 11,
+              "completed": 6,
+              "usdc": 185
+            },
+            {
+              "addr": "0x95eb90af...",
+              "claims": 10,
+              "completed": 6,
+              "usdc": 150
+            },
+            {
+              "addr": "0xc37604a1...",
+              "claims": 5,
+              "completed": 5,
+              "usdc": 175
+            }
+          ],
+          "total_competitors": 14
+        },
+        "categories": {
+          "by_category": {
+            "Protocol/Agent": {
+              "count": 15,
+              "total_usdc": 435,
+              "avg_usdc": 29.0
+            },
+            "Infrastructure": {
+              "count": 28,
+              "total_usdc": 605,
+              "avg_usdc": 21.6
+            }
+          },
+          "top_by_reward": [
+            {
+              "id": 202,
+              "title": "Implement ERC-8004 agent identity for th",
+              "reward": 100,
+              "status": "completed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 201,
+              "title": "Build an owockibot SDK/npm package",
+              "reward": 75,
+              "status": "completed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 203,
+              "title": "Build a cross-agent bounty aggregator",
+              "reward": 50,
+              "status": "completed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 196,
+              "title": "Afrnance : Crypto-Ugandan shillings exch",
+              "reward": 50,
+              "status": "claimed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 195,
+              "title": "Create a Twitter thread explaining Owock",
+              "reward": 50,
+              "status": "claimed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 193,
+              "title": "Crypto - Ugandan shillings platform",
+              "reward": 50,
+              "status": "claimed",
+              "category": "Other"
+            },
+            {
+              "id": 250,
+              "title": "Build a Bioregional Knowledge Commons Pr",
+              "reward": 40,
+              "status": "completed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 249,
+              "title": "Agent-to-Agent Communication Protocol De",
+              "reward": 40,
+              "status": "completed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 239,
+              "title": "Build a multi-agent task coordination de",
+              "reward": 40,
+              "status": "claimed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 234,
+              "title": "Build a bioregional data dashboard proto",
+              "reward": 40,
+              "status": "claimed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 207,
+              "title": "Build an owockibot treasury dashboard",
+              "reward": 40,
+              "status": "completed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 254,
+              "title": "Build a Colorado River Basin Water Dashb",
+              "reward": 35,
+              "status": "submitted",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 247,
+              "title": "Colorado River Basin Water Level Dashboa",
+              "reward": 35,
+              "status": "claimed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 244,
+              "title": "Build an owockibot Farcaster bot that po",
+              "reward": 35,
+              "status": "claimed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 237,
+              "title": "Build a watershed data aggregator for Co",
+              "reward": 35,
+              "status": "completed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 235,
+              "title": "Create an owockibot multi-agent swarm de",
+              "reward": 35,
+              "status": "claimed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 233,
+              "title": "Build a bounty completion badge system (",
+              "reward": 35,
+              "status": "completed",
+              "category": "Infrastructure"
+            },
+            {
+              "id": 255,
+              "title": "Create an Agent Economy Leaderboard",
+              "reward": 30,
+              "status": "submitted",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 251,
+              "title": "Create an Agent Swarm Simulation Visuali",
+              "reward": 30,
+              "status": "completed",
+              "category": "Protocol/Agent"
+            },
+            {
+              "id": 246,
+              "title": "Create a bounty completion analytics pag",
+              "reward": 30,
+              "status": "completed",
+              "category": "Infrastructure"
+            }
+          ]
+        }
+      },
+      "timestamp": "2026-03-03T10:24:30.593946Z"
+    },
+    {
+      "id": 4,
+      "from": "strategist",
+      "to": "scout",
+      "type": "position_assessment",
+      "content": "Position assessed. Pipeline: $125 USDC. Earned to date: $45. 14 competitors active \u2014 we need to stay ahead on quality. Scout, confirm watch priorities for next cycle.",
+      "data": {
+        "our_completion_rate": 0.33,
+        "competitors": 14,
+        "pending_usdc": 90,
+        "earned_usdc": 45,
+        "pipeline_value": 125
+      },
+      "timestamp": "2026-03-03T10:24:30.594017Z"
+    },
+    {
+      "id": 5,
+      "from": "scout",
+      "to": "strategist",
+      "type": "watch_strategy",
+      "content": "Watch strategy: MONITOR. Monitoring for new Protocol/Agent bounties (avg $29.0 USDC). Estimated next batch: based on weekly posting pattern.",
+      "data": {
+        "watch": {
+          "status": "MONITOR",
+          "action": "Monitor board \u2014 watch for new Protocol/Agent bounties (avg $29.0 USDC)",
+          "best_category": "Protocol/Agent",
+          "best_avg_reward": 29.0,
+          "open_opportunities": 0,
+          "top_open": []
+        },
+        "top_open": []
+      },
+      "timestamp": "2026-03-03T10:24:30.594072Z"
+    },
+    {
+      "id": 6,
+      "from": "strategist",
+      "to": "broadcast",
+      "type": "recommendation",
+      "content": "SWARM RECOMMENDATION: HOLD & MONITOR: $90 pending approval. $45 earned to date. Board quiet \u2014 watch for new Protocol/Agent bounties. Active pipeline: $125 USDC. Category focus: Protocol/Agent.",
+      "data": {
+        "recommendation": "HOLD & MONITOR: $90 pending approval. $45 earned to date. Board quiet \u2014 watch for new Protocol/Agent bounties.",
+        "pipeline_value": 125,
+        "earned": 45,
+        "pending": 90,
+        "active_count": 1,
+        "submitted_count": 3,
+        "watch_category": "Protocol/Agent",
+        "status": "MONITOR"
+      },
+      "timestamp": "2026-03-03T10:24:30.594104Z"
+    }
+  ],
+  "summary": {
+    "total_bounties": 88,
+    "open_opportunities": 0,
+    "our_active": 1,
+    "our_submitted": 3,
+    "pending_usdc": 90,
+    "earned_usdc": 45,
+    "top_opportunities": [],
+    "recommendation": "HOLD & MONITOR: $90 pending approval. $45 earned to date. Board quiet \u2014 watch for new Protocol/Agent bounties.",
+    "categories": {
+      "Protocol/Agent": {
+        "count": 15,
+        "total_usdc": 435,
+        "avg_usdc": 29.0
+      },
+      "Infrastructure": {
+        "count": 28,
+        "total_usdc": 605,
+        "avg_usdc": 21.6
+      }
+    },
+    "all_bounties_chart": [
+      {
+        "id": 202,
+        "title": "Implement ERC-8004 agent identity for th",
+        "reward": 100,
+        "status": "completed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 201,
+        "title": "Build an owockibot SDK/npm package",
+        "reward": 75,
+        "status": "completed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 203,
+        "title": "Build a cross-agent bounty aggregator",
+        "reward": 50,
+        "status": "completed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 196,
+        "title": "Afrnance : Crypto-Ugandan shillings exch",
+        "reward": 50,
+        "status": "claimed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 195,
+        "title": "Create a Twitter thread explaining Owock",
+        "reward": 50,
+        "status": "claimed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 193,
+        "title": "Crypto - Ugandan shillings platform",
+        "reward": 50,
+        "status": "claimed",
+        "category": "Other"
+      },
+      {
+        "id": 250,
+        "title": "Build a Bioregional Knowledge Commons Pr",
+        "reward": 40,
+        "status": "completed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 249,
+        "title": "Agent-to-Agent Communication Protocol De",
+        "reward": 40,
+        "status": "completed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 239,
+        "title": "Build a multi-agent task coordination de",
+        "reward": 40,
+        "status": "claimed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 234,
+        "title": "Build a bioregional data dashboard proto",
+        "reward": 40,
+        "status": "claimed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 207,
+        "title": "Build an owockibot treasury dashboard",
+        "reward": 40,
+        "status": "completed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 254,
+        "title": "Build a Colorado River Basin Water Dashb",
+        "reward": 35,
+        "status": "submitted",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 247,
+        "title": "Colorado River Basin Water Level Dashboa",
+        "reward": 35,
+        "status": "claimed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 244,
+        "title": "Build an owockibot Farcaster bot that po",
+        "reward": 35,
+        "status": "claimed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 237,
+        "title": "Build a watershed data aggregator for Co",
+        "reward": 35,
+        "status": "completed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 235,
+        "title": "Create an owockibot multi-agent swarm de",
+        "reward": 35,
+        "status": "claimed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 233,
+        "title": "Build a bounty completion badge system (",
+        "reward": 35,
+        "status": "completed",
+        "category": "Infrastructure"
+      },
+      {
+        "id": 255,
+        "title": "Create an Agent Economy Leaderboard",
+        "reward": 30,
+        "status": "submitted",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 251,
+        "title": "Create an Agent Swarm Simulation Visuali",
+        "reward": 30,
+        "status": "completed",
+        "category": "Protocol/Agent"
+      },
+      {
+        "id": 246,
+        "title": "Create a bounty completion analytics pag",
+        "reward": 30,
+        "status": "completed",
+        "category": "Infrastructure"
+      }
+    ]
+  }
+}

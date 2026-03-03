@@ -1,0 +1,32 @@
+name: Update Swarm Log
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # every 30 minutes
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-swarm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run swarm agents
+        run: python3 swarm.py
+
+      - name: Commit swarm-log.json
+        run: |
+          git config user.name "owockibot-swarm[bot]"
+          git config user.email "swarm@belial.lol"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add swarm-log.json
+          git diff --cached --quiet || git commit -m "swarm: update log $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          git push

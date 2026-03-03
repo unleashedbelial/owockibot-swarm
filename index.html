@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owockibot Swarm — Multi-Agent Coordination</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #080b0f;
+    --bg2: #0e1318;
+    --bg3: #141b22;
+    --border: #1e2a35;
+    --gold: #f0c040;
+    --gold2: #c8992a;
+    --scout: #ff6b35;
+    --strategist: #4ecdc4;
+    --broadcast: #ffe66d;
+    --text: #e8eaed;
+    --muted: #6b7a8d;
+    --success: #4caf50;
+    --glow-scout: rgba(255,107,53,0.3);
+    --glow-strat: rgba(78,205,196,0.3);
+    --glow-gold: rgba(240,192,64,0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  header {
+    background: linear-gradient(180deg, #0a1520 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--gold2), var(--gold));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 16px var(--glow-gold);
+  }
+
+  .logo-text h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .logo-text p {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .live-badge {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(76,175,80,0.1);
+    border: 1px solid rgba(76,175,80,0.3);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 10px;
+    color: var(--success);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* ── STAT CARDS ─────────────────────────────────── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-card {
+    background: var(--bg2);
+    padding: 14px 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent, var(--gold));
+    opacity: 0.6;
+  }
+  .stat-card .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .stat-card .value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent, var(--gold));
+  }
+  .stat-card .sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* ── MAIN LAYOUT ─────────────────────────────────── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    grid-template-rows: auto auto;
+    gap: 1px;
+    background: var(--border);
+    min-height: calc(100vh - 180px);
+  }
+
+  .panel {
+    background: var(--bg2);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .panel-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-title span.dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ── NETWORK GRAPH ───────────────────────────────── */
+  #graph-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #network-svg {
+    flex: 1;
+    min-height: 300px;
+    width: 100%;
+  }
+
+  /* ── MESSAGE FEED ────────────────────────────────── */
+  #feed-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: 520px;
+  }
+
+  .feed-controls {
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { border-color: var(--gold); color: var(--gold); }
+  .btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+  .message-feed {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .message-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .message-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--agent-color, var(--muted));
+  }
+  .message-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .msg-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .msg-from {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .agent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .msg-arrow {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .msg-time {
+    font-size: 9px;
+    color: var(--muted);
+  }
+  .msg-type {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .msg-content {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .msg-content .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 12px;
+    background: var(--gold);
+    margin-left: 2px;
+    animation: blink 0.7s step-end infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── CHART SECTION ───────────────────────────────── */
+  #chart-panel {
+    grid-column: 1 / -1;
+  }
+
+  .chart-container {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .chart-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .chart-box h3 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chart-box h3::before {
+    content: '';
+    display: block;
+    width: 4px; height: 12px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  canvas { max-height: 220px; }
+
+  /* ── RECOMMENDATION ──────────────────────────────── */
+  #recommendation {
+    background: linear-gradient(135deg, rgba(240,192,64,0.08), rgba(78,205,196,0.05));
+    border: 1px solid rgba(240,192,64,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 0 20px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  #recommendation.visible { opacity: 1; }
+  .rec-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .rec-body h3 {
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .rec-body p {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .rec-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .tag {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .tag.gold { border-color: rgba(240,192,64,0.4); color: var(--gold); }
+
+  /* ── RUN INFO ────────────────────────────────────── */
+  footer {
+    padding: 12px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--bg2);
+  }
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-links span { margin: 0 8px; }
+
+  /* ── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 900px) {
+    .main {
+      grid-template-columns: 1fr;
+    }
+    #feed-panel {
+      max-height: 400px;
+    }
+    #chart-panel {
+      grid-column: 1;
+    }
+    .chart-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 12px 16px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stat-card .value { font-size: 18px; }
+    .chart-container { padding: 12px; gap: 12px; }
+    #recommendation { margin: 0 12px 12px; }
+    footer { padding: 10px 16px; }
+    .header-meta { display: none; }
+  }
+
+  /* ── SVG STYLES ──────────────────────────────────── */
+  .node-circle {
+    transition: filter 0.3s;
+    cursor: pointer;
+  }
+  .node-label {
+    fill: var(--text);
+    font-family: 'SF Mono', monospace;
+    font-size: 11px;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+  .node-role {
+    fill: var(--muted);
+    font-family: 'SF Mono', monospace;
+    font-size: 9px;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+  .edge-line {
+    stroke: var(--border);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 4 4;
+  }
+  .msg-count-badge {
+    fill: var(--bg3);
+    stroke: var(--border);
+  }
+  .msg-count-text {
+    fill: var(--muted);
+    font-size: 9px;
+    text-anchor: middle;
+    font-family: monospace;
+  }
+  .active-edge {
+    stroke-width: 2.5;
+    stroke-dasharray: none;
+    opacity: 0;
+  }
+  .packet {
+    filter: url(#glow-packet);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div class="logo-text">
+      <h1>Owockibot Swarm</h1>
+      <p>Multi-Agent Coordination Demo</p>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      Live Data
+    </div>
+    <span id="run-id">Loading...</span>
+    <span id="gen-time">—</span>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-card" style="--accent: var(--gold)">
+    <div class="label">Bounties Tracked</div>
+    <div class="value" id="stat-total">—</div>
+    <div class="sub">owockibot board</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--scout)">
+    <div class="label">Open Now</div>
+    <div class="value" id="stat-open">—</div>
+    <div class="sub" id="stat-open-sub">unclaimed</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--broadcast)">
+    <div class="label">Pending Approval</div>
+    <div class="value" id="stat-pending">—</div>
+    <div class="sub" id="stat-sub-count">submitted</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--strategist)">
+    <div class="label">Total Earned</div>
+    <div class="value" id="stat-earned">—</div>
+    <div class="sub">USDC confirmed</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--gold)">
+    <div class="label">Active Agents</div>
+    <div class="value">2</div>
+    <div class="sub">Scout + Strategist</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Network Graph -->
+  <div class="panel" id="graph-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="dot"></span>
+        Agent Network
+      </div>
+      <div style="font-size:10px;color:var(--muted)" id="graph-status">Initializing...</div>
+    </div>
+    <svg id="network-svg"></svg>
+  </div>
+
+  <!-- Message Feed -->
+  <div class="panel" id="feed-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="dot" style="background:var(--strategist)"></span>
+        Message Log
+      </div>
+      <div style="font-size:10px;color:var(--muted)" id="msg-progress">0 / 0</div>
+    </div>
+    <div class="feed-controls">
+      <button class="btn" id="btn-replay" onclick="replaySwarm()">↺ Replay</button>
+      <button class="btn" id="btn-skip" onclick="skipToEnd()">⏭ Skip</button>
+    </div>
+    <div class="message-feed" id="message-feed"></div>
+  </div>
+
+  <!-- Chart Panel -->
+  <div class="panel" id="chart-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="dot" style="background:var(--broadcast)"></span>
+        Bounty Analytics
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-box">
+        <h3>Reward Distribution by Status</h3>
+        <canvas id="chart-rewards"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Category Breakdown (Completed)</h3>
+        <canvas id="chart-cats"></canvas>
+      </div>
+    </div>
+
+    <div id="recommendation">
+      <div class="rec-icon">💡</div>
+      <div class="rec-body">
+        <h3>Swarm Recommendation</h3>
+        <p id="rec-text">Analyzing...</p>
+        <div class="rec-tags" id="rec-tags"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>
+    Built by <strong style="color:var(--gold)">Belial</strong> — autonomous agent
+    &nbsp;·&nbsp; Scout + Strategist coordinating on real owockibot data
+    &nbsp;·&nbsp; Updated every 30 min via GitHub Actions
+  </div>
+  <div class="footer-links">
+    <a href="https://www.owockibot.xyz/bounty" target="_blank">Bounty Board</a>
+    <span>·</span>
+    <a href="https://github.com/unleashedbelial/owockibot-swarm" target="_blank">GitHub</a>
+    <span>·</span>
+    <a href="swarm-log.json" target="_blank">Raw Data</a>
+  </div>
+</footer>
+
+<script>
+// ─── State ────────────────────────────────────────────────────────────────
+let swarmData = null;
+let replayTimer = null;
+let currentMsgIdx = 0;
+let isReplaying = false;
+let chartRewards = null;
+let chartCats = null;
+
+const AGENT_COLORS = {
+  scout: '#ff6b35',
+  strategist: '#4ecdc4',
+  broadcast: '#ffe66d'
+};
+const MSG_DELAY = 1600;
+
+// ─── Init ─────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const url = `swarm-log.json?t=${Math.floor(Date.now() / (5 * 60 * 1000))}`;
+    const res = await fetch(url);
+    swarmData = await res.json();
+    populateHeader();
+    populateStats();
+    initGraph();
+    initCharts();
+    startReplay();
+  } catch (e) {
+    document.getElementById('graph-status').textContent = 'Failed to load swarm data';
+    console.error(e);
+  }
+}
+
+function populateHeader() {
+  document.getElementById('run-id').textContent = `Run #${swarmData.run_id}`;
+  const d = new Date(swarmData.generated_at);
+  document.getElementById('gen-time').textContent = `Updated ${d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})} UTC`;
+}
+
+function populateStats() {
+  const s = swarmData.summary;
+  document.getElementById('stat-total').textContent = s.total_bounties;
+  document.getElementById('stat-open').textContent = s.open_opportunities || '0';
+  document.getElementById('stat-open-sub').textContent = s.open_opportunities > 0 ? 'claim now!' : 'board quiet';
+  document.getElementById('stat-pending').textContent = `$${s.pending_usdc}`;
+  document.getElementById('stat-sub-count').textContent = `${s.our_submitted} submitted`;
+  document.getElementById('stat-earned').textContent = `$${s.earned_usdc}`;
+}
+
+// ─── GRAPH ────────────────────────────────────────────────────────────────
+let svg, nodes, edges, width, height;
+let nodeElements = {};
+
+function initGraph() {
+  const container = document.getElementById('network-svg');
+  const rect = container.parentElement.getBoundingClientRect();
+  width = rect.width || 600;
+  height = Math.max(280, Math.min(460, rect.height || 400));
+
+  svg = d3.select('#network-svg')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  // Defs
+  const defs = svg.append('defs');
+  // Glow filters
+  ['scout','strategist','broadcast'].forEach(id => {
+    const f = defs.append('filter').attr('id', `glow-${id}`).attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');
+    f.append('feGaussianBlur').attr('stdDeviation', 6).attr('result', 'blur');
+    const merge = f.append('feMerge');
+    merge.append('feMergeNode').attr('in', 'blur');
+    merge.append('feMergeNode').attr('in', 'SourceGraphic');
+  });
+  const fp = defs.append('filter').attr('id', 'glow-packet').attr('x','-100%').attr('y','-100%').attr('width','300%').attr('height','300%');
+  fp.append('feGaussianBlur').attr('stdDeviation', 4).attr('result', 'blur');
+  const fm = fp.append('feMerge');
+  fm.append('feMergeNode').attr('in', 'blur');
+  fm.append('feMergeNode').attr('in', 'SourceGraphic');
+
+  // Node positions
+  const cx = width / 2;
+  const cy = height / 2;
+  const r = Math.min(width, height) * 0.28;
+
+  nodes = [
+    { id: 'scout',      x: cx - r * 0.9, y: cy - r * 0.3, label: 'Scout',      role: 'Bounty Researcher', color: '#ff6b35' },
+    { id: 'strategist', x: cx + r * 0.9, y: cy - r * 0.3, label: 'Strategist', role: 'Build Planner',     color: '#4ecdc4' },
+    { id: 'broadcast',  x: cx,            y: cy + r * 0.8, label: 'Network',    role: 'Broadcast Hub',     color: '#ffe66d' }
+  ];
+
+  edges = [
+    { source: 'scout', target: 'strategist' },
+    { source: 'scout', target: 'broadcast' },
+    { source: 'strategist', target: 'broadcast' }
+  ];
+
+  const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
+
+  // Draw edges
+  const edgeGroup = svg.append('g').attr('class', 'edges');
+  edges.forEach(e => {
+    const s = nodeById[e.source], t = nodeById[e.target];
+    edgeGroup.append('line')
+      .attr('class', 'edge-line')
+      .attr('x1', s.x).attr('y1', s.y)
+      .attr('x2', t.x).attr('y2', t.y);
+    // Active edge highlight (shown during animation)
+    edgeGroup.append('line')
+      .attr('class', 'active-edge')
+      .attr('id', `edge-${e.source}-${e.target}`)
+      .attr('stroke', nodeById[e.source].color)
+      .attr('x1', s.x).attr('y1', s.y)
+      .attr('x2', t.x).attr('y2', t.y);
+    edgeGroup.append('line')
+      .attr('class', 'active-edge')
+      .attr('id', `edge-${e.target}-${e.source}`)
+      .attr('stroke', nodeById[e.target].color)
+      .attr('x1', t.x).attr('y1', t.y)
+      .attr('x2', s.x).attr('y2', s.y);
+  });
+
+  // Draw nodes
+  const nodeGroup = svg.append('g').attr('class', 'nodes');
+  nodes.forEach(n => {
+    const g = nodeGroup.append('g').attr('id', `node-${n.id}`).attr('transform', `translate(${n.x},${n.y})`);
+    // Outer ring (pulse)
+    g.append('circle').attr('r', 34).attr('fill', 'none').attr('stroke', n.color)
+      .attr('stroke-width', 1).attr('opacity', 0.15)
+      .attr('id', `ring-${n.id}`);
+    // Main circle
+    g.append('circle').attr('r', 26)
+      .attr('fill', `${n.color}22`).attr('stroke', n.color)
+      .attr('stroke-width', 2).attr('class', 'node-circle')
+      .attr('filter', `url(#glow-${n.id})`)
+      .attr('id', `circle-${n.id}`);
+    // Icon
+    const icons = { scout: '🔍', strategist: '🧠', broadcast: '📡' };
+    g.append('text').attr('y', 5).attr('text-anchor', 'middle').attr('font-size', 18)
+      .text(icons[n.id] || '●');
+    // Label
+    g.append('text').attr('class', 'node-label').attr('y', 44).text(n.label);
+    g.append('text').attr('class', 'node-role').attr('y', 57).text(n.role);
+    nodeElements[n.id] = g;
+  });
+
+  // Message count badges on edges
+  const msgCounts = {};
+  swarmData.messages.forEach(m => {
+    const key = [m.from, m.to].sort().join('-');
+    msgCounts[key] = (msgCounts[key] || 0) + 1;
+  });
+  edges.forEach(e => {
+    const s = nodeById[e.source], t = nodeById[e.target];
+    const key = [e.source, e.target].sort().join('-');
+    const count = msgCounts[key] || 0;
+    if (count > 0) {
+      const mx = (s.x + t.x) / 2, my = (s.y + t.y) / 2;
+      const bg = svg.append('circle').attr('class', 'msg-count-badge').attr('r', 12)
+        .attr('cx', mx).attr('cy', my).attr('fill', '#0e1318').attr('stroke', '#1e2a35').attr('stroke-width', 1);
+      svg.append('text').attr('class', 'msg-count-text')
+        .attr('x', mx).attr('y', my + 3).text(count);
+    }
+  });
+
+  document.getElementById('graph-status').textContent = `${nodes.length} agents connected`;
+}
+
+function pulseNode(nodeId) {
+  const ring = d3.select(`#ring-${nodeId}`);
+  ring.attr('opacity', 0.6).attr('r', 26)
+    .transition().duration(600).attr('r', 42).attr('opacity', 0)
+    .on('end', () => ring.attr('r', 34).attr('opacity', 0.15));
+}
+
+function flashEdge(from, to) {
+  const edge = d3.select(`#edge-${from}-${to}`);
+  edge.attr('opacity', 0.8)
+    .transition().duration(1200).attr('opacity', 0);
+}
+
+function animatePacket(fromId, toId, color) {
+  const fromNode = nodes.find(n => n.id === fromId);
+  const toNode   = nodes.find(n => n.id === toId);
+  if (!fromNode || !toNode) return;
+
+  const packet = svg.append('circle')
+    .attr('class', 'packet')
+    .attr('r', 7)
+    .attr('fill', color)
+    .attr('cx', fromNode.x)
+    .attr('cy', fromNode.y)
+    .attr('opacity', 0.9);
+
+  packet.transition()
+    .duration(900)
+    .ease(d3.easeCubicInOut)
+    .attrTween('cx', () => d3.interpolateNumber(fromNode.x, toNode.x))
+    .attrTween('cy', () => d3.interpolateNumber(fromNode.y, toNode.y))
+    .on('end', () => {
+      pulseNode(toId);
+      packet.transition().duration(300).attr('r', 18).attr('opacity', 0).remove();
+    });
+
+  flashEdge(fromId, toId);
+  pulseNode(fromId);
+}
+
+// ─── MESSAGE FEED ─────────────────────────────────────────────────────────
+const TYPE_LABELS = {
+  board_scan: 'Board Scan',
+  portfolio_report: 'Portfolio Report',
+  competitive_analysis: 'Competitive Analysis',
+  position_assessment: 'Position Assessment',
+  watch_strategy: 'Watch Strategy',
+  recommendation: 'Final Recommendation',
+  status: 'Status',
+  analysis: 'Analysis',
+  clarification: 'Clarification',
+  feasibility: 'Feasibility Check',
+  strategy: 'Strategy'
+};
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function createMessageEl(msg, instant = false) {
+  const color = AGENT_COLORS[msg.from] || '#888';
+  const toColor = AGENT_COLORS[msg.to] || '#888';
+  const div = document.createElement('div');
+  div.className = 'message-item';
+  div.style.setProperty('--agent-color', color);
+
+  div.innerHTML = `
+    <div class="msg-header">
+      <div class="msg-from">
+        <span class="agent-badge" style="color:${color};border-color:${color}40;background:${color}15">${msg.from}</span>
+        <span class="msg-arrow">→</span>
+        <span class="agent-badge" style="color:${toColor};border-color:${toColor}40;background:${toColor}15">${msg.to}</span>
+      </div>
+      <span class="msg-time">${formatTime(msg.timestamp)}</span>
+    </div>
+    <div class="msg-type">${TYPE_LABELS[msg.type] || msg.type}</div>
+    <div class="msg-content" id="msg-content-${msg.id}"></div>
+  `;
+
+  return div;
+}
+
+function typeText(el, text, onDone, instant = false) {
+  if (instant) {
+    el.textContent = text;
+    if (onDone) onDone();
+    return;
+  }
+  el.innerHTML = '<span class="cursor"></span>';
+  let i = 0;
+  const speed = Math.max(12, Math.min(35, 2500 / text.length));
+  const cursor = el.querySelector('.cursor');
+
+  function tick() {
+    if (i < text.length) {
+      const textNode = document.createTextNode(text[i]);
+      el.insertBefore(textNode, cursor);
+      i++;
+      setTimeout(tick, speed);
+    } else {
+      cursor.remove();
+      if (onDone) onDone();
+    }
+  }
+  tick();
+}
+
+function renderMessage(msg, instant = false) {
+  const feed = document.getElementById('message-feed');
+  const el = createMessageEl(msg, instant);
+  feed.appendChild(el);
+  feed.scrollTop = feed.scrollHeight;
+
+  if (instant) {
+    el.classList.add('visible');
+    document.getElementById(`msg-content-${msg.id}`).textContent = msg.content;
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    el.classList.add('visible');
+    setTimeout(() => {
+      typeText(document.getElementById(`msg-content-${msg.id}`), msg.content);
+    }, 100);
+  });
+
+  animatePacket(msg.from, msg.to, AGENT_COLORS[msg.from] || '#888');
+}
+
+function startReplay(instant = false) {
+  if (replayTimer) clearTimeout(replayTimer);
+  currentMsgIdx = 0;
+  isReplaying = true;
+  document.getElementById('message-feed').innerHTML = '';
+  document.getElementById('recommendation').classList.remove('visible');
+  document.getElementById('btn-replay').classList.add('active');
+
+  const messages = swarmData.messages;
+  document.getElementById('msg-progress').textContent = `0 / ${messages.length}`;
+
+  function next() {
+    if (currentMsgIdx >= messages.length) {
+      isReplaying = false;
+      document.getElementById('btn-replay').classList.remove('active');
+      showRecommendation();
+      return;
+    }
+    const msg = messages[currentMsgIdx];
+    renderMessage(msg, instant);
+    currentMsgIdx++;
+    document.getElementById('msg-progress').textContent = `${currentMsgIdx} / ${messages.length}`;
+    if (!instant) {
+      replayTimer = setTimeout(next, MSG_DELAY);
+    } else {
+      next();
+    }
+  }
+  next();
+}
+
+function replaySwarm() {
+  startReplay(false);
+}
+
+function skipToEnd() {
+  if (replayTimer) clearTimeout(replayTimer);
+  document.getElementById('message-feed').innerHTML = '';
+  swarmData.messages.forEach(msg => renderMessage(msg, true));
+  currentMsgIdx = swarmData.messages.length;
+  document.getElementById('msg-progress').textContent = `${currentMsgIdx} / ${currentMsgIdx}`;
+  isReplaying = false;
+  document.getElementById('btn-replay').classList.remove('active');
+  showRecommendation();
+}
+
+function showRecommendation() {
+  const s = swarmData.summary;
+  document.getElementById('rec-text').textContent = s.recommendation || 'Analysis complete.';
+
+  const tags = document.getElementById('rec-tags');
+  tags.innerHTML = '';
+
+  const addTag = (text, gold = false) => {
+    const t = document.createElement('span');
+    t.className = 'tag' + (gold ? ' gold' : '');
+    t.textContent = text;
+    tags.appendChild(t);
+  };
+
+  addTag(`${s.total_bounties} bounties tracked`);
+  if (s.open_opportunities > 0) addTag(`${s.open_opportunities} open now`, true);
+  if (s.our_submitted > 0) addTag(`${s.our_submitted} submitted`);
+  if (s.pending_usdc > 0) addTag(`$${s.pending_usdc} pending`, true);
+  if (s.earned_usdc > 0) addTag(`$${s.earned_usdc} earned`);
+
+  document.getElementById('recommendation').classList.add('visible');
+}
+
+// ─── CHARTS ───────────────────────────────────────────────────────────────
+const chartDefaults = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    legend: { labels: { color: '#6b7a8d', font: { family: 'monospace', size: 10 }, boxWidth: 10 } }
+  },
+  scales: {
+    x: { ticks: { color: '#6b7a8d', font: { size: 10 } }, grid: { color: '#1e2a35' } },
+    y: { ticks: { color: '#6b7a8d', font: { size: 10 } }, grid: { color: '#1e2a35' } }
+  }
+};
+
+function initCharts() {
+  const bounties = swarmData.summary.all_bounties_chart || [];
+  const cats = swarmData.summary.categories || {};
+
+  // Chart 1: Top bounties by reward, colored by status
+  const statusColors = {
+    completed: '#4caf50cc',
+    submitted: '#4ecdc4cc',
+    claimed:   '#f0c040cc',
+    open:      '#ff6b35cc',
+    cancelled: '#33333388'
+  };
+  const top = bounties.slice(0, 12);
+
+  if (chartRewards) chartRewards.destroy();
+  chartRewards = new Chart(document.getElementById('chart-rewards'), {
+    type: 'bar',
+    data: {
+      labels: top.map(b => `#${b.id}`),
+      datasets: [{
+        label: 'USDC Reward',
+        data: top.map(b => b.reward),
+        backgroundColor: top.map(b => statusColors[b.status] || '#888'),
+        borderColor: top.map(b => (statusColors[b.status] || '#888').replace('cc', 'ff')),
+        borderWidth: 1,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: {
+        ...chartDefaults.plugins,
+        tooltip: {
+          callbacks: {
+            title: (items) => {
+              const b = top[items[0].dataIndex];
+              return `#${b.id}: ${b.title}`;
+            },
+            label: (item) => {
+              const b = top[item.dataIndex];
+              return ` $${b.reward} USDC · ${b.status} · ${b.category}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxRotation: 0 } },
+        y: {
+          ...chartDefaults.scales.y,
+          ticks: { ...chartDefaults.scales.y.ticks, callback: v => `$${v}` }
+        }
+      }
+    }
+  });
+
+  // Chart 2: Category doughnut
+  const catNames = Object.keys(cats);
+  const catValues = catNames.map(k => cats[k].count);
+  const catColors = ['#ff6b35cc', '#4ecdc4cc', '#ffe66dcc', '#888888cc'];
+
+  if (chartCats) chartCats.destroy();
+  chartCats = new Chart(document.getElementById('chart-cats'), {
+    type: 'doughnut',
+    data: {
+      labels: catNames.map(k => `${k} (avg $${cats[k].avg_usdc})`),
+      datasets: [{
+        data: catValues,
+        backgroundColor: catColors,
+        borderColor: catColors.map(c => c.replace('cc', 'ff')),
+        borderWidth: 1,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#6b7a8d', font: { family: 'monospace', size: 10 }, boxWidth: 12, padding: 14 }
+        },
+        tooltip: {
+          callbacks: {
+            label: (item) => {
+              const k = catNames[item.dataIndex];
+              const c = cats[k];
+              return ` ${c.count} completed · avg $${c.avg_usdc} · total $${c.total_usdc}`;
+            }
+          }
+        }
+      },
+      cutout: '55%'
+    }
+  });
+}
+
+// ─── Resize ───────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  if (!swarmData) return;
+  d3.select('#network-svg').selectAll('*').remove();
+  const rect = document.getElementById('graph-panel').getBoundingClientRect();
+  width = rect.width || 600;
+  height = Math.max(280, Math.min(460, rect.height || 400));
+  initGraph();
+});
+
+// ─── Go ───────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
