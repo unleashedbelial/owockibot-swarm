@@ -90,6 +90,7 @@ header{
 .ph{
   display:flex;align-items:center;justify-content:space-between;
   padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg3);
+  flex-shrink:0;
 }
 .pt{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:flex;align-items:center;gap:7px}
 .pt .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
@@ -109,9 +110,9 @@ header{
 .loop-countdown{font-size:9px;color:var(--gold);min-width:28px;text-align:right}
 
 /* ── MESSAGE FEED ── */
-#feed-panel{display:flex;flex-direction:column;max-height:480px}
+#feed-panel{display:flex;flex-direction:column;overflow:hidden}
 .feed-controls{
-  display:flex;gap:6px;padding:8px 12px;
+  display:flex;gap:6px;padding:8px 12px;flex-shrink:0;
   background:var(--bg3);border-bottom:1px solid var(--border);
 }
 .btn{
@@ -122,10 +123,11 @@ header{
 .btn:hover{border-color:var(--gold);color:var(--gold)}
 .btn.active{background:var(--gold);color:#000;border-color:var(--gold)}
 .msg-feed{
-  flex:1;overflow-y:auto;padding:10px;
+  flex:1;min-height:0;overflow-y:auto;padding:10px;
   display:flex;flex-direction:column;gap:8px;
-  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+  scrollbar-width:none;
 }
+.msg-feed::-webkit-scrollbar{display:none}
 .msg{
   background:var(--bg3);border:1px solid var(--border);border-radius:7px;
   padding:10px 12px;opacity:0;transform:translateX(16px);
