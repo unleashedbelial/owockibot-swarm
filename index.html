@@ -84,6 +84,7 @@ header{
 /* ── MAIN GRID ── */
 .main{
   display:grid;grid-template-columns:1fr 360px;
+  grid-template-rows:460px auto;
   gap:1px;background:var(--border);
 }
 .panel{background:var(--bg2);overflow:hidden}
@@ -96,8 +97,8 @@ header{
 .pt .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
 
 /* ── NETWORK GRAPH ── */
-#graph-panel{display:flex;flex-direction:column}
-#net-svg{flex:1;min-height:280px;width:100%}
+#graph-panel{display:flex;flex-direction:column;overflow:hidden}
+#net-svg{flex:1;min-height:0;width:100%}
 
 /* ── AUTO-LOOP PROGRESS ── */
 .loop-bar-wrap{
@@ -213,8 +214,9 @@ footer span.sep{margin:0 6px}
 
 /* ── RESPONSIVE ── */
 @media(max-width:880px){
-  .main{grid-template-columns:1fr}
-  #feed-panel{max-height:360px}
+  .main{grid-template-columns:1fr;grid-template-rows:360px 360px auto}
+  #graph-panel{height:360px}
+  #feed-panel{height:360px}
   #chart-panel{grid-column:1}
   .chart-grid{grid-template-columns:1fr}
   .hdr-right .live-badge~*{display:none}
