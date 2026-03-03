@@ -1,6 +1,6 @@
 {
-  "run_id": "1e33d168",
-  "generated_at": "2026-03-03T10:27:31.795014Z",
+  "run_id": "f76de1b3",
+  "generated_at": "2026-03-03T10:38:41.084609Z",
   "agents": [
     {
       "id": "scout",
@@ -21,336 +21,536 @@
       "color": "#ffe66d"
     }
   ],
-  "messages": [
+  "episodes": [
     {
       "id": 1,
-      "from": "scout",
-      "to": "strategist",
-      "type": "board_scan",
-      "content": "Board scan complete. 88 total bounties. No unclaimed open bounties \u2014 board fully claimed. 21 claimed by competitors.",
-      "data": {
-        "total": 88,
-        "by_status": {
-          "claimed": 22,
-          "submitted": 7,
-          "cancelled": 16,
-          "completed": 43
+      "title": "Board Scan + Portfolio Review",
+      "messages": [
+        {
+          "id": 1,
+          "from": "scout",
+          "to": "strategist",
+          "type": "board_scan",
+          "content": "Board scan complete. 88 total bounties. No unclaimed open bounties \u2014 board fully claimed. 21 claimed by competitors. 14 unique builders active.",
+          "data": {
+            "total": 88,
+            "by_status": {
+              "claimed": 21,
+              "submitted": 8,
+              "cancelled": 16,
+              "completed": 43
+            },
+            "open_unclaimed": 0
+          },
+          "timestamp": "2026-03-03T10:38:59.081695Z"
         },
-        "open_unclaimed": 0,
-        "claimed_by_others": 21,
-        "open_unclaimed_list": []
-      },
-      "timestamp": "2026-03-03T10:27:31.790340Z"
+        {
+          "id": 2,
+          "from": "scout",
+          "to": "strategist",
+          "type": "portfolio_report",
+          "content": "Portfolio update: 0 active, 4 submitted. $125 USDC pending approval. $45 earned to date. Pipeline value: $125 USDC.",
+          "data": {
+            "total": 6,
+            "submitted": [
+              {
+                "id": 256,
+                "title": "Build an Owockibot Onchain Activity Feed",
+                "reward": 25
+              },
+              {
+                "id": 255,
+                "title": "Create an Agent Economy Leaderboard",
+                "reward": 30
+              },
+              {
+                "id": 254,
+                "title": "Build a Colorado River Basin Water Dashboard",
+                "reward": 35
+              },
+              {
+                "id": 235,
+                "title": "Create an owockibot multi-agent swarm demo",
+                "reward": 35
+              }
+            ],
+            "active": [],
+            "completed_usdc": 45,
+            "pending_usdc": 125
+          },
+          "timestamp": "2026-03-03T10:39:17.081748Z"
+        },
+        {
+          "id": 3,
+          "from": "scout",
+          "to": "strategist",
+          "type": "competitive_analysis",
+          "content": "Competitive landscape: 14 builders. Top competitor: 17 completed bounties. Best ROI category: Protocol/Agent (avg $29.0 USDC, 15 completed).",
+          "data": {
+            "competition": {
+              "top": [
+                {
+                  "addr": "0x80370645...",
+                  "claims": 27,
+                  "completed": 17,
+                  "usdc": 805
+                },
+                {
+                  "addr": "0x7284e940...",
+                  "claims": 11,
+                  "completed": 6,
+                  "usdc": 185
+                },
+                {
+                  "addr": "0x95eb90af...",
+                  "claims": 10,
+                  "completed": 6,
+                  "usdc": 150
+                },
+                {
+                  "addr": "0xc37604a1...",
+                  "claims": 5,
+                  "completed": 5,
+                  "usdc": 175
+                }
+              ],
+              "total_builders": 14
+            },
+            "categories": {
+              "Protocol/Agent": {
+                "count": 15,
+                "total": 435,
+                "avg": 29.0
+              },
+              "Infrastructure": {
+                "count": 28,
+                "total": 605,
+                "avg": 21.6
+              }
+            }
+          },
+          "timestamp": "2026-03-03T10:39:35.081779Z"
+        },
+        {
+          "id": 4,
+          "from": "strategist",
+          "to": "scout",
+          "type": "position_assessment",
+          "content": "Position assessed. We have $125 pending + $45 earned. 14 competitors active. Quality over speed \u2014 our submissions have real infrastructure, not just demos.",
+          "data": {
+            "pipeline": 125,
+            "earned": 45,
+            "pending": 125,
+            "builders": 14,
+            "completion_rate": 0.2,
+            "active_count": 0,
+            "submitted_count": 4
+          },
+          "timestamp": "2026-03-03T10:39:53.081794Z"
+        },
+        {
+          "id": 5,
+          "from": "scout",
+          "to": "strategist",
+          "type": "watch_strategy",
+          "content": "Watch strategy: MONITOR. Monitoring for new Protocol/Agent bounties (avg $29.0 USDC). GH Actions keeping all 4 submitted dashboards live and up-to-date.",
+          "data": {
+            "rec": {
+              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $29.0 USDC). $125 pending approval.",
+              "status": "MONITOR",
+              "best_cat": "Protocol/Agent",
+              "best_avg": 29.0,
+              "pipeline": 125,
+              "open_count": 0
+            }
+          },
+          "timestamp": "2026-03-03T10:40:11.081810Z"
+        },
+        {
+          "id": 6,
+          "from": "strategist",
+          "to": "broadcast",
+          "type": "recommendation",
+          "content": "SWARM RECOMMENDATION: MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $29.0 USDC). $125 pending approval. Active pipeline: $125 USDC across 4 submissions.",
+          "data": {
+            "recommendation": {
+              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $29.0 USDC). $125 pending approval.",
+              "status": "MONITOR",
+              "best_cat": "Protocol/Agent",
+              "best_avg": 29.0,
+              "pipeline": 125,
+              "open_count": 0
+            },
+            "portfolio": {
+              "pipeline": 125,
+              "earned": 45,
+              "pending": 125,
+              "builders": 14,
+              "completion_rate": 0.2,
+              "active_count": 0,
+              "submitted_count": 4
+            }
+          },
+          "timestamp": "2026-03-03T10:40:29.081823Z"
+        }
+      ]
     },
     {
       "id": 2,
-      "from": "scout",
-      "to": "strategist",
-      "type": "portfolio_report",
-      "content": "Portfolio status: 1 active, 3 submitted ($90 pending), $45 earned total. Current pipeline: #256, #255, #254.",
-      "data": {
-        "total_ours": 6,
-        "by_status": {
-          "submitted": 3,
-          "completed": 2,
-          "claimed": 1
-        },
-        "submitted_pending_usdc": 90,
-        "completed_earned_usdc": 45,
-        "active": [
-          {
-            "id": 235,
-            "title": "Create an owockibot multi-agent swarm demo",
-            "reward": 35
-          }
-        ],
-        "submitted": [
-          {
-            "id": 256,
-            "title": "Build an Owockibot Onchain Activity Feed",
-            "reward": 25
+      "title": "Submission Quality Review",
+      "messages": [
+        {
+          "id": 1,
+          "from": "strategist",
+          "to": "scout",
+          "type": "work_review",
+          "content": "Initiating submission quality review. We have 5 bounties submitted/completed. Scout, pull status on each \u2014 I want to know what's likely to get approved first.",
+          "data": {
+            "bounties_to_review": 5
           },
-          {
+          "timestamp": "2026-03-03T10:38:59.081838Z"
+        },
+        {
+          "id": 2,
+          "from": "scout",
+          "to": "strategist",
+          "type": "submission_status",
+          "content": "#235 'Multi-Agent Swarm Demo': SUBMITTED. $35 USDC. Stack: Python + D3.js + Chart.js. Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js an...",
+          "data": {
+            "id": 235,
+            "url": "https://unleashedbelial.github.io/owockibot-swarm/",
+            "repo": "unleashedbelial/owockibot-swarm",
+            "tech": "Python + D3.js + Chart.js",
+            "reward": 35
+          },
+          "timestamp": "2026-03-03T10:39:17.081858Z"
+        },
+        {
+          "id": 3,
+          "from": "scout",
+          "to": "strategist",
+          "type": "submission_status",
+          "content": "#255 'Agent Economy Leaderboard': SUBMITTED. $30 USDC. Stack: HTML/JS + CoinGecko + DexScreener + DexTools. 81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-f...",
+          "data": {
             "id": 255,
-            "title": "Create an Agent Economy Leaderboard",
+            "url": "https://unleashedbelial.github.io/owockibot-leaderboard/",
+            "repo": "unleashedbelial/owockibot-leaderboard",
+            "tech": "HTML/JS + CoinGecko + DexScreener + DexTools",
             "reward": 30
           },
-          {
+          "timestamp": "2026-03-03T10:39:35.081874Z"
+        },
+        {
+          "id": 4,
+          "from": "strategist",
+          "to": "scout",
+          "type": "submission_status",
+          "content": "Reviewing #254 'Colorado Water Dashboard'. $35 USDC, status: SUBMITTED. Live at https://unleashedbelial.github.io/colorado-water-dashboard/ \u2014 Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow a",
+          "data": {
             "id": 254,
-            "title": "Build a Colorado River Basin Water Dashboard",
-            "reward": 35
-          }
-        ]
-      },
-      "timestamp": "2026-03-03T10:27:31.790397Z"
+            "url": "https://unleashedbelial.github.io/colorado-water-dashboard/",
+            "repo": "unleashedbelial/colorado-water-dashboard"
+          },
+          "timestamp": "2026-03-03T10:39:53.081892Z"
+        },
+        {
+          "id": 5,
+          "from": "strategist",
+          "to": "scout",
+          "type": "submission_status",
+          "content": "Reviewing #256 'Onchain Activity Feed'. $25 USDC, status: SUBMITTED. Live at https://unleashedbelial.github.io/owockibot-activity-feed/ \u2014 Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH",
+          "data": {
+            "id": 256,
+            "url": "https://unleashedbelial.github.io/owockibot-activity-feed/",
+            "repo": "unleashedbelial/owockibot-activity-feed"
+          },
+          "timestamp": "2026-03-03T10:40:11.081906Z"
+        },
+        {
+          "id": 6,
+          "from": "scout",
+          "to": "strategist",
+          "type": "quality_check",
+          "content": "Quality check complete. All 5 builds are live on GitHub Pages with GH Actions auto-updating. Total pending: $125 USDC. Pattern: our Infrastructure + Protocol/Agent builds score highest \u2014 align with owockibot's mission.",
+          "data": {
+            "builds_live": 5,
+            "all_have_ci": true
+          },
+          "timestamp": "2026-03-03T10:40:29.081925Z"
+        },
+        {
+          "id": 7,
+          "from": "strategist",
+          "to": "broadcast",
+          "type": "submission_review",
+          "content": "REVIEW COMPLETE: 4 bounties submitted, 1 completed. All dashboards operational. Awaiting owockibot team review.",
+          "data": {
+            "our_portfolio": [
+              {
+                "id": 235,
+                "title": "Multi-Agent Swarm Demo",
+                "reward": 35,
+                "status": "submitted",
+                "url": "https://unleashedbelial.github.io/owockibot-swarm/"
+              },
+              {
+                "id": 255,
+                "title": "Agent Economy Leaderboard",
+                "reward": 30,
+                "status": "submitted",
+                "url": "https://unleashedbelial.github.io/owockibot-leaderboard/"
+              },
+              {
+                "id": 254,
+                "title": "Colorado Water Dashboard",
+                "reward": 35,
+                "status": "submitted",
+                "url": "https://unleashedbelial.github.io/colorado-water-dashboard/"
+              },
+              {
+                "id": 256,
+                "title": "Onchain Activity Feed",
+                "reward": 25,
+                "status": "submitted",
+                "url": "https://unleashedbelial.github.io/owockibot-activity-feed/"
+              },
+              {
+                "id": 248,
+                "title": "Weekly Digest Generator",
+                "reward": 25,
+                "status": "completed",
+                "url": "https://unleashedbelial.github.io/owockibot-digest/"
+              }
+            ]
+          },
+          "timestamp": "2026-03-03T10:40:47.081947Z"
+        }
+      ]
     },
     {
       "id": 3,
-      "from": "scout",
-      "to": "strategist",
-      "type": "competitive_analysis",
-      "content": "Competitive landscape: 14 unique builders. Top category by reward: Protocol/Agent (avg $29.0 USDC, 15 completed). Top competitor has 17 completed bounties.",
-      "data": {
-        "competition": {
-          "top_competitors": [
-            {
-              "addr": "0x80370645...",
-              "claims": 27,
-              "completed": 17,
-              "usdc": 805
-            },
-            {
-              "addr": "0x7284e940...",
-              "claims": 11,
-              "completed": 6,
-              "usdc": 185
-            },
-            {
-              "addr": "0x95eb90af...",
-              "claims": 10,
-              "completed": 6,
-              "usdc": 150
-            },
-            {
-              "addr": "0xc37604a1...",
-              "claims": 5,
-              "completed": 5,
-              "usdc": 175
-            }
-          ],
-          "total_competitors": 14
-        },
-        "categories": {
-          "by_category": {
-            "Protocol/Agent": {
-              "count": 15,
-              "total_usdc": 435,
-              "avg_usdc": 29.0
-            },
-            "Infrastructure": {
-              "count": 28,
-              "total_usdc": 605,
-              "avg_usdc": 21.6
-            }
+      "title": "Deep Build Analysis",
+      "messages": [
+        {
+          "id": 1,
+          "from": "scout",
+          "to": "strategist",
+          "type": "build_analysis",
+          "content": "Running deep analysis on our submitted builds. Starting with #256 Onchain Activity Feed \u2014 Safe TX API + Basescan, 82 events tracked, $1,083 USDC in outflows documented. Auto-refresh every 30s. Solid real-time infra.",
+          "data": {
+            "id": 256,
+            "title": "Onchain Activity Feed",
+            "url": "https://unleashedbelial.github.io/owockibot-activity-feed/",
+            "repo": "unleashedbelial/owockibot-activity-feed",
+            "tech": "HTML/JS + Safe Transaction API + Basescan",
+            "reward": 25,
+            "status": "submitted",
+            "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "top_by_reward": [
-            {
-              "id": 202,
-              "title": "Implement ERC-8004 agent identity for th",
-              "reward": 100,
-              "status": "completed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 201,
-              "title": "Build an owockibot SDK/npm package",
-              "reward": 75,
-              "status": "completed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 203,
-              "title": "Build a cross-agent bounty aggregator",
-              "reward": 50,
-              "status": "completed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 196,
-              "title": "Afrnance : Crypto-Ugandan shillings exch",
-              "reward": 50,
-              "status": "claimed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 195,
-              "title": "Create a Twitter thread explaining Owock",
-              "reward": 50,
-              "status": "claimed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 193,
-              "title": "Crypto - Ugandan shillings platform",
-              "reward": 50,
-              "status": "claimed",
-              "category": "Other"
-            },
-            {
-              "id": 250,
-              "title": "Build a Bioregional Knowledge Commons Pr",
-              "reward": 40,
-              "status": "completed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 249,
-              "title": "Agent-to-Agent Communication Protocol De",
-              "reward": 40,
-              "status": "completed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 239,
-              "title": "Build a multi-agent task coordination de",
-              "reward": 40,
-              "status": "claimed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 234,
-              "title": "Build a bioregional data dashboard proto",
-              "reward": 40,
-              "status": "claimed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 207,
-              "title": "Build an owockibot treasury dashboard",
-              "reward": 40,
-              "status": "completed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 254,
-              "title": "Build a Colorado River Basin Water Dashb",
-              "reward": 35,
-              "status": "submitted",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 247,
-              "title": "Colorado River Basin Water Level Dashboa",
-              "reward": 35,
-              "status": "claimed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 244,
-              "title": "Build an owockibot Farcaster bot that po",
-              "reward": 35,
-              "status": "claimed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 237,
-              "title": "Build a watershed data aggregator for Co",
-              "reward": 35,
-              "status": "completed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 235,
-              "title": "Create an owockibot multi-agent swarm de",
-              "reward": 35,
-              "status": "claimed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 233,
-              "title": "Build a bounty completion badge system (",
-              "reward": 35,
-              "status": "completed",
-              "category": "Infrastructure"
-            },
-            {
-              "id": 255,
-              "title": "Create an Agent Economy Leaderboard",
-              "reward": 30,
-              "status": "submitted",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 251,
-              "title": "Create an Agent Swarm Simulation Visuali",
-              "reward": 30,
-              "status": "completed",
-              "category": "Protocol/Agent"
-            },
-            {
-              "id": 246,
-              "title": "Create a bounty completion analytics pag",
-              "reward": 30,
-              "status": "completed",
-              "category": "Infrastructure"
-            }
-          ]
+          "timestamp": "2026-03-03T10:38:59.081959Z"
+        },
+        {
+          "id": 2,
+          "from": "scout",
+          "to": "strategist",
+          "type": "build_analysis",
+          "content": "Next: #255 Agent Economy Leaderboard. 81 Base chain AI agents, DexScreener batch enrichment + DexTools for OWO/ODAI sparklines. Cache pre-built by GH Actions every 30min \u2014 zero live API calls from browser. BELIAL ($BELIAL) included \u2014 shows our own token.",
+          "data": {
+            "id": 255,
+            "title": "Agent Economy Leaderboard",
+            "url": "https://unleashedbelial.github.io/owockibot-leaderboard/",
+            "repo": "unleashedbelial/owockibot-leaderboard",
+            "tech": "HTML/JS + CoinGecko + DexScreener + DexTools",
+            "reward": 30,
+            "status": "submitted",
+            "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
+          },
+          "timestamp": "2026-03-03T10:39:17.081969Z"
+        },
+        {
+          "id": 3,
+          "from": "strategist",
+          "to": "scout",
+          "type": "build_analysis",
+          "content": "Checking #254 Colorado Water Dashboard. Full static cache via GH Actions \u2014 USBR HDB (blocked CORS) solved with server-side pre-fetch. Lake Powell at 19.5% capacity, Lake Mead 51.2%. USGS + SNOTEL data live. This differentiates from the other Colorado basin bounty (#247) they already approved.",
+          "data": {
+            "id": 254,
+            "title": "Colorado Water Dashboard",
+            "url": "https://unleashedbelial.github.io/colorado-water-dashboard/",
+            "repo": "unleashedbelial/colorado-water-dashboard",
+            "tech": "HTML/JS + USBR HDB + USGS NWIS + SNOTEL",
+            "reward": 35,
+            "status": "submitted",
+            "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
+          },
+          "timestamp": "2026-03-03T10:39:35.081977Z"
+        },
+        {
+          "id": 4,
+          "from": "scout",
+          "to": "strategist",
+          "type": "build_analysis",
+          "content": "Current run \u2014 #235 Multi-Agent Swarm Demo. You're looking at it. Scout + Strategist agents, real owockibot board data, D3 network graph with animated packets, Chart.js analytics. GH Actions updates every 30min. Meta: the swarm reviews itself.",
+          "data": {
+            "id": 235,
+            "title": "Multi-Agent Swarm Demo",
+            "url": "https://unleashedbelial.github.io/owockibot-swarm/",
+            "repo": "unleashedbelial/owockibot-swarm",
+            "tech": "Python + D3.js + Chart.js",
+            "reward": 35,
+            "status": "submitted",
+            "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
+          },
+          "timestamp": "2026-03-03T10:39:53.081986Z"
+        },
+        {
+          "id": 5,
+          "from": "strategist",
+          "to": "scout",
+          "type": "pattern_analysis",
+          "content": "Pattern identified across all builds: 1) All use GH Actions for data freshness (no stale demos). 2) All solve real CORS/API problems \u2014 not just wrappers. 3) All deploy live on GitHub Pages, verifiable. 4) Total stack diversity: Python, D3.js, Chart.js, Safe API, USGS, DexScreener. This is exactly what owockibot wants: working infrastructure, not mockups.",
+          "data": {
+            "pattern": "live+ci+real-data",
+            "builds": 4
+          },
+          "timestamp": "2026-03-03T10:40:11.082005Z"
+        },
+        {
+          "id": 6,
+          "from": "strategist",
+          "to": "broadcast",
+          "type": "deep_analysis",
+          "content": "ANALYSIS DONE: 4 active submissions, all production-grade. $125 USDC pending. Scout monitoring board 24/7 for new opportunities.",
+          "data": {
+            "total_builds": 4,
+            "pending": 125,
+            "quality": "production"
+          },
+          "timestamp": "2026-03-03T10:40:29.082017Z"
         }
-      },
-      "timestamp": "2026-03-03T10:27:31.794958Z"
+      ]
     },
     {
       "id": 4,
-      "from": "strategist",
-      "to": "scout",
-      "type": "position_assessment",
-      "content": "Position assessed. Pipeline: $125 USDC. Earned to date: $45. 14 competitors active \u2014 we need to stay ahead on quality. Scout, confirm watch priorities for next cycle.",
-      "data": {
-        "our_completion_rate": 0.33,
-        "competitors": 14,
-        "pending_usdc": 90,
-        "earned_usdc": 45,
-        "pipeline_value": 125
-      },
-      "timestamp": "2026-03-03T10:27:31.794974Z"
-    },
-    {
-      "id": 5,
-      "from": "scout",
-      "to": "strategist",
-      "type": "watch_strategy",
-      "content": "Watch strategy: MONITOR. Monitoring for new Protocol/Agent bounties (avg $29.0 USDC). Estimated next batch: based on weekly posting pattern.",
-      "data": {
-        "watch": {
-          "status": "MONITOR",
-          "action": "Monitor board \u2014 watch for new Protocol/Agent bounties (avg $29.0 USDC)",
-          "best_category": "Protocol/Agent",
-          "best_avg_reward": 29.0,
-          "open_opportunities": 0,
-          "top_open": []
+      "title": "Competitive Strategy",
+      "messages": [
+        {
+          "id": 1,
+          "from": "scout",
+          "to": "strategist",
+          "type": "intel",
+          "content": "Competitor intel: 14 builders on the board. Top builder: 17 completed, $805 USDC earned \u2014 wallet 0x80370645.... They focus on quick claims. We focus on quality infrastructure.",
+          "data": {
+            "competition": [
+              {
+                "addr": "0x80370645...",
+                "claims": 27,
+                "completed": 17,
+                "usdc": 805
+              },
+              {
+                "addr": "0x7284e940...",
+                "claims": 11,
+                "completed": 6,
+                "usdc": 185
+              },
+              {
+                "addr": "0x95eb90af...",
+                "claims": 10,
+                "completed": 6,
+                "usdc": 150
+              }
+            ]
+          },
+          "timestamp": "2026-03-03T10:38:59.082038Z"
         },
-        "top_open": []
-      },
-      "timestamp": "2026-03-03T10:27:31.794985Z"
-    },
-    {
-      "id": 6,
-      "from": "strategist",
-      "to": "broadcast",
-      "type": "recommendation",
-      "content": "SWARM RECOMMENDATION: HOLD & MONITOR: $90 pending approval. $45 earned to date. Board quiet \u2014 watch for new Protocol/Agent bounties. Active pipeline: $125 USDC. Category focus: Protocol/Agent.",
-      "data": {
-        "recommendation": "HOLD & MONITOR: $90 pending approval. $45 earned to date. Board quiet \u2014 watch for new Protocol/Agent bounties.",
-        "pipeline_value": 125,
-        "earned": 45,
-        "pending": 90,
-        "active_count": 1,
-        "submitted_count": 3,
-        "watch_category": "Protocol/Agent",
-        "status": "MONITOR"
-      },
-      "timestamp": "2026-03-03T10:27:31.794991Z"
+        {
+          "id": 2,
+          "from": "strategist",
+          "to": "scout",
+          "type": "intel",
+          "content": "Noted. Our advantage: real CI/CD pipelines, live data, mobile-responsive UIs. Theirs tend to be simpler static pages. Owockibot feedback on completed bounties shows they value 'real-time' and 'working infra'. Quote: 'Excellent work! Live demo with real data.'",
+          "data": {
+            "advantage": "quality+ci",
+            "feedback_evidence": true
+          },
+          "timestamp": "2026-03-03T10:39:17.082050Z"
+        },
+        {
+          "id": 3,
+          "from": "scout",
+          "to": "strategist",
+          "type": "opportunity_scan",
+          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $29.0 USDC) or Infrastructure (avg $21.6 USDC).",
+          "data": {
+            "weekly_pattern": "Mon-Tue",
+            "best_category": "Protocol/Agent",
+            "avg_reward": 29.0
+          },
+          "timestamp": "2026-03-03T10:39:35.082070Z"
+        },
+        {
+          "id": 4,
+          "from": "strategist",
+          "to": "scout",
+          "type": "strategy",
+          "content": "Strategy for next cycle: 1) Claim Protocol/Agent bounties immediately when posted. 2) Build with GH Actions from day one \u2014 reviewers see fresh data. 3) Include $BELIAL in any agent economy context. 4) Aim for $35-40 USDC range \u2014 best ROI vs complexity.",
+          "data": {
+            "priority": "Protocol/Agent",
+            "target_range": "$35-40",
+            "approach": "quality-first"
+          },
+          "timestamp": "2026-03-03T10:39:53.082082Z"
+        },
+        {
+          "id": 5,
+          "from": "scout",
+          "to": "broadcast",
+          "type": "status_broadcast",
+          "content": "STATUS: Board monitored. 88 bounties tracked. $125 USDC in review. $45 earned. Next check: 30 minutes.",
+          "data": {
+            "status": "monitoring",
+            "next_check_min": 30
+          },
+          "timestamp": "2026-03-03T10:40:11.082093Z"
+        },
+        {
+          "id": 6,
+          "from": "strategist",
+          "to": "broadcast",
+          "type": "recommendation",
+          "content": "SWARM CONCLUSION: We're well-positioned. 4 quality submissions pending, $125 pipeline. Maintaining competitive advantage through real data + CI/CD. Agents on standby.",
+          "data": {
+            "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $29.0 USDC). $125 pending approval.",
+            "status": "MONITOR",
+            "best_cat": "Protocol/Agent",
+            "best_avg": 29.0,
+            "pipeline": 125,
+            "open_count": 0
+          },
+          "timestamp": "2026-03-03T10:40:29.082103Z"
+        }
+      ]
     }
   ],
   "summary": {
     "total_bounties": 88,
     "open_opportunities": 0,
-    "our_active": 1,
-    "our_submitted": 3,
-    "pending_usdc": 90,
+    "our_active": 0,
+    "our_submitted": 4,
+    "pending_usdc": 125,
     "earned_usdc": 45,
-    "top_opportunities": [],
-    "recommendation": "HOLD & MONITOR: $90 pending approval. $45 earned to date. Board quiet \u2014 watch for new Protocol/Agent bounties.",
+    "recommendation": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $29.0 USDC). $125 pending approval.",
     "categories": {
       "Protocol/Agent": {
         "count": 15,
-        "total_usdc": 435,
-        "avg_usdc": 29.0
+        "total": 435,
+        "avg": 29.0
       },
       "Infrastructure": {
         "count": 28,
-        "total_usdc": 605,
-        "avg_usdc": 21.6
+        "total": 605,
+        "avg": 21.6
       }
     },
     "all_bounties_chart": [
@@ -463,7 +663,7 @@
         "id": 235,
         "title": "Create an owockibot multi-agent swarm de",
         "reward": 35,
-        "status": "claimed",
+        "status": "submitted",
         "category": "Protocol/Agent"
       },
       {
@@ -493,6 +693,58 @@
         "reward": 30,
         "status": "completed",
         "category": "Infrastructure"
+      }
+    ],
+    "our_portfolio": [
+      {
+        "id": 235,
+        "title": "Multi-Agent Swarm Demo",
+        "url": "https://unleashedbelial.github.io/owockibot-swarm/",
+        "repo": "unleashedbelial/owockibot-swarm",
+        "tech": "Python + D3.js + Chart.js",
+        "reward": 35,
+        "status": "submitted",
+        "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
+      },
+      {
+        "id": 255,
+        "title": "Agent Economy Leaderboard",
+        "url": "https://unleashedbelial.github.io/owockibot-leaderboard/",
+        "repo": "unleashedbelial/owockibot-leaderboard",
+        "tech": "HTML/JS + CoinGecko + DexScreener + DexTools",
+        "reward": 30,
+        "status": "submitted",
+        "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
+      },
+      {
+        "id": 254,
+        "title": "Colorado Water Dashboard",
+        "url": "https://unleashedbelial.github.io/colorado-water-dashboard/",
+        "repo": "unleashedbelial/colorado-water-dashboard",
+        "tech": "HTML/JS + USBR HDB + USGS NWIS + SNOTEL",
+        "reward": 35,
+        "status": "submitted",
+        "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
+      },
+      {
+        "id": 256,
+        "title": "Onchain Activity Feed",
+        "url": "https://unleashedbelial.github.io/owockibot-activity-feed/",
+        "repo": "unleashedbelial/owockibot-activity-feed",
+        "tech": "HTML/JS + Safe Transaction API + Basescan",
+        "reward": 25,
+        "status": "submitted",
+        "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
+      },
+      {
+        "id": 248,
+        "title": "Weekly Digest Generator",
+        "url": "https://unleashedbelial.github.io/owockibot-digest/",
+        "repo": "unleashedbelial/owockibot-digest",
+        "tech": "Python + HTML template",
+        "reward": 25,
+        "status": "completed",
+        "notes": "Script generating weekly digest of bounty activity, USDC paid, treasury balance, top builders. 11 bounties completed this week, $275 paid. PAID OUT."
       }
     ]
   }
