@@ -1,6 +1,6 @@
 {
-  "run_id": "f25a4cd8",
-  "generated_at": "2026-05-12T17:28:46.774091Z",
+  "run_id": "561b4a8e",
+  "generated_at": "2026-05-12T19:15:48.592129Z",
   "agents": [
     {
       "id": "scout",
@@ -41,7 +41,7 @@
             },
             "open_unclaimed": 0
           },
-          "timestamp": "2026-05-12T17:29:04.772551Z"
+          "timestamp": "2026-05-12T19:16:06.590675Z"
         },
         {
           "id": 2,
@@ -72,7 +72,7 @@
             "completed_usdc": 535,
             "pending_usdc": 0
           },
-          "timestamp": "2026-05-12T17:29:22.772578Z"
+          "timestamp": "2026-05-12T19:16:24.590698Z"
         },
         {
           "id": 3,
@@ -123,7 +123,7 @@
               }
             }
           },
-          "timestamp": "2026-05-12T17:29:40.772586Z"
+          "timestamp": "2026-05-12T19:16:42.590707Z"
         },
         {
           "id": 4,
@@ -140,7 +140,7 @@
             "active_count": 3,
             "submitted_count": 0
           },
-          "timestamp": "2026-05-12T17:29:58.772593Z"
+          "timestamp": "2026-05-12T19:17:00.590714Z"
         },
         {
           "id": 5,
@@ -158,7 +158,7 @@
               "open_count": 0
             }
           },
-          "timestamp": "2026-05-12T17:30:16.772598Z"
+          "timestamp": "2026-05-12T19:17:18.590719Z"
         },
         {
           "id": 6,
@@ -185,7 +185,7 @@
               "submitted_count": 0
             }
           },
-          "timestamp": "2026-05-12T17:30:34.772604Z"
+          "timestamp": "2026-05-12T19:17:36.590726Z"
         }
       ]
     },
@@ -202,7 +202,7 @@
           "data": {
             "bounties_to_review": 1
           },
-          "timestamp": "2026-05-12T17:29:04.772609Z"
+          "timestamp": "2026-05-12T19:16:06.590730Z"
         },
         {
           "id": 2,
@@ -217,7 +217,7 @@
             "tech": "Python + HTML template",
             "reward": 25
           },
-          "timestamp": "2026-05-12T17:29:22.772617Z"
+          "timestamp": "2026-05-12T19:16:24.590738Z"
         },
         {
           "id": 3,
@@ -229,7 +229,7 @@
             "builds_live": 1,
             "all_have_ci": true
           },
-          "timestamp": "2026-05-12T17:29:40.772624Z"
+          "timestamp": "2026-05-12T19:16:42.590745Z"
         },
         {
           "id": 4,
@@ -248,7 +248,7 @@
               }
             ]
           },
-          "timestamp": "2026-05-12T17:29:58.772630Z"
+          "timestamp": "2026-05-12T19:17:00.590751Z"
         }
       ]
     },
@@ -272,7 +272,7 @@
             "status": "submitted",
             "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "timestamp": "2026-05-12T17:29:04.772633Z"
+          "timestamp": "2026-05-12T19:16:06.590755Z"
         },
         {
           "id": 2,
@@ -290,7 +290,7 @@
             "status": "submitted",
             "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
           },
-          "timestamp": "2026-05-12T17:29:22.772636Z"
+          "timestamp": "2026-05-12T19:16:24.590757Z"
         },
         {
           "id": 3,
@@ -308,7 +308,7 @@
             "status": "submitted",
             "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
           },
-          "timestamp": "2026-05-12T17:29:40.772639Z"
+          "timestamp": "2026-05-12T19:16:42.590760Z"
         },
         {
           "id": 4,
@@ -326,7 +326,7 @@
             "status": "submitted",
             "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
           },
-          "timestamp": "2026-05-12T17:29:58.772642Z"
+          "timestamp": "2026-05-12T19:17:00.590763Z"
         },
         {
           "id": 5,
@@ -338,7 +338,7 @@
             "pattern": "live+ci+real-data",
             "builds": 4
           },
-          "timestamp": "2026-05-12T17:30:16.772645Z"
+          "timestamp": "2026-05-12T19:17:18.590766Z"
         },
         {
           "id": 6,
@@ -351,7 +351,7 @@
             "pending": 0,
             "quality": "production"
           },
-          "timestamp": "2026-05-12T17:30:34.772648Z"
+          "timestamp": "2026-05-12T19:17:36.590769Z"
         }
       ]
     },
@@ -387,7 +387,7 @@
               }
             ]
           },
-          "timestamp": "2026-05-12T17:29:04.772653Z"
+          "timestamp": "2026-05-12T19:16:06.590774Z"
         },
         {
           "id": 2,
@@ -399,7 +399,7 @@
             "advantage": "quality+ci",
             "feedback_evidence": true
           },
-          "timestamp": "2026-05-12T17:29:22.772656Z"
+          "timestamp": "2026-05-12T19:16:24.590777Z"
         },
         {
           "id": 3,
@@ -412,7 +412,7 @@
             "best_category": "Protocol/Agent",
             "avg_reward": 22.0
           },
-          "timestamp": "2026-05-12T17:29:40.772662Z"
+          "timestamp": "2026-05-12T19:16:42.590783Z"
         },
         {
           "id": 4,
@@ -425,7 +425,7 @@
             "target_range": "$35-40",
             "approach": "quality-first"
           },
-          "timestamp": "2026-05-12T17:29:58.772665Z"
+          "timestamp": "2026-05-12T19:17:00.590787Z"
         },
         {
           "id": 5,
@@ -437,7 +437,7 @@
             "status": "monitoring",
             "next_check_min": 30
           },
-          "timestamp": "2026-05-12T17:30:16.772669Z"
+          "timestamp": "2026-05-12T19:17:18.590790Z"
         },
         {
           "id": 6,
@@ -453,7 +453,7 @@
             "pipeline": 35,
             "open_count": 0
           },
-          "timestamp": "2026-05-12T17:30:34.772673Z"
+          "timestamp": "2026-05-12T19:17:36.590795Z"
         }
       ]
     }
