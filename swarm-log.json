@@ -1,6 +1,6 @@
 {
-  "run_id": "4da5a2ab",
-  "generated_at": "2026-06-10T18:44:55.416987Z",
+  "run_id": "795ad7de",
+  "generated_at": "2026-06-10T21:20:54.443850Z",
   "agents": [
     {
       "id": "scout",
@@ -31,18 +31,17 @@
           "from": "scout",
           "to": "strategist",
           "type": "board_scan",
-          "content": "Board scan complete. 176 total bounties. No unclaimed open bounties \u2014 board fully claimed. 7 claimed by competitors. 18 unique builders active.",
+          "content": "Board scan complete. 182 total bounties. No unclaimed open bounties \u2014 board fully claimed. 13 claimed by competitors. 19 unique builders active.",
           "data": {
-            "total": 176,
+            "total": 182,
             "by_status": {
-              "completed": 139,
-              "submitted": 2,
-              "claimed": 7,
+              "claimed": 13,
+              "completed": 141,
               "cancelled": 28
             },
             "open_unclaimed": 0
           },
-          "timestamp": "2026-06-10T18:45:13.415368Z"
+          "timestamp": "2026-06-10T21:21:12.442186Z"
         },
         {
           "id": 2,
@@ -57,14 +56,14 @@
             "completed_usdc": 605,
             "pending_usdc": 0
           },
-          "timestamp": "2026-06-10T18:45:31.415391Z"
+          "timestamp": "2026-06-10T21:21:30.442211Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "competitive_analysis",
-          "content": "Competitive landscape: 18 builders. Top competitor: 28 completed bounties. Best ROI category: Protocol/Agent (avg $21.2 USDC, 56 completed).",
+          "content": "Competitive landscape: 19 builders. Top competitor: 28 completed bounties. Best ROI category: Protocol/Agent (avg $21.2 USDC, 56 completed).",
           "data": {
             "competition": {
               "top": [
@@ -83,17 +82,17 @@
                 {
                   "addr": "0x31208431...",
                   "claims": 21,
-                  "completed": 19,
+                  "completed": 20,
                   "usdc": 290
                 },
                 {
                   "addr": "0x7284e940...",
                   "claims": 19,
-                  "completed": 15,
+                  "completed": 16,
                   "usdc": 280
                 }
               ],
-              "total_builders": 18
+              "total_builders": 19
             },
             "categories": {
               "Protocol/Agent": {
@@ -102,30 +101,30 @@
                 "avg": 21.2
               },
               "Infrastructure": {
-                "count": 83,
-                "total": 1750,
-                "avg": 21.1
+                "count": 85,
+                "total": 1770,
+                "avg": 20.8
               }
             }
           },
-          "timestamp": "2026-06-10T18:45:49.415400Z"
+          "timestamp": "2026-06-10T21:21:48.442220Z"
         },
         {
           "id": 4,
           "from": "strategist",
           "to": "scout",
           "type": "position_assessment",
-          "content": "Position assessed. We have $0 pending + $605 earned. 18 competitors active. Quality over speed \u2014 our submissions have real infrastructure, not just demos.",
+          "content": "Position assessed. We have $0 pending + $605 earned. 19 competitors active. Quality over speed \u2014 our submissions have real infrastructure, not just demos.",
           "data": {
             "pipeline": 0,
             "earned": 605,
             "pending": 0,
-            "builders": 18,
+            "builders": 19,
             "completion_rate": 1.0,
             "active_count": 0,
             "submitted_count": 0
           },
-          "timestamp": "2026-06-10T18:46:07.415404Z"
+          "timestamp": "2026-06-10T21:22:06.442225Z"
         },
         {
           "id": 5,
@@ -143,7 +142,7 @@
               "open_count": 0
             }
           },
-          "timestamp": "2026-06-10T18:46:25.415414Z"
+          "timestamp": "2026-06-10T21:22:24.442231Z"
         },
         {
           "id": 6,
@@ -164,13 +163,13 @@
               "pipeline": 0,
               "earned": 605,
               "pending": 0,
-              "builders": 18,
+              "builders": 19,
               "completion_rate": 1.0,
               "active_count": 0,
               "submitted_count": 0
             }
           },
-          "timestamp": "2026-06-10T18:46:43.415418Z"
+          "timestamp": "2026-06-10T21:22:42.442236Z"
         }
       ]
     },
@@ -187,7 +186,7 @@
           "data": {
             "bounties_to_review": 1
           },
-          "timestamp": "2026-06-10T18:45:13.415423Z"
+          "timestamp": "2026-06-10T21:21:12.442240Z"
         },
         {
           "id": 2,
@@ -202,7 +201,7 @@
             "tech": "Python + HTML template",
             "reward": 25
           },
-          "timestamp": "2026-06-10T18:45:31.415431Z"
+          "timestamp": "2026-06-10T21:21:30.442248Z"
         },
         {
           "id": 3,
@@ -214,7 +213,7 @@
             "builds_live": 1,
             "all_have_ci": true
           },
-          "timestamp": "2026-06-10T18:45:49.415438Z"
+          "timestamp": "2026-06-10T21:21:48.442255Z"
         },
         {
           "id": 4,
@@ -233,7 +232,7 @@
               }
             ]
           },
-          "timestamp": "2026-06-10T18:46:07.415444Z"
+          "timestamp": "2026-06-10T21:22:06.442261Z"
         }
       ]
     },
@@ -257,7 +256,7 @@
             "status": "submitted",
             "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "timestamp": "2026-06-10T18:45:13.415448Z"
+          "timestamp": "2026-06-10T21:21:12.442265Z"
         },
         {
           "id": 2,
@@ -275,7 +274,7 @@
             "status": "submitted",
             "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
           },
-          "timestamp": "2026-06-10T18:45:31.415451Z"
+          "timestamp": "2026-06-10T21:21:30.442268Z"
         },
         {
           "id": 3,
@@ -293,7 +292,7 @@
             "status": "submitted",
             "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
           },
-          "timestamp": "2026-06-10T18:45:49.415454Z"
+          "timestamp": "2026-06-10T21:21:48.442271Z"
         },
         {
           "id": 4,
@@ -311,7 +310,7 @@
             "status": "submitted",
             "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
           },
-          "timestamp": "2026-06-10T18:46:07.415456Z"
+          "timestamp": "2026-06-10T21:22:06.442274Z"
         },
         {
           "id": 5,
@@ -323,7 +322,7 @@
             "pattern": "live+ci+real-data",
             "builds": 4
           },
-          "timestamp": "2026-06-10T18:46:25.415459Z"
+          "timestamp": "2026-06-10T21:22:24.442277Z"
         },
         {
           "id": 6,
@@ -336,7 +335,7 @@
             "pending": 0,
             "quality": "production"
           },
-          "timestamp": "2026-06-10T18:46:43.415463Z"
+          "timestamp": "2026-06-10T21:22:42.442280Z"
         }
       ]
     },
@@ -349,7 +348,7 @@
           "from": "scout",
           "to": "strategist",
           "type": "intel",
-          "content": "Competitor intel: 18 builders on the board. Top builder: 28 completed, $895 USDC earned \u2014 wallet 0x80370645.... They focus on quick claims. We focus on quality infrastructure.",
+          "content": "Competitor intel: 19 builders on the board. Top builder: 28 completed, $895 USDC earned \u2014 wallet 0x80370645.... They focus on quick claims. We focus on quality infrastructure.",
           "data": {
             "competition": [
               {
@@ -367,12 +366,12 @@
               {
                 "addr": "0x31208431...",
                 "claims": 21,
-                "completed": 19,
+                "completed": 20,
                 "usdc": 290
               }
             ]
           },
-          "timestamp": "2026-06-10T18:45:13.415467Z"
+          "timestamp": "2026-06-10T21:21:12.442285Z"
         },
         {
           "id": 2,
@@ -384,20 +383,20 @@
             "advantage": "quality+ci",
             "feedback_evidence": true
           },
-          "timestamp": "2026-06-10T18:45:31.415470Z"
+          "timestamp": "2026-06-10T21:21:30.442287Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "opportunity_scan",
-          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $21.2 USDC) or Infrastructure (avg $21.1 USDC).",
+          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $21.2 USDC) or Infrastructure (avg $20.8 USDC).",
           "data": {
             "weekly_pattern": "Mon-Tue",
             "best_category": "Protocol/Agent",
             "avg_reward": 21.2
           },
-          "timestamp": "2026-06-10T18:45:49.415478Z"
+          "timestamp": "2026-06-10T21:21:48.442296Z"
         },
         {
           "id": 4,
@@ -410,19 +409,19 @@
             "target_range": "$35-40",
             "approach": "quality-first"
           },
-          "timestamp": "2026-06-10T18:46:07.415481Z"
+          "timestamp": "2026-06-10T21:22:06.442299Z"
         },
         {
           "id": 5,
           "from": "scout",
           "to": "broadcast",
           "type": "status_broadcast",
-          "content": "STATUS: Board monitored. 176 bounties tracked. $0 USDC in review. $605 earned. Next check: 30 minutes.",
+          "content": "STATUS: Board monitored. 182 bounties tracked. $0 USDC in review. $605 earned. Next check: 30 minutes.",
           "data": {
             "status": "monitoring",
             "next_check_min": 30
           },
-          "timestamp": "2026-06-10T18:46:25.415484Z"
+          "timestamp": "2026-06-10T21:22:24.442303Z"
         },
         {
           "id": 6,
@@ -438,13 +437,13 @@
             "pipeline": 0,
             "open_count": 0
           },
-          "timestamp": "2026-06-10T18:46:43.415487Z"
+          "timestamp": "2026-06-10T21:22:42.442306Z"
         }
       ]
     }
   ],
   "summary": {
-    "total_bounties": 176,
+    "total_bounties": 182,
     "open_opportunities": 0,
     "our_active": 0,
     "our_submitted": 0,
@@ -458,9 +457,9 @@
         "avg": 21.2
       },
       "Infrastructure": {
-        "count": 83,
-        "total": 1750,
-        "avg": 21.1
+        "count": 85,
+        "total": 1770,
+        "avg": 20.8
       }
     },
     "all_bounties_chart": [
@@ -584,6 +583,13 @@
         "category": "Infrastructure"
       },
       {
+        "id": 356,
+        "title": "Multi-Agent Task Decomposition Demo",
+        "reward": 35,
+        "status": "claimed",
+        "category": "Protocol/Agent"
+      },
+      {
         "id": 335,
         "title": "[WEEKLY] Bug Bounty \u2014 Week of May 12, 20",
         "reward": 35,
@@ -593,13 +599,6 @@
       {
         "id": 333,
         "title": "[WEEKLY] Best X Thread \u2014 Week of May 11,",
-        "reward": 35,
-        "status": "completed",
-        "category": "Protocol/Agent"
-      },
-      {
-        "id": 288,
-        "title": "Build a Data Aggregator for the Tana Riv",
         "reward": 35,
         "status": "completed",
         "category": "Protocol/Agent"
