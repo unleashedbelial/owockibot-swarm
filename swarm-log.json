@@ -1,6 +1,6 @@
 {
-  "run_id": "3b957de8",
-  "generated_at": "2026-07-01T20:19:16.409129Z",
+  "run_id": "1c64fb40",
+  "generated_at": "2026-07-01T21:54:38.325880Z",
   "agents": [
     {
       "id": "scout",
@@ -31,17 +31,17 @@
           "from": "scout",
           "to": "strategist",
           "type": "board_scan",
-          "content": "Board scan complete. 218 total bounties. 3 unclaimed open. 0 claimed by competitors. 26 unique builders active.",
+          "content": "Board scan complete. 218 total bounties. No unclaimed open bounties \u2014 board fully claimed. 3 claimed by competitors. 26 unique builders active.",
           "data": {
             "total": 218,
             "by_status": {
-              "open": 3,
+              "claimed": 3,
               "completed": 164,
               "cancelled": 51
             },
-            "open_unclaimed": 3
+            "open_unclaimed": 0
           },
-          "timestamp": "2026-07-01T20:19:34.407301Z"
+          "timestamp": "2026-07-01T21:54:56.323924Z"
         },
         {
           "id": 2,
@@ -56,7 +56,7 @@
             "completed_usdc": 605,
             "pending_usdc": 0
           },
-          "timestamp": "2026-07-01T20:19:52.407326Z"
+          "timestamp": "2026-07-01T21:55:14.323952Z"
         },
         {
           "id": 3,
@@ -87,9 +87,9 @@
                 },
                 {
                   "addr": "0x7284e940...",
-                  "claims": 23,
+                  "claims": 25,
                   "completed": 21,
-                  "usdc": 400
+                  "usdc": 460
                 }
               ],
               "total_builders": 26
@@ -107,7 +107,7 @@
               }
             }
           },
-          "timestamp": "2026-07-01T20:20:10.407340Z"
+          "timestamp": "2026-07-01T21:55:32.323962Z"
         },
         {
           "id": 4,
@@ -124,40 +124,40 @@
             "active_count": 0,
             "submitted_count": 0
           },
-          "timestamp": "2026-07-01T20:20:28.407345Z"
+          "timestamp": "2026-07-01T21:55:50.323967Z"
         },
         {
           "id": 5,
           "from": "scout",
           "to": "strategist",
           "type": "watch_strategy",
-          "content": "Watch strategy: ACT. Claiming available bounties now. GH Actions keeping all 4 submitted dashboards live and up-to-date.",
+          "content": "Watch strategy: MONITOR. Monitoring for new Protocol/Agent bounties (avg $22.1 USDC). GH Actions keeping all 4 submitted dashboards live and up-to-date.",
           "data": {
             "rec": {
-              "action": "ACT \u2014 3 bounties unclaimed. Claim Protocol/Agent type first.",
-              "status": "ACT",
+              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $22.1 USDC). $0 pending approval.",
+              "status": "MONITOR",
               "best_cat": "Protocol/Agent",
               "best_avg": 22.1,
               "pipeline": 0,
-              "open_count": 3
+              "open_count": 0
             }
           },
-          "timestamp": "2026-07-01T20:20:46.407349Z"
+          "timestamp": "2026-07-01T21:56:08.323975Z"
         },
         {
           "id": 6,
           "from": "strategist",
           "to": "broadcast",
           "type": "recommendation",
-          "content": "SWARM RECOMMENDATION: ACT \u2014 3 bounties unclaimed. Claim Protocol/Agent type first. Active pipeline: $0 USDC across 0 submissions.",
+          "content": "SWARM RECOMMENDATION: MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $22.1 USDC). $0 pending approval. Active pipeline: $0 USDC across 0 submissions.",
           "data": {
             "recommendation": {
-              "action": "ACT \u2014 3 bounties unclaimed. Claim Protocol/Agent type first.",
-              "status": "ACT",
+              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $22.1 USDC). $0 pending approval.",
+              "status": "MONITOR",
               "best_cat": "Protocol/Agent",
               "best_avg": 22.1,
               "pipeline": 0,
-              "open_count": 3
+              "open_count": 0
             },
             "portfolio": {
               "pipeline": 0,
@@ -169,7 +169,7 @@
               "submitted_count": 0
             }
           },
-          "timestamp": "2026-07-01T20:21:04.407353Z"
+          "timestamp": "2026-07-01T21:56:26.323980Z"
         }
       ]
     },
@@ -186,7 +186,7 @@
           "data": {
             "bounties_to_review": 1
           },
-          "timestamp": "2026-07-01T20:19:34.407358Z"
+          "timestamp": "2026-07-01T21:54:56.323984Z"
         },
         {
           "id": 2,
@@ -201,7 +201,7 @@
             "tech": "Python + HTML template",
             "reward": 25
           },
-          "timestamp": "2026-07-01T20:19:52.407366Z"
+          "timestamp": "2026-07-01T21:55:14.323993Z"
         },
         {
           "id": 3,
@@ -213,7 +213,7 @@
             "builds_live": 1,
             "all_have_ci": true
           },
-          "timestamp": "2026-07-01T20:20:10.407373Z"
+          "timestamp": "2026-07-01T21:55:32.324000Z"
         },
         {
           "id": 4,
@@ -232,7 +232,7 @@
               }
             ]
           },
-          "timestamp": "2026-07-01T20:20:28.407379Z"
+          "timestamp": "2026-07-01T21:55:50.324006Z"
         }
       ]
     },
@@ -256,7 +256,7 @@
             "status": "submitted",
             "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "timestamp": "2026-07-01T20:19:34.407383Z"
+          "timestamp": "2026-07-01T21:54:56.324010Z"
         },
         {
           "id": 2,
@@ -274,7 +274,7 @@
             "status": "submitted",
             "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
           },
-          "timestamp": "2026-07-01T20:19:52.407386Z"
+          "timestamp": "2026-07-01T21:55:14.324013Z"
         },
         {
           "id": 3,
@@ -292,7 +292,7 @@
             "status": "submitted",
             "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
           },
-          "timestamp": "2026-07-01T20:20:10.407389Z"
+          "timestamp": "2026-07-01T21:55:32.324016Z"
         },
         {
           "id": 4,
@@ -310,7 +310,7 @@
             "status": "submitted",
             "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
           },
-          "timestamp": "2026-07-01T20:20:28.407391Z"
+          "timestamp": "2026-07-01T21:55:50.324018Z"
         },
         {
           "id": 5,
@@ -322,7 +322,7 @@
             "pattern": "live+ci+real-data",
             "builds": 4
           },
-          "timestamp": "2026-07-01T20:20:46.407394Z"
+          "timestamp": "2026-07-01T21:56:08.324022Z"
         },
         {
           "id": 6,
@@ -335,7 +335,7 @@
             "pending": 0,
             "quality": "production"
           },
-          "timestamp": "2026-07-01T20:21:04.407398Z"
+          "timestamp": "2026-07-01T21:56:26.324025Z"
         }
       ]
     },
@@ -371,7 +371,7 @@
               }
             ]
           },
-          "timestamp": "2026-07-01T20:19:34.407403Z"
+          "timestamp": "2026-07-01T21:54:56.324029Z"
         },
         {
           "id": 2,
@@ -383,20 +383,20 @@
             "advantage": "quality+ci",
             "feedback_evidence": true
           },
-          "timestamp": "2026-07-01T20:19:52.407408Z"
+          "timestamp": "2026-07-01T21:55:14.324034Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "opportunity_scan",
-          "content": "Scanning for next opportunity. Board has 3 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $22.1 USDC) or Infrastructure (avg $20.8 USDC).",
+          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $22.1 USDC) or Infrastructure (avg $20.8 USDC).",
           "data": {
             "weekly_pattern": "Mon-Tue",
             "best_category": "Protocol/Agent",
             "avg_reward": 22.1
           },
-          "timestamp": "2026-07-01T20:20:10.407415Z"
+          "timestamp": "2026-07-01T21:55:32.324040Z"
         },
         {
           "id": 4,
@@ -409,7 +409,7 @@
             "target_range": "$35-40",
             "approach": "quality-first"
           },
-          "timestamp": "2026-07-01T20:20:28.407418Z"
+          "timestamp": "2026-07-01T21:55:50.324044Z"
         },
         {
           "id": 5,
@@ -421,7 +421,7 @@
             "status": "monitoring",
             "next_check_min": 30
           },
-          "timestamp": "2026-07-01T20:20:46.407422Z"
+          "timestamp": "2026-07-01T21:56:08.324047Z"
         },
         {
           "id": 6,
@@ -430,26 +430,26 @@
           "type": "recommendation",
           "content": "SWARM CONCLUSION: We're well-positioned. 4 quality submissions pending, $0 pipeline. Maintaining competitive advantage through real data + CI/CD. Agents on standby.",
           "data": {
-            "action": "ACT \u2014 3 bounties unclaimed. Claim Protocol/Agent type first.",
-            "status": "ACT",
+            "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $22.1 USDC). $0 pending approval.",
+            "status": "MONITOR",
             "best_cat": "Protocol/Agent",
             "best_avg": 22.1,
             "pipeline": 0,
-            "open_count": 3
+            "open_count": 0
           },
-          "timestamp": "2026-07-01T20:21:04.407425Z"
+          "timestamp": "2026-07-01T21:56:26.324050Z"
         }
       ]
     }
   ],
   "summary": {
     "total_bounties": 218,
-    "open_opportunities": 3,
+    "open_opportunities": 0,
     "our_active": 0,
     "our_submitted": 0,
     "pending_usdc": 0,
     "earned_usdc": 605,
-    "recommendation": "ACT \u2014 3 bounties unclaimed. Claim Protocol/Agent type first.",
+    "recommendation": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $22.1 USDC). $0 pending approval.",
     "categories": {
       "Infrastructure": {
         "count": 96,
@@ -565,7 +565,7 @@
         "id": 409,
         "title": "Create an AI Agent Builder Starter Kit",
         "reward": 35,
-        "status": "open",
+        "status": "claimed",
         "category": "Protocol/Agent"
       },
       {
