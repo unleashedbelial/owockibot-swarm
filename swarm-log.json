@@ -1,6 +1,6 @@
 {
-  "run_id": "e7431c35",
-  "generated_at": "2026-07-04T20:01:13.425413Z",
+  "run_id": "c0a51308",
+  "generated_at": "2026-07-04T21:23:29.080601Z",
   "agents": [
     {
       "id": "scout",
@@ -35,14 +35,13 @@
           "data": {
             "total": 227,
             "by_status": {
-              "completed": 172,
-              "submitted": 1,
+              "completed": 173,
               "claimed": 3,
               "cancelled": 51
             },
             "open_unclaimed": 0
           },
-          "timestamp": "2026-07-04T20:01:31.423486Z"
+          "timestamp": "2026-07-04T21:23:47.078657Z"
         },
         {
           "id": 2,
@@ -57,7 +56,7 @@
             "completed_usdc": 605,
             "pending_usdc": 0
           },
-          "timestamp": "2026-07-04T20:01:49.423512Z"
+          "timestamp": "2026-07-04T21:24:05.078683Z"
         },
         {
           "id": 3,
@@ -102,13 +101,13 @@
                 "avg": 22.4
               },
               "Infrastructure": {
-                "count": 101,
-                "total": 2140,
-                "avg": 21.2
+                "count": 102,
+                "total": 2175,
+                "avg": 21.3
               }
             }
           },
-          "timestamp": "2026-07-04T20:02:07.423521Z"
+          "timestamp": "2026-07-04T21:24:23.078692Z"
         },
         {
           "id": 4,
@@ -125,7 +124,7 @@
             "active_count": 0,
             "submitted_count": 0
           },
-          "timestamp": "2026-07-04T20:02:25.423526Z"
+          "timestamp": "2026-07-04T21:24:41.078696Z"
         },
         {
           "id": 5,
@@ -143,7 +142,7 @@
               "open_count": 0
             }
           },
-          "timestamp": "2026-07-04T20:02:43.423532Z"
+          "timestamp": "2026-07-04T21:24:59.078701Z"
         },
         {
           "id": 6,
@@ -170,7 +169,7 @@
               "submitted_count": 0
             }
           },
-          "timestamp": "2026-07-04T20:03:01.423536Z"
+          "timestamp": "2026-07-04T21:25:17.078706Z"
         }
       ]
     },
@@ -187,7 +186,7 @@
           "data": {
             "bounties_to_review": 1
           },
-          "timestamp": "2026-07-04T20:01:31.423541Z"
+          "timestamp": "2026-07-04T21:23:47.078710Z"
         },
         {
           "id": 2,
@@ -202,7 +201,7 @@
             "tech": "Python + HTML template",
             "reward": 25
           },
-          "timestamp": "2026-07-04T20:01:49.423549Z"
+          "timestamp": "2026-07-04T21:24:05.078718Z"
         },
         {
           "id": 3,
@@ -214,7 +213,7 @@
             "builds_live": 1,
             "all_have_ci": true
           },
-          "timestamp": "2026-07-04T20:02:07.423555Z"
+          "timestamp": "2026-07-04T21:24:23.078724Z"
         },
         {
           "id": 4,
@@ -233,7 +232,7 @@
               }
             ]
           },
-          "timestamp": "2026-07-04T20:02:25.423561Z"
+          "timestamp": "2026-07-04T21:24:41.078731Z"
         }
       ]
     },
@@ -257,7 +256,7 @@
             "status": "submitted",
             "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "timestamp": "2026-07-04T20:01:31.423565Z"
+          "timestamp": "2026-07-04T21:23:47.078735Z"
         },
         {
           "id": 2,
@@ -275,7 +274,7 @@
             "status": "submitted",
             "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
           },
-          "timestamp": "2026-07-04T20:01:49.423568Z"
+          "timestamp": "2026-07-04T21:24:05.078738Z"
         },
         {
           "id": 3,
@@ -293,7 +292,7 @@
             "status": "submitted",
             "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
           },
-          "timestamp": "2026-07-04T20:02:07.423571Z"
+          "timestamp": "2026-07-04T21:24:23.078741Z"
         },
         {
           "id": 4,
@@ -311,7 +310,7 @@
             "status": "submitted",
             "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
           },
-          "timestamp": "2026-07-04T20:02:25.423574Z"
+          "timestamp": "2026-07-04T21:24:41.078744Z"
         },
         {
           "id": 5,
@@ -323,7 +322,7 @@
             "pattern": "live+ci+real-data",
             "builds": 4
           },
-          "timestamp": "2026-07-04T20:02:43.423576Z"
+          "timestamp": "2026-07-04T21:24:59.078746Z"
         },
         {
           "id": 6,
@@ -336,7 +335,7 @@
             "pending": 0,
             "quality": "production"
           },
-          "timestamp": "2026-07-04T20:03:01.423580Z"
+          "timestamp": "2026-07-04T21:25:17.078750Z"
         }
       ]
     },
@@ -372,7 +371,7 @@
               }
             ]
           },
-          "timestamp": "2026-07-04T20:01:31.423587Z"
+          "timestamp": "2026-07-04T21:23:47.078757Z"
         },
         {
           "id": 2,
@@ -384,20 +383,20 @@
             "advantage": "quality+ci",
             "feedback_evidence": true
           },
-          "timestamp": "2026-07-04T20:01:49.423591Z"
+          "timestamp": "2026-07-04T21:24:05.078761Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "opportunity_scan",
-          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $22.4 USDC) or Infrastructure (avg $21.2 USDC).",
+          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $22.4 USDC) or Infrastructure (avg $21.3 USDC).",
           "data": {
             "weekly_pattern": "Mon-Tue",
             "best_category": "Protocol/Agent",
             "avg_reward": 22.4
           },
-          "timestamp": "2026-07-04T20:02:07.423596Z"
+          "timestamp": "2026-07-04T21:24:23.078767Z"
         },
         {
           "id": 4,
@@ -410,7 +409,7 @@
             "target_range": "$35-40",
             "approach": "quality-first"
           },
-          "timestamp": "2026-07-04T20:02:25.423600Z"
+          "timestamp": "2026-07-04T21:24:41.078770Z"
         },
         {
           "id": 5,
@@ -422,7 +421,7 @@
             "status": "monitoring",
             "next_check_min": 30
           },
-          "timestamp": "2026-07-04T20:02:43.423603Z"
+          "timestamp": "2026-07-04T21:24:59.078773Z"
         },
         {
           "id": 6,
@@ -438,7 +437,7 @@
             "pipeline": 0,
             "open_count": 0
           },
-          "timestamp": "2026-07-04T20:03:01.423606Z"
+          "timestamp": "2026-07-04T21:25:17.078776Z"
         }
       ]
     }
@@ -458,9 +457,9 @@
         "avg": 22.4
       },
       "Infrastructure": {
-        "count": 101,
-        "total": 2140,
-        "avg": 21.2
+        "count": 102,
+        "total": 2175,
+        "avg": 21.3
       }
     },
     "all_bounties_chart": [
@@ -566,7 +565,7 @@
         "id": 417,
         "title": "Build a Bounty Board Analytics API",
         "reward": 35,
-        "status": "submitted",
+        "status": "completed",
         "category": "Infrastructure"
       },
       {
