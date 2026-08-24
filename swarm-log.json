@@ -1,6 +1,6 @@
 {
-  "run_id": "b47fcf57",
-  "generated_at": "2026-08-24T14:07:44.040676Z",
+  "run_id": "755d810e",
+  "generated_at": "2026-08-24T15:05:21.370387Z",
   "agents": [
     {
       "id": "scout",
@@ -31,17 +31,18 @@
           "from": "scout",
           "to": "strategist",
           "type": "board_scan",
-          "content": "Board scan complete. 245 total bounties. No unclaimed open bounties \u2014 board fully claimed. 6 claimed by competitors. 29 unique builders active.",
+          "content": "Board scan complete. 245 total bounties. No unclaimed open bounties \u2014 board fully claimed. 4 claimed by competitors. 29 unique builders active.",
           "data": {
             "total": 245,
             "by_status": {
-              "claimed": 6,
+              "submitted": 2,
+              "claimed": 4,
               "completed": 187,
               "cancelled": 52
             },
             "open_unclaimed": 0
           },
-          "timestamp": "2026-08-24T14:08:02.038574Z"
+          "timestamp": "2026-08-24T15:05:39.368181Z"
         },
         {
           "id": 2,
@@ -56,7 +57,7 @@
             "completed_usdc": 605,
             "pending_usdc": 0
           },
-          "timestamp": "2026-08-24T14:08:20.038600Z"
+          "timestamp": "2026-08-24T15:05:57.368211Z"
         },
         {
           "id": 3,
@@ -107,7 +108,7 @@
               }
             }
           },
-          "timestamp": "2026-08-24T14:08:38.038610Z"
+          "timestamp": "2026-08-24T15:06:15.368221Z"
         },
         {
           "id": 4,
@@ -124,7 +125,7 @@
             "active_count": 0,
             "submitted_count": 0
           },
-          "timestamp": "2026-08-24T14:08:56.038618Z"
+          "timestamp": "2026-08-24T15:06:33.368229Z"
         },
         {
           "id": 5,
@@ -142,7 +143,7 @@
               "open_count": 0
             }
           },
-          "timestamp": "2026-08-24T14:09:14.038623Z"
+          "timestamp": "2026-08-24T15:06:51.368235Z"
         },
         {
           "id": 6,
@@ -169,7 +170,7 @@
               "submitted_count": 0
             }
           },
-          "timestamp": "2026-08-24T14:09:32.038627Z"
+          "timestamp": "2026-08-24T15:07:09.368239Z"
         }
       ]
     },
@@ -186,7 +187,7 @@
           "data": {
             "bounties_to_review": 1
           },
-          "timestamp": "2026-08-24T14:08:02.038631Z"
+          "timestamp": "2026-08-24T15:05:39.368244Z"
         },
         {
           "id": 2,
@@ -201,7 +202,7 @@
             "tech": "Python + HTML template",
             "reward": 25
           },
-          "timestamp": "2026-08-24T14:08:20.038639Z"
+          "timestamp": "2026-08-24T15:05:57.368252Z"
         },
         {
           "id": 3,
@@ -213,7 +214,7 @@
             "builds_live": 1,
             "all_have_ci": true
           },
-          "timestamp": "2026-08-24T14:08:38.038646Z"
+          "timestamp": "2026-08-24T15:06:15.368260Z"
         },
         {
           "id": 4,
@@ -232,7 +233,7 @@
               }
             ]
           },
-          "timestamp": "2026-08-24T14:08:56.038652Z"
+          "timestamp": "2026-08-24T15:06:33.368266Z"
         }
       ]
     },
@@ -256,7 +257,7 @@
             "status": "submitted",
             "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "timestamp": "2026-08-24T14:08:02.038656Z"
+          "timestamp": "2026-08-24T15:05:39.368270Z"
         },
         {
           "id": 2,
@@ -274,7 +275,7 @@
             "status": "submitted",
             "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
           },
-          "timestamp": "2026-08-24T14:08:20.038659Z"
+          "timestamp": "2026-08-24T15:05:57.368273Z"
         },
         {
           "id": 3,
@@ -292,7 +293,7 @@
             "status": "submitted",
             "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
           },
-          "timestamp": "2026-08-24T14:08:38.038662Z"
+          "timestamp": "2026-08-24T15:06:15.368276Z"
         },
         {
           "id": 4,
@@ -310,7 +311,7 @@
             "status": "submitted",
             "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
           },
-          "timestamp": "2026-08-24T14:08:56.038665Z"
+          "timestamp": "2026-08-24T15:06:33.368279Z"
         },
         {
           "id": 5,
@@ -322,7 +323,7 @@
             "pattern": "live+ci+real-data",
             "builds": 4
           },
-          "timestamp": "2026-08-24T14:09:14.038668Z"
+          "timestamp": "2026-08-24T15:06:51.368282Z"
         },
         {
           "id": 6,
@@ -335,7 +336,7 @@
             "pending": 0,
             "quality": "production"
           },
-          "timestamp": "2026-08-24T14:09:32.038673Z"
+          "timestamp": "2026-08-24T15:07:09.368288Z"
         }
       ]
     },
@@ -371,7 +372,7 @@
               }
             ]
           },
-          "timestamp": "2026-08-24T14:08:02.038679Z"
+          "timestamp": "2026-08-24T15:05:39.368293Z"
         },
         {
           "id": 2,
@@ -383,7 +384,7 @@
             "advantage": "quality+ci",
             "feedback_evidence": true
           },
-          "timestamp": "2026-08-24T14:08:20.038682Z"
+          "timestamp": "2026-08-24T15:05:57.368296Z"
         },
         {
           "id": 3,
@@ -396,7 +397,7 @@
             "best_category": "Protocol/Agent",
             "avg_reward": 21.8
           },
-          "timestamp": "2026-08-24T14:08:38.038687Z"
+          "timestamp": "2026-08-24T15:06:15.368301Z"
         },
         {
           "id": 4,
@@ -409,7 +410,7 @@
             "target_range": "$35-40",
             "approach": "quality-first"
           },
-          "timestamp": "2026-08-24T14:08:56.038690Z"
+          "timestamp": "2026-08-24T15:06:33.368305Z"
         },
         {
           "id": 5,
@@ -421,7 +422,7 @@
             "status": "monitoring",
             "next_check_min": 30
           },
-          "timestamp": "2026-08-24T14:09:14.038694Z"
+          "timestamp": "2026-08-24T15:06:51.368308Z"
         },
         {
           "id": 6,
@@ -437,7 +438,7 @@
             "pipeline": 0,
             "open_count": 0
           },
-          "timestamp": "2026-08-24T14:09:32.038697Z"
+          "timestamp": "2026-08-24T15:07:09.368311Z"
         }
       ]
     }
