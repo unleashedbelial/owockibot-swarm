@@ -1,6 +1,6 @@
 {
-  "run_id": "793471ea",
-  "generated_at": "2026-09-01T10:34:11.172402Z",
+  "run_id": "bf327acb",
+  "generated_at": "2026-09-01T15:14:22.118811Z",
   "agents": [
     {
       "id": "scout",
@@ -35,13 +35,12 @@
           "data": {
             "total": 250,
             "by_status": {
-              "submitted": 1,
-              "completed": 197,
+              "completed": 198,
               "cancelled": 52
             },
             "open_unclaimed": 0
           },
-          "timestamp": "2026-09-01T10:34:29.170194Z"
+          "timestamp": "2026-09-01T15:14:40.116606Z"
         },
         {
           "id": 2,
@@ -56,14 +55,14 @@
             "completed_usdc": 605,
             "pending_usdc": 0
           },
-          "timestamp": "2026-09-01T10:34:47.170218Z"
+          "timestamp": "2026-09-01T15:14:58.116631Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "competitive_analysis",
-          "content": "Competitive landscape: 29 builders. Top competitor: 35 completed bounties. Best ROI category: Protocol/Agent (avg $21.2 USDC, 83 completed).",
+          "content": "Competitive landscape: 29 builders. Top competitor: 35 completed bounties. Best ROI category: Protocol/Agent (avg $21.1 USDC, 84 completed).",
           "data": {
             "competition": {
               "top": [
@@ -96,9 +95,9 @@
             },
             "categories": {
               "Protocol/Agent": {
-                "count": 83,
-                "total": 1761,
-                "avg": 21.2
+                "count": 84,
+                "total": 1773,
+                "avg": 21.1
               },
               "Infrastructure": {
                 "count": 114,
@@ -107,7 +106,7 @@
               }
             }
           },
-          "timestamp": "2026-09-01T10:35:05.170228Z"
+          "timestamp": "2026-09-01T15:15:16.116641Z"
         },
         {
           "id": 4,
@@ -124,38 +123,38 @@
             "active_count": 0,
             "submitted_count": 0
           },
-          "timestamp": "2026-09-01T10:35:23.170232Z"
+          "timestamp": "2026-09-01T15:15:34.116645Z"
         },
         {
           "id": 5,
           "from": "scout",
           "to": "strategist",
           "type": "watch_strategy",
-          "content": "Watch strategy: MONITOR. Monitoring for new Protocol/Agent bounties (avg $21.2 USDC). GH Actions keeping all 4 submitted dashboards live and up-to-date.",
+          "content": "Watch strategy: MONITOR. Monitoring for new Protocol/Agent bounties (avg $21.1 USDC). GH Actions keeping all 4 submitted dashboards live and up-to-date.",
           "data": {
             "rec": {
-              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.2 USDC). $0 pending approval.",
+              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.1 USDC). $0 pending approval.",
               "status": "MONITOR",
               "best_cat": "Protocol/Agent",
-              "best_avg": 21.2,
+              "best_avg": 21.1,
               "pipeline": 0,
               "open_count": 0
             }
           },
-          "timestamp": "2026-09-01T10:35:41.170237Z"
+          "timestamp": "2026-09-01T15:15:52.116650Z"
         },
         {
           "id": 6,
           "from": "strategist",
           "to": "broadcast",
           "type": "recommendation",
-          "content": "SWARM RECOMMENDATION: MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.2 USDC). $0 pending approval. Active pipeline: $0 USDC across 0 submissions.",
+          "content": "SWARM RECOMMENDATION: MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.1 USDC). $0 pending approval. Active pipeline: $0 USDC across 0 submissions.",
           "data": {
             "recommendation": {
-              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.2 USDC). $0 pending approval.",
+              "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.1 USDC). $0 pending approval.",
               "status": "MONITOR",
               "best_cat": "Protocol/Agent",
-              "best_avg": 21.2,
+              "best_avg": 21.1,
               "pipeline": 0,
               "open_count": 0
             },
@@ -169,7 +168,7 @@
               "submitted_count": 0
             }
           },
-          "timestamp": "2026-09-01T10:35:59.170241Z"
+          "timestamp": "2026-09-01T15:16:10.116654Z"
         }
       ]
     },
@@ -186,7 +185,7 @@
           "data": {
             "bounties_to_review": 1
           },
-          "timestamp": "2026-09-01T10:34:29.170246Z"
+          "timestamp": "2026-09-01T15:14:40.116659Z"
         },
         {
           "id": 2,
@@ -201,7 +200,7 @@
             "tech": "Python + HTML template",
             "reward": 25
           },
-          "timestamp": "2026-09-01T10:34:47.170253Z"
+          "timestamp": "2026-09-01T15:14:58.116666Z"
         },
         {
           "id": 3,
@@ -213,7 +212,7 @@
             "builds_live": 1,
             "all_have_ci": true
           },
-          "timestamp": "2026-09-01T10:35:05.170261Z"
+          "timestamp": "2026-09-01T15:15:16.116673Z"
         },
         {
           "id": 4,
@@ -232,7 +231,7 @@
               }
             ]
           },
-          "timestamp": "2026-09-01T10:35:23.170267Z"
+          "timestamp": "2026-09-01T15:15:34.116679Z"
         }
       ]
     },
@@ -256,7 +255,7 @@
             "status": "submitted",
             "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "timestamp": "2026-09-01T10:34:29.170271Z"
+          "timestamp": "2026-09-01T15:14:40.116683Z"
         },
         {
           "id": 2,
@@ -274,7 +273,7 @@
             "status": "submitted",
             "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
           },
-          "timestamp": "2026-09-01T10:34:47.170274Z"
+          "timestamp": "2026-09-01T15:14:58.116686Z"
         },
         {
           "id": 3,
@@ -292,7 +291,7 @@
             "status": "submitted",
             "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
           },
-          "timestamp": "2026-09-01T10:35:05.170277Z"
+          "timestamp": "2026-09-01T15:15:16.116689Z"
         },
         {
           "id": 4,
@@ -310,7 +309,7 @@
             "status": "submitted",
             "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
           },
-          "timestamp": "2026-09-01T10:35:23.170279Z"
+          "timestamp": "2026-09-01T15:15:34.116691Z"
         },
         {
           "id": 5,
@@ -322,7 +321,7 @@
             "pattern": "live+ci+real-data",
             "builds": 4
           },
-          "timestamp": "2026-09-01T10:35:41.170282Z"
+          "timestamp": "2026-09-01T15:15:52.116694Z"
         },
         {
           "id": 6,
@@ -335,7 +334,7 @@
             "pending": 0,
             "quality": "production"
           },
-          "timestamp": "2026-09-01T10:35:59.170288Z"
+          "timestamp": "2026-09-01T15:16:10.116701Z"
         }
       ]
     },
@@ -371,7 +370,7 @@
               }
             ]
           },
-          "timestamp": "2026-09-01T10:34:29.170293Z"
+          "timestamp": "2026-09-01T15:14:40.116706Z"
         },
         {
           "id": 2,
@@ -383,20 +382,20 @@
             "advantage": "quality+ci",
             "feedback_evidence": true
           },
-          "timestamp": "2026-09-01T10:34:47.170296Z"
+          "timestamp": "2026-09-01T15:14:58.116709Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "opportunity_scan",
-          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $21.2 USDC) or Infrastructure (avg $20.7 USDC).",
+          "content": "Scanning for next opportunity. Board has 0 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $21.1 USDC) or Infrastructure (avg $20.7 USDC).",
           "data": {
             "weekly_pattern": "Mon-Tue",
             "best_category": "Protocol/Agent",
-            "avg_reward": 21.2
+            "avg_reward": 21.1
           },
-          "timestamp": "2026-09-01T10:35:05.170302Z"
+          "timestamp": "2026-09-01T15:15:16.116714Z"
         },
         {
           "id": 4,
@@ -409,7 +408,7 @@
             "target_range": "$35-40",
             "approach": "quality-first"
           },
-          "timestamp": "2026-09-01T10:35:23.170305Z"
+          "timestamp": "2026-09-01T15:15:34.116718Z"
         },
         {
           "id": 5,
@@ -421,7 +420,7 @@
             "status": "monitoring",
             "next_check_min": 30
           },
-          "timestamp": "2026-09-01T10:35:41.170309Z"
+          "timestamp": "2026-09-01T15:15:52.116721Z"
         },
         {
           "id": 6,
@@ -430,14 +429,14 @@
           "type": "recommendation",
           "content": "SWARM CONCLUSION: We're well-positioned. 4 quality submissions pending, $0 pipeline. Maintaining competitive advantage through real data + CI/CD. Agents on standby.",
           "data": {
-            "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.2 USDC). $0 pending approval.",
+            "action": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.1 USDC). $0 pending approval.",
             "status": "MONITOR",
             "best_cat": "Protocol/Agent",
-            "best_avg": 21.2,
+            "best_avg": 21.1,
             "pipeline": 0,
             "open_count": 0
           },
-          "timestamp": "2026-09-01T10:35:59.170312Z"
+          "timestamp": "2026-09-01T15:16:10.116724Z"
         }
       ]
     }
@@ -449,12 +448,12 @@
     "our_submitted": 0,
     "pending_usdc": 0,
     "earned_usdc": 605,
-    "recommendation": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.2 USDC). $0 pending approval.",
+    "recommendation": "MONITOR \u2014 Board quiet. Watch for new Protocol/Agent bounties (avg $21.1 USDC). $0 pending approval.",
     "categories": {
       "Protocol/Agent": {
-        "count": 83,
-        "total": 1761,
-        "avg": 21.2
+        "count": 84,
+        "total": 1773,
+        "avg": 21.1
       },
       "Infrastructure": {
         "count": 114,
