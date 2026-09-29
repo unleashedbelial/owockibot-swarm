@@ -1,6 +1,6 @@
 {
-  "run_id": "e7285c16",
-  "generated_at": "2026-09-29T18:42:47.111140Z",
+  "run_id": "2e5d54eb",
+  "generated_at": "2026-09-29T22:42:19.324896Z",
   "agents": [
     {
       "id": "scout",
@@ -31,19 +31,19 @@
           "from": "scout",
           "to": "strategist",
           "type": "board_scan",
-          "content": "Board scan complete. 287 total bounties. 3 unclaimed open. 2 claimed by competitors. 35 unique builders active.",
+          "content": "Board scan complete. 287 total bounties. 2 unclaimed open. 3 claimed by competitors. 36 unique builders active.",
           "data": {
             "total": 287,
             "by_status": {
               "cancelled": 60,
-              "open": 3,
+              "open": 2,
+              "claimed": 3,
               "submitted": 18,
-              "claimed": 2,
               "completed": 204
             },
-            "open_unclaimed": 3
+            "open_unclaimed": 2
           },
-          "timestamp": "2026-09-29T18:43:05.108532Z"
+          "timestamp": "2026-09-29T22:42:37.322855Z"
         },
         {
           "id": 2,
@@ -58,14 +58,14 @@
             "completed_usdc": 605,
             "pending_usdc": 0
           },
-          "timestamp": "2026-09-29T18:43:23.108561Z"
+          "timestamp": "2026-09-29T22:42:55.322881Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "competitive_analysis",
-          "content": "Competitive landscape: 35 builders. Top competitor: 35 completed bounties. Best ROI category: Infrastructure (avg $20.7 USDC, 115 completed).",
+          "content": "Competitive landscape: 36 builders. Top competitor: 35 completed bounties. Best ROI category: Infrastructure (avg $20.7 USDC, 115 completed).",
           "data": {
             "competition": {
               "top": [
@@ -94,7 +94,7 @@
                   "usdc": 475
                 }
               ],
-              "total_builders": 35
+              "total_builders": 36
             },
             "categories": {
               "Protocol/Agent": {
@@ -109,24 +109,24 @@
               }
             }
           },
-          "timestamp": "2026-09-29T18:43:41.108577Z"
+          "timestamp": "2026-09-29T22:43:13.322895Z"
         },
         {
           "id": 4,
           "from": "strategist",
           "to": "scout",
           "type": "position_assessment",
-          "content": "Position assessed. We have $0 pending + $605 earned. 35 competitors active. Quality over speed \u2014 our submissions have real infrastructure, not just demos.",
+          "content": "Position assessed. We have $0 pending + $605 earned. 36 competitors active. Quality over speed \u2014 our submissions have real infrastructure, not just demos.",
           "data": {
             "pipeline": 0,
             "earned": 605,
             "pending": 0,
-            "builders": 35,
+            "builders": 36,
             "completion_rate": 1.0,
             "active_count": 0,
             "submitted_count": 0
           },
-          "timestamp": "2026-09-29T18:43:59.108582Z"
+          "timestamp": "2026-09-29T22:43:31.322898Z"
         },
         {
           "id": 5,
@@ -136,42 +136,42 @@
           "content": "Watch strategy: ACT. Claiming available bounties now. GH Actions keeping all 4 submitted dashboards live and up-to-date.",
           "data": {
             "rec": {
-              "action": "ACT \u2014 3 bounties unclaimed. Claim Infrastructure type first.",
+              "action": "ACT \u2014 2 bounties unclaimed. Claim Infrastructure type first.",
               "status": "ACT",
               "best_cat": "Infrastructure",
               "best_avg": 20.7,
               "pipeline": 0,
-              "open_count": 3
+              "open_count": 2
             }
           },
-          "timestamp": "2026-09-29T18:44:17.108586Z"
+          "timestamp": "2026-09-29T22:43:49.322902Z"
         },
         {
           "id": 6,
           "from": "strategist",
           "to": "broadcast",
           "type": "recommendation",
-          "content": "SWARM RECOMMENDATION: ACT \u2014 3 bounties unclaimed. Claim Infrastructure type first. Active pipeline: $0 USDC across 0 submissions.",
+          "content": "SWARM RECOMMENDATION: ACT \u2014 2 bounties unclaimed. Claim Infrastructure type first. Active pipeline: $0 USDC across 0 submissions.",
           "data": {
             "recommendation": {
-              "action": "ACT \u2014 3 bounties unclaimed. Claim Infrastructure type first.",
+              "action": "ACT \u2014 2 bounties unclaimed. Claim Infrastructure type first.",
               "status": "ACT",
               "best_cat": "Infrastructure",
               "best_avg": 20.7,
               "pipeline": 0,
-              "open_count": 3
+              "open_count": 2
             },
             "portfolio": {
               "pipeline": 0,
               "earned": 605,
               "pending": 0,
-              "builders": 35,
+              "builders": 36,
               "completion_rate": 1.0,
               "active_count": 0,
               "submitted_count": 0
             }
           },
-          "timestamp": "2026-09-29T18:44:35.108591Z"
+          "timestamp": "2026-09-29T22:44:07.322905Z"
         }
       ]
     },
@@ -188,7 +188,7 @@
           "data": {
             "bounties_to_review": 1
           },
-          "timestamp": "2026-09-29T18:43:05.108595Z"
+          "timestamp": "2026-09-29T22:42:37.322909Z"
         },
         {
           "id": 2,
@@ -203,7 +203,7 @@
             "tech": "Python + HTML template",
             "reward": 25
           },
-          "timestamp": "2026-09-29T18:43:23.108603Z"
+          "timestamp": "2026-09-29T22:42:55.322916Z"
         },
         {
           "id": 3,
@@ -215,7 +215,7 @@
             "builds_live": 1,
             "all_have_ci": true
           },
-          "timestamp": "2026-09-29T18:43:41.108610Z"
+          "timestamp": "2026-09-29T22:43:13.322921Z"
         },
         {
           "id": 4,
@@ -234,7 +234,7 @@
               }
             ]
           },
-          "timestamp": "2026-09-29T18:43:59.108616Z"
+          "timestamp": "2026-09-29T22:43:31.322926Z"
         }
       ]
     },
@@ -258,7 +258,7 @@
             "status": "submitted",
             "notes": "Real-time timeline of owockibot Safe transactions. 82 events shown: $1,083 USDC paid out, 12.34 WETH received. Filter tabs: All / Payouts / Revenue / Fee Claims / Swaps. Auto-refresh every 30s."
           },
-          "timestamp": "2026-09-29T18:43:05.108620Z"
+          "timestamp": "2026-09-29T22:42:37.322929Z"
         },
         {
           "id": 2,
@@ -276,7 +276,7 @@
             "status": "submitted",
             "notes": "81 Base chain AI agents ranked by mcap/volume. Sparklines for OWO/ODAI via DexTools synthetic approach. GH Actions pre-fetches blocked APIs into agents-cache.json every 30min. $BELIAL included with Flaunch tag."
           },
-          "timestamp": "2026-09-29T18:43:23.108623Z"
+          "timestamp": "2026-09-29T22:42:55.322931Z"
         },
         {
           "id": 3,
@@ -294,7 +294,7 @@
             "status": "submitted",
             "notes": "Lake Powell (3530ft, 19.5% capacity) + Lake Mead (1066ft, 51.2%) reservoir levels, USGS streamflow at 4 gauges, SNOTEL snowpack. Full static cache via GH Actions \u2014 no live API calls from browser."
           },
-          "timestamp": "2026-09-29T18:43:41.108626Z"
+          "timestamp": "2026-09-29T22:43:13.322934Z"
         },
         {
           "id": 4,
@@ -312,7 +312,7 @@
             "status": "submitted",
             "notes": "Two agents (Scout + Strategist) coordinating on live board data. D3 network graph, animated message packets, Chart.js analytics, auto-refreshing via GH Actions every 30min."
           },
-          "timestamp": "2026-09-29T18:43:59.108628Z"
+          "timestamp": "2026-09-29T22:43:31.322936Z"
         },
         {
           "id": 5,
@@ -324,7 +324,7 @@
             "pattern": "live+ci+real-data",
             "builds": 4
           },
-          "timestamp": "2026-09-29T18:44:17.108634Z"
+          "timestamp": "2026-09-29T22:43:49.322941Z"
         },
         {
           "id": 6,
@@ -337,7 +337,7 @@
             "pending": 0,
             "quality": "production"
           },
-          "timestamp": "2026-09-29T18:44:35.108637Z"
+          "timestamp": "2026-09-29T22:44:07.322943Z"
         }
       ]
     },
@@ -350,7 +350,7 @@
           "from": "scout",
           "to": "strategist",
           "type": "intel",
-          "content": "Competitor intel: 35 builders on the board. Top builder: 35 completed, $665 USDC earned \u2014 wallet 0x31208431.... They focus on quick claims. We focus on quality infrastructure.",
+          "content": "Competitor intel: 36 builders on the board. Top builder: 35 completed, $665 USDC earned \u2014 wallet 0x31208431.... They focus on quick claims. We focus on quality infrastructure.",
           "data": {
             "competition": [
               {
@@ -373,7 +373,7 @@
               }
             ]
           },
-          "timestamp": "2026-09-29T18:43:05.108642Z"
+          "timestamp": "2026-09-29T22:42:37.322947Z"
         },
         {
           "id": 2,
@@ -385,20 +385,20 @@
             "advantage": "quality+ci",
             "feedback_evidence": true
           },
-          "timestamp": "2026-09-29T18:43:23.108644Z"
+          "timestamp": "2026-09-29T22:42:55.322949Z"
         },
         {
           "id": 3,
           "from": "scout",
           "to": "strategist",
           "type": "opportunity_scan",
-          "content": "Scanning for next opportunity. Board has 3 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $20.5 USDC) or Infrastructure (avg $20.7 USDC).",
+          "content": "Scanning for next opportunity. Board has 2 open bounties. Based on weekly pattern: new bounties typically posted Mon-Tue. Categories most likely: Protocol/Agent (avg $20.5 USDC) or Infrastructure (avg $20.7 USDC).",
           "data": {
             "weekly_pattern": "Mon-Tue",
             "best_category": "Infrastructure",
             "avg_reward": 20.7
           },
-          "timestamp": "2026-09-29T18:43:41.108653Z"
+          "timestamp": "2026-09-29T22:43:13.322956Z"
         },
         {
           "id": 4,
@@ -411,7 +411,7 @@
             "target_range": "$35-40",
             "approach": "quality-first"
           },
-          "timestamp": "2026-09-29T18:43:59.108656Z"
+          "timestamp": "2026-09-29T22:43:31.322959Z"
         },
         {
           "id": 5,
@@ -423,7 +423,7 @@
             "status": "monitoring",
             "next_check_min": 30
           },
-          "timestamp": "2026-09-29T18:44:17.108659Z"
+          "timestamp": "2026-09-29T22:43:49.322962Z"
         },
         {
           "id": 6,
@@ -432,26 +432,26 @@
           "type": "recommendation",
           "content": "SWARM CONCLUSION: We're well-positioned. 4 quality submissions pending, $0 pipeline. Maintaining competitive advantage through real data + CI/CD. Agents on standby.",
           "data": {
-            "action": "ACT \u2014 3 bounties unclaimed. Claim Infrastructure type first.",
+            "action": "ACT \u2014 2 bounties unclaimed. Claim Infrastructure type first.",
             "status": "ACT",
             "best_cat": "Infrastructure",
             "best_avg": 20.7,
             "pipeline": 0,
-            "open_count": 3
+            "open_count": 2
           },
-          "timestamp": "2026-09-29T18:44:35.108662Z"
+          "timestamp": "2026-09-29T22:44:07.322964Z"
         }
       ]
     }
   ],
   "summary": {
     "total_bounties": 287,
-    "open_opportunities": 3,
+    "open_opportunities": 2,
     "our_active": 0,
     "our_submitted": 0,
     "pending_usdc": 0,
     "earned_usdc": 605,
-    "recommendation": "ACT \u2014 3 bounties unclaimed. Claim Infrastructure type first.",
+    "recommendation": "ACT \u2014 2 bounties unclaimed. Claim Infrastructure type first.",
     "categories": {
       "Protocol/Agent": {
         "count": 89,
